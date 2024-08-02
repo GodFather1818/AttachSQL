@@ -5,11 +5,12 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './style.category.css'
 import { Button } from '@mui/material';
+import Link from 'next/link';
+
 const CategoryPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);
-  
   const add = () => {
-    window.location.href = '/category/add';
+    
     console.log('Add category');
   }
 
@@ -31,7 +32,7 @@ const CategoryPage = () => {
   return (
     <div className="container">
       <h1>Categories</h1>
-      <Button className='btn-add' onClick={add}>Add</Button>
+      <Link href="/category/add"><Button className='btn-add' onClick={add}>Add</Button></Link>
       <div className="grid">
         {categories.map(category =>  (
           <div key={category.id} className="card">
