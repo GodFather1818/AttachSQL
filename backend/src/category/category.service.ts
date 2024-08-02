@@ -7,7 +7,6 @@ import { Category } from './category.schema';
 export class CategoryService {
   constructor(@InjectModel(Category.name) private categoryModel: Model<Category>) {}
 
-  
   async getCategories(): Promise<Category[]> {
     return this.categoryModel.find().exec();
   }

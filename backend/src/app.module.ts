@@ -10,7 +10,7 @@ import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [UserModule,CategoryModule,ProductModule, MongooseModule.forRoot('mongodb+srv://Dhruv:Dhruv@cluster0.h6fh7fu.mongodb.net/task1?retryWrites=true&w=majority')],
-  controllers: [AppController, CategoryController],
-  providers: [AppService, CategoryService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
