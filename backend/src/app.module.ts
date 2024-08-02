@@ -4,9 +4,13 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { CategoryService } from './category/category.service';
+import { CategoryController } from './category/category.controller';
+import { CategoryModule } from './category/category.module';
+
 @Module({
-  imports: [UserModule, ProductModule, MongooseModule.forRoot('mongodb://127.0.0.1:27017/nest')],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [UserModule,CategoryModule,ProductModule, MongooseModule.forRoot('mongodb+srv://Dhruv:Dhruv@cluster0.h6fh7fu.mongodb.net/task1?retryWrites=true&w=majority')],
+  controllers: [AppController, CategoryController],
+  providers: [AppService, CategoryService],
 })
 export class AppModule {}
