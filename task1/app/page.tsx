@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/sheet"
 import ButtonAppBar from "@/components/ui/ButtonAppBar";
 import Image from "next/image";
-
+import AddCategoryform from '../components/ui/AddCategoryForm'
 export default function Home() {
   return (
     <>
