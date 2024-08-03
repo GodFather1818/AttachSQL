@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { Project } from "./project.schema";
+import { CreateProjectDto } from './create-project.dto';
 
 @Controller('project')
 export class ProjectController {
@@ -13,8 +14,8 @@ export class ProjectController {
     }
 
     @Post() 
-    async createProject(@Body() project: Project): Promise<Project> {
-        return this.projectService.create(project);
+    async createProject(@Body() createProjectDto: CreateProjectDto): Promise<Project> {
+        return this.projectService.create(createProjectDto);
     }
 
 }
