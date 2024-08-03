@@ -5,5 +5,6 @@ export class CreateProductDto {
     readonly sellingPrice: number;
     readonly actualPrice: number;
     readonly tags: string;
+    readonly category:string;
   }
-  
+    
