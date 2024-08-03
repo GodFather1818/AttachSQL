@@ -49,8 +49,6 @@ const CategoryPage = () => {
         {categories.map(category =>  (
           <div key={category.id} className="relative card bg-slate-100 bg-white shadow-md rounded-lg p-4 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
             <Button onClick={()=>{deleteit(category._id)}} className="absolute top-0 right-0 mt-2 mr-2 bg-primary"><DeleteIcon sx={{ color: 'red' }}/></Button>
-            <img className="image-container h-48 w-full flex items-center justify-center bg-gray-200"
- src='' alt='xyz' />
             
             <h2 className='font-semibold text-blue-500 text-2xl m-3'>{category.name}</h2>
             <p className='text-blue-900'>{category.description}</p>
