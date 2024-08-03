@@ -47,31 +47,40 @@ const AddProductForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} >
-      <h2 className='font-bold
-       text-primary'>Add New Product</h2>
+    
+
+    <div className="m-2 mx-auto p-6 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg shadow-xl hover:shadow-2xl transition duration-300 ease-in-out">
+        <form onSubmit={handleSubmit} className="max-w-lg mx-auto mt-8 p-6 rounded-lg shadow-md">
+      <div className='mt-10'>
+      <h2 className='font-bold text-3xl 
+       text-primary mb-4'>Add New Product</h2>
+      </div>
       {error && <p className="error">{error}</p>}
       <div className="form-group">
-        <label htmlFor="name">Name</label>
+        <label htmlFor="name" className="block text-lg font-medium mb-2">Name</label>
         <input
           type="text"
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+        
         />
       </div>
-      <div className="form-group">
-        <label htmlFor="description">Description</label>
+      <div className="form-group mb-4">
+        <label htmlFor="description"  className="block text-lg font-medium mb-2">Description</label>
         <textarea
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+        
         ></textarea>
       </div>
-      <div className="form-group">
-        <label htmlFor="sellingPrice">Selling Price</label>
+      <div className="form-group mb-4">
+        <label htmlFor="sellingPrice" className="block text-lg font-medium mb-2">Selling Price</label>
         <input
           type="number"
           id="sellingPrice"
@@ -114,6 +123,9 @@ const AddProductForm = () => {
       </button>
       
     </form>
+    </div>
+
+    
   );
 };
 
