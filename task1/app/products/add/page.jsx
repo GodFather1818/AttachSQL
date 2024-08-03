@@ -47,8 +47,9 @@ const AddProductForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Add New Product</h2>
+    <form onSubmit={handleSubmit} >
+      <h2 className='font-bold
+       text-primary'>Add New Product</h2>
       {error && <p className="error">{error}</p>}
       <div className="form-group">
         <label htmlFor="name">Name</label>
