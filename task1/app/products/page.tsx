@@ -18,7 +18,7 @@ const CategoryPage = () => {
     // Fetch products from the backend
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/prodcut/api/'); // Adjust the endpoint as per your backend route
+        const response = await axios.get('http://localhost:3001/product/api/'); // Adjust the endpoint as per your backend route
         setProducts(response.data);
         console.log(response.data)
       } catch (error) {
@@ -34,10 +34,14 @@ const CategoryPage = () => {
       <h1>Products</h1>
       <Link href="/products/add"><Button className='btn-add' onClick={add}>Add</Button></Link>
       <div className="grid">
-        {products.map(category => (
-          <div key={category.id} className="card">
-            <h2>{category.name}</h2>
-            <p>{category.description}</p>
+        {products.map(product => (
+          <div key={product.id} className="card">
+            <img src={`http://localhost:3001/${product.bannerImage}`} alt={product.name} style={{
+              margin:'auto',
+              width:'30%'}}/>
+            <h2>{product.name}</h2>
+            <h3>Category:{product.category}</h3>
+            <p>Description:{product.description}</p>
           </div>
         ))}
       </div>

@@ -1,10 +1,12 @@
 "use client"
 // components/AddProductForm.js
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './style.add.css'
+
 const AddProductForm = () => {
   const [name, setName] = useState('');
+  const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [sellingPrice, setSellingPrice] = useState('');
   const [actualPrice, setActualPrice] = useState('');
@@ -12,10 +14,25 @@ const AddProductForm = () => {
   const [bannerImage, setBannerImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    // Replace this with your actual data fetching logic
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/category/api/'); // Example API endpoint
+        setCategories(response.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+
     setError('');
 
     const formData = new FormData();
@@ -25,9 +42,10 @@ const AddProductForm = () => {
     formData.append('actualPrice', actualPrice);
     formData.append('tags', tags);
     formData.append('bannerImage', bannerImage);
+    formData.append('category', category);
 
     try {
-      await axios.post('/api/products', formData, {
+      await axios.post('http://localhost:3001/product/api/add', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -38,6 +56,7 @@ const AddProductForm = () => {
       setActualPrice('');
       setTags('');
       setBannerImage(null);
+      setCategory('');
       alert('Product added successfully!');
     } catch (err) {
       setError('Failed to add product. Please try again.');
@@ -100,6 +119,22 @@ const AddProductForm = () => {
         />
       </div>
       <div className="form-group">
+        <label htmlFor="category">Category</label>
+        <select
+          id="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          required
+        >
+          <option value="">Select a category</option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.name}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="form-group">
         <label htmlFor="bannerImage">Banner Image</label>
         <input
           type="file"
@@ -111,7 +146,6 @@ const AddProductForm = () => {
       <button type="submit" disabled={loading}>
         {loading ? 'Adding...' : 'Add Product'}
       </button>
-      
     </form>
   );
 };
