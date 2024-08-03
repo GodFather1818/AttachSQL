@@ -16,4 +16,8 @@ export class CategoryService {
     const newCategory = new this.categoryModel(createCategoryDto);
     return newCategory.save();
   }
+  async deleteCategory(categoryId: string): Promise<Category> {
+    return this.categoryModel.findByIdAndDelete(categoryId).exec();
+  }
+
 }

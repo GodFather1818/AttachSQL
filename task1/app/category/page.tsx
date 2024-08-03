@@ -6,6 +6,7 @@ import axios from 'axios';
 import './style.category.css'
 import { Button } from '@mui/material';
 import Link from 'next/link';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const CategoryPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -13,18 +14,28 @@ const CategoryPage = () => {
     console.log('Add category');
   }
 
-  useEffect(() => {
-    // Fetch categories from the backend
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/category/api/'); // Adjust the endpoint as per your backend route
-        setCategories(response.data);
-        console.log(response.data)
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
+  const deleteit = async (id:any) => {
+    try{
+      await axios.delete(`http://localhost:3001/category/api/delete/${id}`);
+      fetchCategories();
+    }catch(error){
+      console.log(error);
+    }
+    console.log('Delete category');
+  }
 
+  // Fetch categories from the backend
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/category/api/'); // Adjust the endpoint as per your backend route
+      setCategories(response.data);
+      console.log(response.data)
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+  
+  useEffect(() => {
     fetchCategories();
   }, []);
 
@@ -37,6 +48,7 @@ const CategoryPage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {categories.map(category =>  (
           <div key={category.id} className="card bg-slate-100 bg-white shadow-md rounded-lg p-4 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+            <Button onClick={()=>{deleteit(category._id)}}><DeleteIcon /></Button>
             <h2 className='font-semibold text-blue-500 text-2xl'>{category.name}</h2>
             <p className='text-blue-900'>{category.description}</p>
           </div>
