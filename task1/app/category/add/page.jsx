@@ -27,11 +27,11 @@ const AddCategoryForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="category-form">
-      <h2>Add New Category</h2>
+    <form onSubmit={handleSubmit} className="category-form border rounded-lg m-10">
+      <h2 className='mt-10 text-3xl font-bold'>Add New Category</h2>
       {error && <p className="error">{error}</p>}
-      <div className="form-group">
-        <label htmlFor="name">Name</label>
+      <div className="form-group mt-10 mb-5">
+        <label htmlFor="name" className='text-xl font-semibold'>Name</label>
         <input
           type="text"
           id="name"
@@ -41,7 +41,7 @@ const AddCategoryForm = () => {
         />
       </div>
       <div className="form-group">
-        <label htmlFor="description">Description</label>
+        <label htmlFor="description" className='text-xl font-semibold'>Description</label>
         <textarea
           id="description"
           value={description}
@@ -49,8 +49,8 @@ const AddCategoryForm = () => {
           required
         ></textarea>
       </div>
-      <button type="submit" disabled={loading}>
-        {loading ? 'Adding...' : 'Add Category'}
+      <button className='mb-5' type="submit" disabled={loading}>
+        {loading ? 'Adding...' : '+ Add Category'}
       </button>
       <style jsx>{`
         .category-form {
