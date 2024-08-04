@@ -11,18 +11,23 @@ export const getProjects = async() => {
     return response.data;
 };
 
+export const getParticularProject = async(id: any) => {
+    const response = await api.get(`project/${id}`);
+    return response.data;
+}
+
 export const createProject = async(createProjectDto: CreateProjectDto) => {
-    const response = await api.post("/project", createProjectDto);
+    const response = await api.post("project", createProjectDto);
     return response.data;
 };
 
 export const deleteProject = async(id: string) => {
-    const response = await api.delete(`/project/${id}`);
+    const response = await api.delete(`/project/delete/${id}`);
     return response.data;
 }
 
-export const updateProject = async(id: string, updateData: Partial<Task>) => {
-    const response = await api.put(`/project/${id}`, updateData);
+export const updateProject = async(id: string, updateData: Partial<Project>) => {
+    const response = await api.put(`/project/update/${id}`, updateData);
     return response.data;
 }
 
