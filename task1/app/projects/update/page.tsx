@@ -8,8 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { getParticularProject } from '@/utils/api';
-import { strict } from 'assert';
+import { getParticularProject, updateProject } from '@/utils/api';
 
 
 function UpdateProject() {
@@ -39,20 +38,15 @@ function UpdateProject() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3001/project/${id}`, {
-        name,
-      });
-      setTimeout(()=> {
+      await axios.put(`http://localhost:3001/project/${id}`, { name });
+      setTimeout(() => {
         setName('');
-        toast.success('Project created successfully!');
+        toast.success('Project updated successfully!');
         router.push('/projects');
-
-        
       }, 2000);
     } catch (error) {
-      console.error('Error updating category:', error);
+      console.error('Error updating project:', error);
       toast.error('Failed to update project');
-
     }
   };
 

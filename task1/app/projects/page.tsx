@@ -8,8 +8,9 @@ import { Project } from "../../../backend/src/project/project.schema";
 import Link from "next/link";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { deleteProject } from "../../utils/api";
 
-const ProjectList = () => {
+function ProjectList() {
   const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
@@ -20,6 +21,17 @@ const ProjectList = () => {
 
     fetchProjects();
   }, []);
+
+  const handleDelete = async(id: any) => {
+    try {
+      await deleteProject(id);
+      setProjects(projects.filter(project => project._id !== id))
+
+    }catch (error) {
+      console.error(error);
+    }
+  }
+  
 
   return (
     <div>
@@ -39,9 +51,9 @@ const ProjectList = () => {
                 key={project.id}
                 className="m-3 relative card bg-slate-100 shadow-md rounded-lg p-4 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
               >
-                <Button className="absolute top-0 right-0 mt-2 mr-2 bg-primary">
+                <button className="absolute top-0 right-0 mt-2 mr-2 bg-primary" onClick={()=> handleDelete(project._id)}>
                   <DeleteIcon sx={{ color: "red" }} />
-                </Button>
+                </button>
                 <Link href={`/project/update/${project._id}`}>
                   <Button className="absolute top-0 right-100 mt-2 mr-2 bg-primary ">
                     <EditIcon sx={{ color: "white" }} />
@@ -68,3 +80,4 @@ const ProjectList = () => {
 };
 
 export default ProjectList;
+

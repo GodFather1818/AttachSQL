@@ -12,17 +12,17 @@ export const getProjects = async() => {
 };
 
 export const getParticularProject = async(id: any) => {
-    const response = await api.get(`project/${id}`);
+    const response = await api.get(`/project/${id}`);
     return response.data;
 }
 
 export const createProject = async(createProjectDto: CreateProjectDto) => {
-    const response = await api.post("project", createProjectDto);
+    const response = await api.post("/project", createProjectDto);
     return response.data;
 };
 
 export const deleteProject = async(id: string) => {
-    const response = await api.delete(`/project/delete/${id}`);
+    const response = await api.delete(`/project/${id}`);
     return response.data;
 }
 
