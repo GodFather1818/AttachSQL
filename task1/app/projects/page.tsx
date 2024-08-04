@@ -27,9 +27,9 @@ const ProjectList = () => {
     {projects.length !== 0 ? (
       <div className="mt-10 container mx-auto p-6 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg shadow-xl hover:shadow-2xl transition duration-300 ease-in-out">
         <div className="flex justify-between items-center h-16 m-4">
-          <h1 className="text-3xl font-bold text-primary">Categories</h1>
+          <h1 className="text-3xl font-bold text-primary">PROJECTS</h1>
           <Link href="/projects/create">
-            <Button className="btn-add">+ Add new categories</Button>
+            <Button className="btn-add p-3 bg-primary text-blue-100">+ Add new PROJECTS</Button>
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
