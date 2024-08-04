@@ -9,7 +9,11 @@ export class ProjectService {
     constructor(@InjectModel(Project.name) private projectModel: Model<Project>){}
 
     async findAll(): Promise<Project[]>{
-        return this.projectModel.find().populate('tasks', 'title').exec();
+        return this.projectModel.find().exec();
+    }
+
+    async findParticularProject(id: string): Promise<Project> {
+        return this.projectModel.findById(id).exec();
     }
 
     async create(createProjectDto: CreateProjectDto): Promise<Project> {

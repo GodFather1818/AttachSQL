@@ -32,7 +32,7 @@ const EditCategory = () => {
     fetchCategory();
   }, [id]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
       await axios.put(`http://localhost:3001/category/api/update/${id}`, {
