@@ -7,6 +7,7 @@ import './style.category.css'
 import { Button } from '@mui/material';
 import Link from 'next/link';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { Category } from "../../../backend/src/category/category.schema";
 
 const CategoryPage = () => {
@@ -23,6 +24,15 @@ const CategoryPage = () => {
       console.log(error);
     }
     console.log('Delete category');
+  }
+  const editit = async (id:any) => {
+    try{
+      await axios.delete(`http://localhost:3001/category/api/edit/${id}`);
+      fetchCategories();
+    }catch(error){
+      console.log(error);
+    }
+    console.log('Edit category');
   }
 
   // Fetch categories from the backend
@@ -48,10 +58,13 @@ const CategoryPage = () => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {categories.map(category =>  (
-          <div key={category.id} className="relative card bg-slate-100 shadow-md rounded-lg p-4 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
-            <Button onClick={()=>{deleteit(category._id)}} className="absolute top-0 right-0 mt-2 mr-2 bg-primary"><DeleteIcon sx={{ color: 'red' }}/></Button>
-            <h2 className='font-semibold text-blue-500 text-2xl m-3'>{category.name}</h2>
+          <div key={category.id} className="flex space-around relative card bg-slate-100 shadow-md rounded-lg p-4 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+            <Button onClick={()=>{deleteit(category._id)}} className="absolute top-0 right-0 mt-2 mr-2 bg-primary "><DeleteIcon sx={{ color: 'red' }}/></Button>
+            <Button onClick={()=>{editit(category._id)}} className="absolute top-0 right-100 mt-2 mr-2 bg-primary "><EditIcon sx={{ color: 'red' }}/></Button>
+            <div className='flex-col justify-center items-center w-80 m-auto'>
+            <h2 className='font-semibold text-blue-500 text-2xl m-3 '>{category.name}</h2>
             <p className='text-blue-900'>{category.description}</p>
+          </div>
           </div>
         ))}
       </div>
