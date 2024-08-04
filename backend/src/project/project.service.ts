@@ -20,6 +20,9 @@ export class ProjectService {
     async deleteProject(projectId: string): Promise<Project> {
         return this.projectModel.findByIdAndDelete(projectId).exec();
     }
+    async updateProject(projectId: string, updateData: Partial<Project>): Promise<Project> {
+        return this.projectModel.findByIdAndUpdate(projectId, updateData, { new: true }).exec();        
+    }
 
     
 
