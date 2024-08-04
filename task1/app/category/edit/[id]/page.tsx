@@ -1,13 +1,16 @@
-"use client"
+"use client";
 
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Params } from 'react-router-dom';
 import { useParams } from 'next/navigation';
+
+
+
 const EditCategory = () => {
-  const param = useParams()
-  const id = param.id;
+  const params = useParams();
+  const id = params.id;
+
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -34,9 +37,9 @@ const EditCategory = () => {
     try {
       await axios.put(`http://localhost:3001/category/api/update/${id}`, {
         name,
-        description
+        description,
       });
-      router.push('/categories');
+      window.location.href = '/category'
     } catch (error) {
       console.error('Error updating category:', error);
     }
