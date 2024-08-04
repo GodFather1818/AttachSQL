@@ -80,10 +80,10 @@ export default function ButtonAppBar() {
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link href="/">
-              Task
+              Practise Project Application
             </Link>
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button className='text-white bg-primary p-3 text-sm' >Login</Button>
         </Toolbar>
       </AppBar>
     </Box>
