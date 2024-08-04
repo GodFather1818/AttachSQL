@@ -50,7 +50,7 @@ export default function ButtonAppBar() {
                 <SheetHeader>
                   <SheetTitle>Features</SheetTitle>
                   <SheetDescription>
-                    <div className="btn-class">
+                    <div className="btn-class text-primary">
                       <SheetClose asChild>
                         <Link href="/category">
                           <Button onClick={category}>Category</Button>

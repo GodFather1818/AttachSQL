@@ -44,7 +44,7 @@ const CategoryPage = () => {
             </Button>
             <img className="image-container h-48 w-full flex items-center justify-center bg-gray-200"
  src={`http://localhost:3001/${product.bannerImage}`} alt={product.name} />
-            <h2 className='font-bold text-blue-900 text-2xl mt-5'>{product.name}</h2>
+            <h2 className='font-bold text-blue-900 text-2xl m-5'>{product.name}</h2>
             <h3 className='font-semibold text-blue-500 text-lg m-1'>Category: {product.category}</h3>
             <p className='text-blue-900'>Description: {product.description}</p>
           </div>

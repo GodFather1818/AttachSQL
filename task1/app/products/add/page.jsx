@@ -68,9 +68,9 @@ const AddProductForm = () => {
   return (
     
 
-    <div className="m-2 mx-auto p-6 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg shadow-xl hover:shadow-2xl transition duration-300 ease-in-out">
-        <form onSubmit={handleSubmit} className="max-w-lg mx-auto mt-8 p-6 rounded-lg shadow-md">
-      <div className='mt-10'>
+    <div className=" mx-auto align-middle p-6 bg-gradient-to-r from-blue-100 to-blue-200 border rounded-lg shadow-xl hover:shadow-2xl transition duration-300 ease-in-out">
+        <form onSubmit={handleSubmit} >
+      <div>
       <h2 className='font-bold text-3xl 
        text-primary mb-4'>Add New Product</h2>
       </div>
