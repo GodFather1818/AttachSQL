@@ -32,14 +32,14 @@ const ProjectList = () => {
             <Button className="btn-add p-3 bg-primary text-blue-100">+ Add new PROJECTS</Button>
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4">
           {projects.map((project) => (
-            <div key={project.id} className="relative card bg-slate-100 shadow-md rounded-lg p-4 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+            <div key={project.id} className="m-3 relative card bg-slate-100 shadow-md rounded-lg p-4 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
               <Button className="absolute top-0 right-0 mt-2 mr-2 bg-primary">
                 <DeleteIcon sx={{ color: 'red' }} />
               </Button>
-              <h2 className="font-semibold text-blue-500 text-2xl m-3"></h2>
-              <p className="text-blue-900">{project.name}</p>
+              <h2 className="font-semibold text-blue-500 text-2xl ">{project.name}</h2>
+              <p className="text-blue-900 bg-blue-300 w-2/6 border rounded-lg p-1">Ongoing</p>
             </div>
           ))}
         </div>
