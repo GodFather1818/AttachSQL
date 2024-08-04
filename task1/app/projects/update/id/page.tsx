@@ -1,33 +1,39 @@
+"use client";
+
 import React from 'react';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import './style.category.css';
-import { Button } from '@mui/material';
-import Link from 'next/link';
-import DeleteIcon from '@mui/icons-material/Delete';
+// import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { getParticularProject, updateProject } from '@/utils/api';
+import axios from 'axios';
+// import { Project } from '../../../../../backend/src/project/project.schema';
 
 
 function UpdateProject() {
   const params = useParams();
   const id = params.id;
+
   const [name, setName] = useState('');
+  const [loading, setLoading] = useState(true); // Added loading state
+
   const router = useRouter();
+
 
 
   useEffect(() => {
     const fetchProject = async () => {
       if (id) {
         try {
-          // const response = await axios.get(`http://localhost:3001/project/${id}`);
-          // const project = response.data;
-          const project = await getParticularProject(id);
+          const response = await getParticularProject(id as string); // Type assertion to string
+          const project = response.data;
           setName(project.name);
         } catch (error) {
-          console.error('Error fetching category:', error);
+          console.error('Error fetching project:', error);
+        } finally {
+          setLoading(false); // Set loading to false after fetching
         }
       }
     };
@@ -35,10 +41,12 @@ function UpdateProject() {
     fetchProject();
   }, [id]);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await axios.put(`http://localhost:3001/project/${id}`, { name });
+      // await updateProject(id as string, {name});
+      setName('')
       setTimeout(() => {
         setName('');
         toast.success('Project updated successfully!');
@@ -49,6 +57,9 @@ function UpdateProject() {
       toast.error('Failed to update project');
     }
   };
+  if (loading) {
+    return <div>Loading...</div>; // Display loading state
+  }
 
 
   return (

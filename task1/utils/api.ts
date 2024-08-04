@@ -27,7 +27,8 @@ export const deleteProject = async(id: string) => {
 }
 
 export const updateProject = async(id: string, updateData: Partial<Project>) => {
-    const response = await api.put(`/project/update/${id}`, updateData);
+    const response = await api.put(`/project/${id}`, updateData);
+    console.log(response.data);
     return response.data;
 }
 
