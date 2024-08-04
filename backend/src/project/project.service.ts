@@ -17,5 +17,10 @@ export class ProjectService {
         return newProject.save();
     }
 
+    async deleteProject(projectId: string): Promise<Project> {
+        return this.projectModel.findByIdAndDelete(projectId).exec();
+    }
+
+    
 
 }
