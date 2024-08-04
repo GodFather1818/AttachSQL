@@ -17,12 +17,12 @@ export class ProjectController {
     async createProject(@Body() createProjectDto: CreateProjectDto): Promise<Project> {
         return this.projectService.create(createProjectDto);
     }
-    @Delete()
+    @Delete("/:id")
     async deleteProject(@Param('id') id: string): Promise<Project> {
         return this.projectService.deleteProject(id);
     }
     // @Patch()
-    @Put()
+    @Put("/:id")
     async updateProject(@Param('id') id: string,  @Body() updateData: Partial<Project>): Promise<Project> {
         return this.projectService.updateProject(id, updateData);
     }

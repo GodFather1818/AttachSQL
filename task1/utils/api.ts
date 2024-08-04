@@ -16,6 +16,17 @@ export const createProject = async(createProjectDto: CreateProjectDto) => {
     return response.data;
 };
 
+export const deleteProject = async(id: string) => {
+    const response = await api.delete(`/project/${id}`);
+    return response.data;
+}
+
+export const updateProject = async(id: string, updateData: Partial<Task>) => {
+    const response = await api.put(`/project/${id}`, updateData);
+    return response.data;
+}
+
+
 export const getTasks = async() => {
     const response = await api.get("/task");
     return response.data;
@@ -23,6 +34,16 @@ export const getTasks = async() => {
 
 export const createTask = async(task: Task) => {
     const response = await api.post("/task", task);
+    return response.data;
+};
+
+export const deleteTask = async (id: string) => {
+    const response = await api.delete(`/tasks/${id}`);
+    return response.data;
+};
+
+export const updateTask = async (id: string, updateData: Partial<Task>) => {
+    const response = await api.put(`/tasks/${id}`, updateData);
     return response.data;
 };
 
