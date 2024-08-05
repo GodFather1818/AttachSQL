@@ -48,28 +48,28 @@ export default function ButtonAppBar() {
               <SheetTrigger><MenuIcon /></SheetTrigger>
               <SheetContent>
                 <SheetHeader>
-                  <SheetTitle>Features</SheetTitle>
-                  <SheetDescription>
+                  <SheetTitle className='text-3xl text-blue-100 bg-blue-950 p-10 mb-5 border rounded-lg'>Features</SheetTitle>
+                  <SheetDescription >
                     <div className="btn-class text-primary">
-                      <SheetClose asChild>
+                      <SheetClose asChild >
                         <Link href="/category">
-                          <Button onClick={category}>Category</Button>
+                          <Button className='mt-3 mb-1 ml-5 text-blue-950 font-semibold text-lg ' onClick={category}>Category</Button>
                         </Link>
                       </SheetClose>
                       <SheetClose asChild>
                         <Link href="/products">
-                          <Button onClick={products}>Products</Button>
+                          <Button className='mb-1 ml-5 text-blue-950 font-semibold text-lg ' onClick={products}>Products</Button>
                         </Link>
                       </SheetClose>
                       <SheetClose asChild>
                         <Link href="/projects">
-                          <Button onClick={projects}>Projects</Button>
+                          <Button className='mb-1 ml-5 text-blue-950 font-semibold text-lg ' onClick={projects}>Projects</Button>
                         </Link>
                       </SheetClose>
                       <SheetClose asChild>
 
                         <Link href="/tasks">
-                          <Button onClick={tasks}>Tasks</Button>
+                          <Button className='mb-1 text-blue-950 font-semibold text-lg ' onClick={tasks}>Tasks</Button>
                         </Link>
                       </SheetClose>
                     </div>
@@ -80,10 +80,10 @@ export default function ButtonAppBar() {
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link href="/">
-              Task
+              Practise Project Application
             </Link>
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button className='text-white bg-primary p-3 text-sm' >Login</Button>
         </Toolbar>
       </AppBar>
     </Box>
