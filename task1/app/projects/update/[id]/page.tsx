@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useState, useEffect } from 'react';
-import './style.category.css';
+// import './style.category.css';
 // import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
@@ -27,7 +27,7 @@ function UpdateProject() {
     const fetchProject = async () => {
       if (id) {
         try {
-          const response = await getParticularProject(id as string); // Type assertion to string
+          const response = await getParticularProject(id as string); 
           const project = response.data;
           setName(project.name);
         } catch (error) {

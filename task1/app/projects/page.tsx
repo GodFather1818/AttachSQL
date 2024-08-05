@@ -54,7 +54,7 @@ function ProjectList() {
                 <button className="absolute top-0 right-0 mt-2 mr-2 bg-primary" onClick={()=> handleDelete(project._id)}>
                   <DeleteIcon sx={{ color: "red" }} />
                 </button>
-                <Link href={`/project/update/${project._id}`}>
+                <Link href={`/projects/update/${project._id}`}>
                   <Button className="absolute top-0 right-100 mt-2 mr-2 bg-primary ">
                     <EditIcon sx={{ color: "white" }} />
                   </Button>

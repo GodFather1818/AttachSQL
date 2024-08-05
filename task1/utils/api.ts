@@ -32,14 +32,18 @@ export const updateProject = async(id: string, updateData: Partial<Project>) => 
     return response.data;
 }
 
-
+//  ------------------Tasks API --------------------------------
 export const getTasks = async() => {
-    const response = await api.get("/task");
+    const response = await api.get("/tasks");
     return response.data;
 };
+export const getParticularTask = async(id: string) => {
+    const response = await api.get(`/tasks/${id}`);
+    return response.data;
+}
 
 export const createTask = async(task: Task) => {
-    const response = await api.post("/task", task);
+    const response = await api.post("/tasks", task);
     return response.data;
 };
 
