@@ -26,7 +26,7 @@ export class TaskController {
     }
 
     @Put("/:id")
-    async updateTask(@Param('id') id: string, updateData: Partial<Task>) : Promise<Task> {
+    async updateTask(@Param('id') id: string, @Body() updateData: Partial<Task>) : Promise<Task> {
         return this.taskService.update(id, updateData);
     }
 }

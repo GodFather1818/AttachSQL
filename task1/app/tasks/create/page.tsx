@@ -1,16 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import toast from 'react-hot-toast';
-import { getParticularTask, updateTask, TaskCreateDto } from '@/utils/api'; // Ensure these functions are properly defined in utils/api.ts
+import { createTask, TaskCreateDto } from '@/utils/api'; // Ensure this function is properly defined in utils/api.ts
 
-const UpdateTask = () => {
+
+const CreateTask = () => {
     const router = useRouter();
-    const params = useParams();
-    const taskId = params.id;
-
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [stage, setStage] = useState('');
@@ -19,27 +17,10 @@ const UpdateTask = () => {
     const [companyName, setCompanyName] = useState('');
     const [contactName, setContactName] = useState('');
 
-    useEffect(() => {
-        if (taskId) {
-            getParticularTask(taskId as string).then(task => {
-                setTitle(task.title);
-                setDescription(task.description || '');
-                setStage(task.stage);
-                setDue(new Date(task.due).toISOString().substring(0, 10)); // format date to yyyy-mm-dd
-                setAssignedTo(task.assigned_to.join(', '));
-                setCompanyName(task.companyName);
-                setContactName(task.contactName);
-            }).catch(error => {
-                console.error('Error fetching task:', error);
-                toast.error('Failed to fetch task');
-            });
-        }
-    }, [taskId]);
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            await updateTask(taskId as string, {
+        
+            const newTask: TaskCreateDto = {
                 title,
                 description,
                 stage,
@@ -47,15 +28,17 @@ const UpdateTask = () => {
                 assigned_to: assignedTo.split(',').map(str => str.trim()),
                 companyName,
                 contactName
-            });
-            setTimeout(() => {
-                toast.success('Task updated successfully!');
-                router.push('/tasks');
-            }, 2000);
-        } catch (error) {
-            console.error('Error updating task:', error);
-            toast.error('Failed to update task');
-        }
+            };
+            try {
+                await createTask(newTask);
+                toast.success('Task created successfully!');
+                setTimeout(() => {
+                    router.push('/tasks');
+                }, 2000);
+            } catch (error) {
+                console.error('Error creating task:', error);
+                toast.error('Failed to create task');
+            }
     };
 
     return (
@@ -67,7 +50,7 @@ const UpdateTask = () => {
                 autoComplete="off"
             >
                 <Typography variant="h4" gutterBottom>
-                    Update Task
+                    Create New Task
                 </Typography>
                 <TextField
                     label="Title"
@@ -129,11 +112,11 @@ const UpdateTask = () => {
                     margin="normal"
                 />
                 <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-                    Update Task
+                    Create Task
                 </Button>
             </Box>
         </div>
     );
 };
 
-export default UpdateTask;
+export default CreateTask;

@@ -4,6 +4,7 @@ import { Document } from "mongoose";
 
 @Schema({timestamps: true})
 export class Task extends Document {
+    
     @Prop({required: true})
     title: string;
 
@@ -25,5 +26,6 @@ export class Task extends Document {
     @Prop({ required: true })
     contactName: string;
 }
+
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

@@ -6,6 +6,7 @@ const api = axios.create({
     baseURL: "http://localhost:3001",
 });
 
+
 export const getProjects = async() => {
     const response = await api.get("/project");
     return response.data;
@@ -39,10 +40,11 @@ export const getTasks = async() => {
 };
 export const getParticularTask = async(id: string) => {
     const response = await api.get(`/tasks/${id}`);
+    console.log(response.data);
     return response.data;
 }
 
-export const createTask = async(task: Task) => {
+export const createTask = async(task: TaskCreateDto) => {
     const response = await api.post("/tasks", task);
     return response.data;
 };
@@ -58,5 +60,13 @@ export const updateTask = async (id: string, updateData: Partial<Task>) => {
 };
 
 
-
+export interface TaskCreateDto {
+    title: string;
+    description?: string;
+    stage: string;
+    due: Date;
+    assigned_to: string[];
+    companyName: string;
+    contactName: string;
+}
 
