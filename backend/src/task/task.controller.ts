@@ -10,7 +10,11 @@ export class TaskController {
     async findAll(): Promise<Task[]>{
         return this.taskService.findAll();
     }
-
+    @Get('/:id')
+    async findParticularTask(@Param('id') id: string): Promise<Task> {
+        return this.taskService.findParticularTask(id);
+    }
+ 
     @Post()
     async createPost(@Body() task: Task) : Promise<Task> {
         return this.taskService.create(task);

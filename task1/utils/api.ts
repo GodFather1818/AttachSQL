@@ -11,6 +11,11 @@ export const getProjects = async() => {
     return response.data;
 };
 
+export const getParticularProject = async(id: any) => {
+    const response = await api.get(`/project/${id}`);
+    return response.data;
+}
+
 export const createProject = async(createProjectDto: CreateProjectDto) => {
     const response = await api.post("/project", createProjectDto);
     return response.data;
@@ -21,19 +26,24 @@ export const deleteProject = async(id: string) => {
     return response.data;
 }
 
-export const updateProject = async(id: string, updateData: Partial<Task>) => {
+export const updateProject = async(id: string, updateData: Partial<Project>) => {
     const response = await api.put(`/project/${id}`, updateData);
+    console.log(response.data);
     return response.data;
 }
 
-
+//  ------------------Tasks API --------------------------------
 export const getTasks = async() => {
-    const response = await api.get("/task");
+    const response = await api.get("/tasks");
     return response.data;
 };
+export const getParticularTask = async(id: string) => {
+    const response = await api.get(`/tasks/${id}`);
+    return response.data;
+}
 
 export const createTask = async(task: Task) => {
-    const response = await api.post("/task", task);
+    const response = await api.post("/tasks", task);
     return response.data;
 };
 

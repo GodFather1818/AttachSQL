@@ -12,6 +12,10 @@ export class ProjectController {
     async getProjects(): Promise<Project[]> {
         return this.projectService.findAll();
     }
+    @Get("/:id")
+    async getParticularProject(@Param('id') id: string) : Promise<Project> {
+        return this.projectService.findParticularProject(id);
+    }
 
     @Post() 
     async createProject(@Body() createProjectDto: CreateProjectDto): Promise<Project> {

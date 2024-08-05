@@ -28,6 +28,4 @@ export class ProjectService {
         return this.projectModel.findByIdAndUpdate(projectId, updateData, { new: true }).exec();        
     }
 
-    
-
 }

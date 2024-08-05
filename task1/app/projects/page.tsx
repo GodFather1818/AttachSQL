@@ -1,29 +1,41 @@
 "use client";
 
-import React from 'react'
+import React from "react";
 import { useState, useEffect } from "react";
-import { getProjects } from '@/utils/api';
-import { List, ListItem, ListItemText, Button } from '@mui/material';
-import { Project } from '../../../backend/src/project/project.schema';
-import Link from 'next/link';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { getProjects } from "@/utils/api";
+import { List, ListItem, ListItemText, Button } from "@mui/material";
+import { Project } from "../../../backend/src/project/project.schema";
+import Link from "next/link";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { deleteProject } from "../../utils/api";
 
-const ProjectList = () => {
-
+function ProjectList() {
   const [projects, setProjects] = useState<Project[]>([]);
 
-  useEffect(()=> {
-    const fetchProjects = async () =>{ 
+  useEffect(() => {
+    const fetchProjects = async () => {
       const data = await getProjects();
       setProjects(data);
-    } 
+    };
 
     fetchProjects();
-  }, [])
+  }, []);
 
+  const handleDelete = async(id: any) => {
+    try {
+      await deleteProject(id);
+      setProjects(projects.filter(project => project._id !== id))
+
+    }catch (error) {
+      console.error(error);
+    }
+  }
+  
 
   return (
     <div>
+
     {projects.length !== 0 ? (
       <div className="mt-10 container mx-auto p-6 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg shadow-xl hover:shadow-2xl transition duration-300 ease-in-out">
         <div className="flex justify-between items-center h-16 m-4">
@@ -50,8 +62,8 @@ const ProjectList = () => {
       </div>
     )}
   </div>
-    // </div>
-  )
-}
+  );
+};
 
 export default ProjectList;
+

@@ -10,7 +10,7 @@ import { useParams } from 'next/navigation';
 const EditCategory = () => {
   const params = useParams();
   const id = params.id;
-
+  
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
