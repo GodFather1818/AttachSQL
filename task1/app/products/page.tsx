@@ -7,9 +7,14 @@ import './style.category.css'
 import { Button } from '@mui/material';
 import Link from 'next/link';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Category } from '../../../backend/src/category/category.schema';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+
 
 const CategoryPage = () => {
   const [products, setProducts] = useState<Category[]>([]);
+  const router = useRouter()
   const add = () => {
 
     console.log('Add Product');
@@ -21,6 +26,7 @@ const CategoryPage = () => {
       try {
         const response = await axios.get('http://localhost:3001/product/api/'); // Adjust the endpoint as per your backend route
         setProducts(response.data);
+        
         console.log(response.data)
       } catch (error) {
         console.error('Error fetching products:', error);

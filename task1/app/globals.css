@@ -77,16 +77,17 @@
 .btn-class Button{
 
 display: flex;
-width: 30%;
+width: 40%;
 margin-top: 1rem;
 justify-content: center;
 transition: all ease-in-out 0.3s;
-padding: 4px;
+padding: 0.5rem;
 }
 
 .btn-class Button:hover{
   background-color: #1976d2;
   color: #fff;
+  padding: 0.5rem;
 }
 .main-h1{
   display: block;

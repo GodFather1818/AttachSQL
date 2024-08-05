@@ -3,18 +3,15 @@
 import { Box, Button, TextField } from '@mui/material';
 import React, { useState } from 'react'
 import {createProject} from "../../../utils/api";
-// import { redirect } from 'next/navigation'
 import { useRouter } from 'next/navigation';
-// import {useNavigate} from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-// import {useNavigate} from "react-router-dom";
 function CreateProject() {
 
     const [name, setName] = useState('');
 
     const router = useRouter();
-    // const navigate = useNavigate();
+  
 
     const handleSubmit = async(e: any) => {
         e.preventDefault();
@@ -22,7 +19,6 @@ function CreateProject() {
         setName('')
         setTimeout(()=>{
             toast.success('Project created successfully!');
-            // router.push('/projects');
             router.push('/projects');
         }, 2000);
     }

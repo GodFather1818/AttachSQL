@@ -51,7 +51,7 @@ function ProjectList() {
                 <DeleteIcon sx={{ color: 'red' }} />
               </Button>
               <h2 className="font-semibold text-blue-500 text-2xl p-6">{project.name}</h2>
-              <p className= " absolute bottom-0 left-0 mb-2 ml-2 text-blue-900 bg-blue-300 w-2/6 border rounded-lg p-1">Ongoing</p>
+              {/* <p className= " absolute bottom-0 left-0 mb-2 ml-2 text-blue-900 bg-blue-300 w-2/6 border rounded-lg p-1">Ongoing</p> */}
             </div>
           ))}
         </div>

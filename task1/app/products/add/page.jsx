@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './style.add.css'
+import { useRouter } from 'next/navigation';
+import {toast} from 'react-hot-toast';
 
 const AddProductForm = () => {
   const [name, setName] = useState('');
@@ -15,6 +17,7 @@ const AddProductForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [categories, setCategories] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     // Replace this with your actual data fetching logic
@@ -22,6 +25,7 @@ const AddProductForm = () => {
       try {
         const response = await axios.get('http://localhost:3001/category/api/'); // Example API endpoint
         setCategories(response.data);
+        
       } catch (error) {
         console.error('Error fetching categories:', error);
       }
@@ -57,7 +61,12 @@ const AddProductForm = () => {
       setTags('');
       setBannerImage(null);
       setCategory('');
+
       alert('Product added successfully!');
+      setTimeout(()=>{
+        toast.success('Product created successfully!');
+        router.push('/products');
+    }, 2000);
     } catch (err) {
       setError('Failed to add product. Please try again.');
     } finally {

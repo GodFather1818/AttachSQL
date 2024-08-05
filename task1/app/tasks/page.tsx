@@ -82,6 +82,9 @@ function TaskList() {
                     View Details
                   </button>
                 </div>
+                <div className= "flex justify-center mt-6 w-full bottom-0 left-0 mb-2 ml-2 text-blue-900 bg-blue-300 border rounded-lg p-1">
+                  <p >{task.stage}</p>
+                </div>
               </div>
             ))}
           </div>
