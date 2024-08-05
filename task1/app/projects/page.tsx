@@ -47,7 +47,7 @@ function ProjectList() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4">
           {projects.map((project) => (
             <div key={project.id} className="m-3 relative card bg-slate-100 shadow-md rounded-lg p-4 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
-              <Button className="absolute top-0 right-0 mt-3 mr-3 bg-primary">
+              <Button className="absolute top-0 right-0 mt-3 mr-3 ">
                 <DeleteIcon sx={{ color: 'red' }} />
               </Button>
               <h2 className="font-semibold text-blue-500 text-2xl p-6">{project.name}</h2>

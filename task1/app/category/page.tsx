@@ -57,12 +57,12 @@ const CategoryPage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {categories.map(category => (
           <div key={category.id} className="flex space-around relative card bg-slate-100 shadow-md rounded-lg p-4 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
-            <Button onClick={() => { deleteit(category._id) }} className="absolute top-0 right-0 mt-1 mr-1 bg-primary ">
+            <Button onClick={() => { deleteit(category._id) }} className="absolute top-0 right-0 mt-1 mr-1 ">
               <DeleteIcon sx={{ color: 'red' }} />
             </Button>
             <Link href={`/category/edit/${category._id}`}>
-              <Button className="absolute top-0 left-0 mt-1 ml-1 bg-primary ">
-                <EditIcon sx={{ color: 'white' }} />
+              <Button className="absolute top-0 left-0 mt-1 ml-1  ">
+                <EditIcon sx={{ color: 'blue' }} />
               </Button>
             </Link>
             <div className='flex-col justify-center items-center w-80 m-auto'>

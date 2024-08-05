@@ -1,4 +1,4 @@
-import { Get, Controller, Post, Body, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Get, Controller, Post, Body, UploadedFile, UseInterceptors, Delete, Param } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import { diskStorage } from 'multer';
@@ -34,6 +34,10 @@ export class ProductController {
     ) {
       const imagePath = file.path;
       return await this.productService.createProduct(createProductDto, imagePath);
+    }
+    @Delete('/api/delete/:id')
+    async deleteProduct(@Param('id') id:string):Promise<Product>{
+      return await this.productService.deleteProduct(id);
     }
 
 }

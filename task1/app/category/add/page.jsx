@@ -2,12 +2,13 @@
 // components/AddCategoryForm.js
 import { useState } from 'react';
 import axios from 'axios';
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/navigation';
 const AddCategoryForm = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -20,7 +21,7 @@ const AddCategoryForm = () => {
       alert('Category added successfully!');
       router.push('/category');
     } catch (err) {
-      setError('Failed to add category. Please try again.');
+      console.log(err)
     } finally {
       setLoading(false);
 

@@ -20,9 +20,8 @@ const CategoryPage = () => {
     console.log('Add Product');
   }
 
-  useEffect(() => {
-    // Fetch products from the backend
-    const fetchProducts = async () => {
+  // Fetch products from the backend
+  const fetchProducts = async () => {
       try {
         const response = await axios.get('http://localhost:3001/product/api/'); // Adjust the endpoint as per your backend route
         setProducts(response.data);
@@ -32,9 +31,24 @@ const CategoryPage = () => {
         console.error('Error fetching products:', error);
       }
     };
+    useEffect(() => {
 
     fetchProducts();
   }, []);
+
+  const deleteit = async (id:any) =>{
+    console.log(id)
+    try {
+
+      await axios.delete(`http://localhost:3001/product/api/delete/${id}`);
+      fetchProducts();
+      toast.success('Product deleted successfully')
+    } catch (error) {
+      console.log(error);
+      toast.error('Error deleting product')
+    }
+    console.log('Delete product');
+  }
 
   return (
     <div className="w-full container m-5 border rounded-lg align-middle p-10 mx-auto  bg-gradient-to-r from-blue-100 to-blue-200 shadow-xl hover:shadow-2xl transition duration-300 ease-in-out">
@@ -45,7 +59,7 @@ const CategoryPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6">
         {products.map(product => (
           <div key={product.id} className="card relative bg-slate-100 bg-white shadow-md rounded-lg p-4 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
-            <Button onClick={() => { }} className="absolute bottom-0 right-0 mb-2 mr-2 bg-primary">
+            <Button onClick={() => {deleteit(product._id)}} className="absolute bottom-0 right-0 mb-2 mr-2">
               <DeleteIcon sx={{ color: 'red' }} />
             </Button>
             <img className="image-container h-48 w-full flex items-center justify-center bg-gray-200"

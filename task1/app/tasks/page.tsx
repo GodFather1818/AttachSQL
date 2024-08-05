@@ -61,26 +61,29 @@ function TaskList() {
             {tasks.map((task) => (
               <div
                 key={task.id}
-                className="m-3 relative card bg-slate-100 shadow-md rounded-lg p-4 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+                className="m-3 relative card bg-slate-100 shadow-md rounded-lg p-2 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
               >
-                <button
-                  className="absolute top-0 right-0 mt-2 mr-2 bg-primary"
-                  onClick={() => handleDelete(task._id)}
-                >
-                  <DeleteIcon sx={{ color: "red" }} />
-                </button>
+                <div className="flex justify-between">
+               
                 <Link href={`/tasks/update/${task._id}`}>
-                  <Button className="absolute top-0 right-100 mt-2 mr-2 bg-primary ">
-                    <EditIcon sx={{ color: "white", '&:hover': { color: "black" } }} />
+                  <Button className=" ">
+                    <EditIcon sx={{ color: "blue", '&:hover': { color: "black" } }} />
                   </Button>
                 </Link>
-                <div className="flex justify-around items-center w-100 mt-[5vh] h-[10vh]">
-                  <h2 className="font-semibold text-blue-500 text-2xl ">
-                    {task.title}
+
+                <button
+                  className=""
+                  onClick={() => handleDelete(task._id)}
+                  >
+                  <DeleteIcon sx={{ color: "red" }} />
+                </button>
+
+                  </div>
+                <div className="flex justify-around items-center w-100 mt-[1vh] h-[9vh]">
+                  <h2 className="font-semibold text-blue-500 text-2xl " >
+                    <a onClick={()=> handleViewDetails(task._id)} style={{cursor:'pointer'}}>{task.title}</a>
                   </h2>
-                  <button className="shadow bg-blue-500 hover:bg-blue-200 p-3 rounded-md font-bold hover:underline" onClick={()=> handleViewDetails(task._id)}>
-                    View Details
-                  </button>
+                 
                 </div>
                 <div className= "flex justify-center mt-6 w-full bottom-0 left-0 mb-2 ml-2 text-blue-900 bg-blue-300 border rounded-lg p-1">
                   <p >{task.stage}</p>

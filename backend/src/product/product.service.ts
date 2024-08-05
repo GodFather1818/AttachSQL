@@ -19,5 +19,7 @@ export class ProductService {
         });
         return await newProduct.save();
       }
-
+    async deleteProduct(categoryId:string):Promise<Product>{
+        return this.productModel.findByIdAndDelete(categoryId).exec();
+    }  
 }
