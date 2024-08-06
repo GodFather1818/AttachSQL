@@ -66,7 +66,7 @@ const UpdateTask = () => {
                 sx={{ mt: 3, maxWidth: 500, width: '100%' }}
                 autoComplete="off"
             >
-                <Typography variant="h4" gutterBottom>
+                <Typography variant="h4" gutterBottom className="mt-[9rem] w-full flex justify-center">
                     Update Task
                 </Typography>
                 <TextField
@@ -128,7 +128,7 @@ const UpdateTask = () => {
                     required
                     margin="normal"
                 />
-                <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+                <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }} className='mb-[3rem]'>
                     Update Task
                 </Button>
             </Box>
