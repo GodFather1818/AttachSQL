@@ -9,6 +9,7 @@ import {
 import ButtonAppBar from "@/components/ui/ButtonAppBar";
 import Image from "next/image";
 import AddCategoryform from "../components/ui/AddCategoryForm";
+
 export default function Home() {
   return (
     <>
@@ -31,7 +32,7 @@ export default function Home() {
           <h1 className="text-3xl font-semibold text-blue-600 mb-6">
             Contributions
           </h1>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
             <div className="bg-white p-6 rounded-lg shadow-lg text-center border-r-2 border-gray-300 md:border-r-2">
               <h1 className="text-2xl font-semibold text-gray-800 mb-2">
                 Dhruv
