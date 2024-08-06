@@ -45,7 +45,7 @@ function ProjectList() {
       header:'Delete',
       cell: ({row}) => (
         <div>
-          <Button>
+          <Button onClick={() => handleDelete(row.original._id)}>
                 <DeleteIcon sx={{ color: 'red' }} />
               </Button>
         </div>
