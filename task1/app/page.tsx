@@ -32,7 +32,7 @@ export default function Home() {
           </div>
           <div className="bg-white p-6 rounded-lg shadow-lg text-center border-r-2 border-gray-300 md:border-r-2">
             <h1 className="text-2xl font-semibold text-gray-800 mb-2">Sahil</h1>
-            <p className="text-lg py-1 text-primary border rounded-lg bg-blue-300">Backend</p>
+            <p className="text-lg py-1 text-primary border rounded-lg bg-blue-300">Frontend and Backend</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-lg text-center border-r-2 border-gray-300 md:border-r-2">
             <h1 className="text-2xl font-semibold text-gray-800 mb-2">Dhruv</h1>
@@ -56,8 +56,8 @@ export default function Home() {
             <p className="text-lg text-gray-600">Here you can perform CRUD in Projects and view them.</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h1 className="text-2xl font-semibold text-gray-800 mb-2">Taks Page</h1>
-            <p className="text-lg text-gray-600">Here you can perform CRUD in Taks and view them.</p>
+            <h1 className="text-2xl font-semibold text-gray-800 mb-2">Tasks Page</h1>
+            <p className="text-lg text-gray-600">Here you can perform CRUD in Tasks and view them.</p>
           </div>
         </div>
       </div>
