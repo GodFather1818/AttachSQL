@@ -10,6 +10,9 @@ export class Project extends Document{
 
     @Prop({type: [{type: Types.ObjectId, ref: "Task"}]})
     tasks: Types.ObjectId[];
+    
+    @Prop({ type: Types.ObjectId, ref: "User", required: true })
+    ownerId: Types.ObjectId;
 
 }
 
