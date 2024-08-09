@@ -1,5 +1,3 @@
-// pages/categories/index.js
-
 "use client";
 import { useState, useEffect } from 'react';
 import axios from 'axios';

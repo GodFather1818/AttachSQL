@@ -107,6 +107,7 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import Link from 'next/link';
+import SignInButton from './SignInButton';
 
 export default function ButtonAppBar() {
   const category = () => {
@@ -173,9 +174,7 @@ export default function ButtonAppBar() {
               Practise Project Application
             </Link>
           </Typography>
-          <Link href='/login'>
-          <Button className='text-white bg-primary p-3 text-sm'>Login</Button>
-          </Link>
+          <SignInButton />
         </Toolbar>
       </AppBar>
     </Box>
