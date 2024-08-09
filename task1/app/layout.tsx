@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Providers from "@/components/ui/Providers";
 import SignInButton from "@/components/ui/SignInButton";
+import { SessionProvider } from "next-auth/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,16 +24,15 @@ export default function RootLayout({
     
 
     <html lang="en">
-      <body className={inter.className}>
         <Providers>
-
+      <body className={inter.className}>
       
       <ButtonAppBar />
       <ToastContainer />
         <NextTopLoader color="#fff" />
        
-        </Providers>
         {children}</body>
+        </Providers>
     </html>
    
   );

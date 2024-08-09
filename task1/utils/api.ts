@@ -1,7 +1,9 @@
+
 import axios from "axios";
 import { Task } from "../../backend/src/task/task.schema";
 import { Project } from "../../backend/src/project/project.schema";
 import {CreateProjectDto} from "../../backend/src/project/create-project.dto"
+
 const api = axios.create({
     baseURL: "http://localhost:3001",
 });
@@ -18,6 +20,7 @@ export const getParticularProject = async(id: any) => {
 }
 
 export const createProject = async(createProjectDto: CreateProjectDto) => {
+    
     const response = await api.post("/project", createProjectDto);
     return response.data;
 };

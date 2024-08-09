@@ -60,6 +60,7 @@ export class UserService {
         const userRole = chk_user.role;
 
         return {
+            userId:chk_user._id,
             name: chk_user.name, // Assuming 'name' is a field in chk_user
             userRole: userRole,
             token: token,
