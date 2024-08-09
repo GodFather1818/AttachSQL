@@ -1,0 +1,12 @@
+ADMIN 
+- Get Users / get by id
+- Patch Users
+- Delete Users
+
+
+
+USER
+-Get just the routes associated to each user.(Read)
+
+
+
