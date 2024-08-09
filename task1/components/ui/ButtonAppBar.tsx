@@ -173,7 +173,9 @@ export default function ButtonAppBar() {
               Practise Project Application
             </Link>
           </Typography>
+          <Link href='/login'>
           <Button className='text-white bg-primary p-3 text-sm'>Login</Button>
+          </Link>
         </Toolbar>
       </AppBar>
     </Box>
