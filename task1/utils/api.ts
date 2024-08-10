@@ -3,25 +3,23 @@ import axios from "axios";
 import { Task } from "../../backend/src/task/task.schema";
 import { Project } from "../../backend/src/project/project.schema";
 import {CreateProjectDto} from "../../backend/src/project/create-project.dto"
-
+import { getSession } from "next-auth/react";
 const api = axios.create({
-    baseURL: "http://localhost:3001",
+    baseURL: "http://localhost:3002",
 });
 
 
-export const getProjects = async() => {
-    const response = await api.get("/project");
+export const getProjects = async (headers: any) => {
+    const response = await api.get("/project", {headers});
     return response.data;
 };
-
 export const getParticularProject = async(id: any) => {
     const response = await api.get(`/project/${id}`);
     return response.data;
 }
 
-export const createProject = async(createProjectDto: CreateProjectDto) => {
-    
-    const response = await api.post("/project", createProjectDto);
+export const createProject = async (createProjectDto: CreateProjectDto, headers: any) => {
+    const response = await api.post("/project", createProjectDto, { headers });
     return response.data;
 };
 

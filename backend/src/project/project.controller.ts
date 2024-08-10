@@ -15,11 +15,13 @@ export class ProjectController {
     @UseGuards(AuthGuard)
     async getProjects(@Request() req): Promise<Project[] | Project> {
         const user = req.user;
+        console.log("User is",{user})
 
-        if(user.role === UserRole.ADMIN) {
+        if(user.userRole === UserRole.ADMIN) {
             // ADMIN: Show all the projects
+            console.log(this.projectService.findAll())
             return this.projectService.findAll();
-        }else if (user.role === UserRole.USER) {
+        }else if (user.userRole === UserRole.USER) {
             // Regular User: Show only thier Project.
             return this.projectService.findParticularProject(user.userId);
         }else {
@@ -37,10 +39,10 @@ export class ProjectController {
     @UseGuards(AuthGuard)
     async createProject(@Body() createProjectDto: CreateProjectDto, @Request() req): Promise<Project> {
         const userId = req.user.userId;
-
+        console.log('Creating project for user:', userId);
+    
         return this.projectService.create(createProjectDto, userId);
     }
-
     @Delete("/:id")
     @UseGuards(AuthGuard)
     async deleteProject(@Param('id') id: string, @Request() req): Promise<Project> {

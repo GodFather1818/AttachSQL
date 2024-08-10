@@ -15,7 +15,7 @@ const AddCategoryForm = () => {
     setError('');
 
     try {
-      await axios.post('http://localhost:3001/category/api/add', { name, description });
+      await axios.post('http://localhost:3002/category/api/add', { name, description });
       setName('');
       setDescription('');
       alert('Category added successfully!');

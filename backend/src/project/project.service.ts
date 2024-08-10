@@ -18,8 +18,9 @@ export class ProjectService {
     async create(createProjectDto: CreateProjectDto, userId: Types.ObjectId): Promise<Project> {
         const newProject = new this.projectModel({
             ...createProjectDto,
-            ownerId: userId
+            ownerId: userId,  
         });
+        console.log('Saving new project:', newProject);
         return newProject.save();
     }
 

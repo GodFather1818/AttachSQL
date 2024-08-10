@@ -9,7 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Category } from '../../../backend/src/category/category.schema';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/ui/datatabble';
-
+import withProtectedRoute from '../../lib/withProtectedRoute';
 const CategoryPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);
 
@@ -19,7 +19,7 @@ const CategoryPage = () => {
 
   const deleteit = async (id: any) => {
     try {
-      await axios.delete(`http://localhost:3001/category/api/delete/${id}`);
+      await axios.delete(`http://localhost:3002/category/api/delete/${id}`);
       fetchCategories();
     } catch (error) {
       console.log(error);
@@ -34,7 +34,7 @@ const CategoryPage = () => {
   // Fetch categories from the backend
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/category/api/'); // Adjust the endpoint as per your backend route
+      const response = await axios.get('http://localhost:3002/category/api/'); // Adjust the endpoint as per your backend route
       setCategories(response.data);
       console.log(response.data);
     } catch (error) {
@@ -89,4 +89,4 @@ const CategoryPage = () => {
   );
 };
 
-export default CategoryPage;
+export default withProtectedRoute(CategoryPage, ['user', 'admin']);

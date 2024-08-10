@@ -1,29 +1,32 @@
 "use client";
 import { Box, Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
-import { createProject } from "../../../utils/api";
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
+import axios from 'axios';
 
 function CreateProject() {
     const [name, setName] = useState('');
     const { data: session } = useSession();  // Access the session
     const router = useRouter();
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (session?.user?.id) {  // Check if userId is available in the session
-            const userId = session.user.id;
-            await createProject({ name, userId });  // Pass userId along with the project name
+        try {
+            const headers = {
+                Authorization: `Bearer ${session?.user.token}`,
+            };
+
+            await axios.post('http://localhost:3002/project', { name }, { headers });
+
             setName('');
-            setTimeout(() => {
-                toast.success('Project created successfully!');
-                router.push('/projects');
-            }, 2000);
-        } else {
-            toast.error('User not authenticated!');
+            toast.success('Project created successfully!');
+            router.push('/projects');
+        } catch (error) {
+            console.error('Error creating project:', error.response?.data || error.message);
+            toast.error('Error creating project!');
         }
     };
 

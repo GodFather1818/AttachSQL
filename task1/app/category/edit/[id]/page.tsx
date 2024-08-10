@@ -18,7 +18,7 @@ const EditCategory = () => {
     const fetchCategory = async () => {
       if (id) {
         try {
-          const response = await axios.get(`http://localhost:3001/category/api/${id}`);
+          const response = await axios.get(`http://localhost:3002/category/api/${id}`);
           const category = response.data;
           setName(category.name);
           setDescription(category.description);

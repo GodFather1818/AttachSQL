@@ -9,9 +9,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Category } from '../../../backend/src/category/category.schema';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import withProtectedRoute from '../../lib/withProtectedRoute';
 
-
-const CategoryPage = () => {
+const ProductPage = () => {
   const [products, setProducts] = useState<Category[]>([]);
   const router = useRouter()
   const add = () => {
@@ -22,7 +22,7 @@ const CategoryPage = () => {
   // Fetch products from the backend
   const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/product/api/'); // Adjust the endpoint as per your backend route
+        const response = await axios.get('http://localhost:3002/product/api/'); // Adjust the endpoint as per your backend route
         setProducts(response.data);
         
         console.log(response.data)
@@ -74,4 +74,4 @@ const CategoryPage = () => {
   );
 };
 
-export default CategoryPage;
+export default withProtectedRoute(ProductPage, ['admin']);

@@ -23,7 +23,7 @@ const AddProductForm = () => {
     // Replace this with your actual data fetching logic
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/category/api/'); // Example API endpoint
+        const response = await axios.get('http://localhost:3002/category/api/'); // Example API endpoint
         setCategories(response.data);
         
       } catch (error) {

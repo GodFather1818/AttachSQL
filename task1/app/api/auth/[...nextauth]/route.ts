@@ -17,7 +17,7 @@ export const authOptions:NextAuthOptions ={
                 if (!credentials?.email || !credentials?.password) return null;
 
                 try {
-                    const res = await axios.post('http://localhost:3001/user/login', {
+                    const res = await axios.post('http://localhost:3002/user/login', {
                         email: credentials.email,
                         password: credentials.password,
                     });
@@ -46,13 +46,14 @@ export const authOptions:NextAuthOptions ={
             session.user = {
                 id: token.userId,
                 name: token.name,
-                role: token.role
+                role: token.role,
+                token:token.accessToken, 
             };
             session.accessToken = token.accessToken;
             return session;
         }
     },
-    secret: '1234',
+    secret: 'SAHIL2102',
 };
 const handler = NextAuth(authOptions);
 export {handler as GET , handler as POST};

@@ -30,6 +30,7 @@ export class UserService {
             email: data.email,
             password: data.password,
             name: data.name,
+        
         });
         const token = await this.jwtService.sign({userId: newUser._id});
 
@@ -56,8 +57,8 @@ export class UserService {
             throw new BadRequestException('Invalid Credentials!');
         }
 
-        const token = this.jwtService.sign({userId: chk_user._id})
         const userRole = chk_user.role;
+        const token = this.jwtService.sign({userId: chk_user._id,userRole:userRole})
 
         return {
             userId:chk_user._id,

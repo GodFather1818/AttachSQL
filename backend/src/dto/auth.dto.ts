@@ -1,5 +1,4 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsLowercase } from "class-validator";
-
 export class RegisterDto {
     @IsNotEmpty({message: "UserNamme is Required"})
     name: string
