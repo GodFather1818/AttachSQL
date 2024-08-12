@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable , NotFoundException} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from 'src/models/users.models';
+import { User,UserRole  } from 'src/models/users.models';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from 'src/dto/auth.dto';
 import * as bcrypt from "bcrypt";
@@ -79,5 +79,17 @@ export class UserService {
         }
 
         return chk_user;
+    }
+
+    async updateUserRole(userId: string, role: UserRole): Promise<User> {
+        const user = await this.userModel.findById(userId).exec();
+
+        if (!user) {
+            throw new NotFoundException("User Not Found!");
+        }
+
+        user.role = role;
+        await user.save();
+        return user;
     }
 }

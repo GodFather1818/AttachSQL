@@ -10,7 +10,10 @@ import { Category } from '../../../backend/src/category/category.schema';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/ui/datatabble';
 import withProtectedRoute from '../../lib/withProtectedRoute';
+import { useSession } from 'next-auth/react';
 const CategoryPage = () => {
+  const {data:session} = useSession();
+  const userRole = session?.user.role;
   const [categories, setCategories] = useState<Category[]>([]);
 
   const add = () => {
@@ -65,11 +68,13 @@ const CategoryPage = () => {
           <Button onClick={() => deleteit(row.original._id)}>
             <DeleteIcon sx={{ color: 'red' }} />
           </Button>
+          {userRole === "admin" && (
           <Link href={`/category/edit/${row.original._id}`}>
             <Button>
               <EditIcon sx={{ color: 'blue' }} />
             </Button>
           </Link>
+          )}
         </div>
       ),
     },

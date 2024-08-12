@@ -17,10 +17,10 @@ const withProtectedRoute = (WrappedComponent: React.ComponentType, roles?: strin
       if (status === 'loading') return; // Loading, do nothing
       if (!session) {
         // Not authenticated, redirect to login
-        router.push('/api/auth/signin');
+        router.push('/loginerror');
       } else if (roles && !roles.includes(session.user.role)) {
         // Not authorized, redirect to a forbidden page or error page
-        router.push('/403'); // or any other page you prefer
+        router.push('/adminerror'); // or any other page you prefer
       }
     }, [session, status]);
 

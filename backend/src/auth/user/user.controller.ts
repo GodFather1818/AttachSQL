@@ -1,6 +1,6 @@
-import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards, Patch, Param} from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from 'src/models/users.models';
+import { User,UserRole } from 'src/models/users.models';
 import { RegisterDto } from 'src/dto/auth.dto';
 import { LoginDto } from 'src/dto/login.dto';
 // import { AuthGuard } from '@nestjs/passport';
@@ -36,5 +36,10 @@ export class UserController {
         }
         console.log(user);
         return this.userService.profileView(user?.userId);
+    }
+
+    @Patch('role/:id')
+    async updateUserRole(@Param('id') id: string, @Body('role') role: UserRole) {
+        return this.userService.updateUserRole(id, role);
     }
 }
