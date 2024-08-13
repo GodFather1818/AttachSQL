@@ -19,13 +19,15 @@ import { deleteProject } from "../../utils/api";
 import {useRouter} from 'next/navigation';
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/datatabble";
-
+import { useSession } from "next-auth/react";
 
 function TaskList() {
+
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const router = useRouter();
-
+  const { data: session } = useSession();
+const permissions = session?.user?.permissions;
   useEffect(() => {
     const fetchTasks = async () => {
       const data = await getTasks();
@@ -82,9 +84,12 @@ function TaskList() {
       <div className="flex justify-between items-center h-16">
             <h1 className="text-2xl font-bold text-primary">Tasks</h1>
             <Link href={`/tasks/create`}>
+            {permissions?.create &&
+
               <Button className="btn-add text-xs bg-primary text-blue-100 hover:text-black">
                 + Add new Tasks
               </Button>
+              }
             </Link>
           </div>
           <DataTable columns={columns} data={tasks} />

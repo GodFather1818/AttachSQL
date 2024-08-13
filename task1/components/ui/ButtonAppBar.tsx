@@ -83,7 +83,7 @@ export default function ButtonAppBar() {
 
                       <SheetClose asChild>
                       <Link href="/admin">
-                        <Button className='mb-1 text-blue-950 font-semibold text-lg' onClick={tasks}>admin</Button>
+                        <Button className='mb-1 text-blue-950 font-semibold text-lg' onClick={tasks}>Users</Button>
                       </Link>
                     </SheetClose>
                       )}

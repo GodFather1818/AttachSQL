@@ -39,7 +39,7 @@ const ProductPage = () => {
     console.log(id)
     try {
 
-      await axios.delete(`http://localhost:3001/product/api/delete/${id}`);
+      await axios.delete(`http://localhost:3002/product/api/delete/${id}`);
       fetchProducts();
       toast.success('Product deleted successfully')
     } catch (error) {

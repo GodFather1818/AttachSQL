@@ -5,7 +5,7 @@ import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { JWT } from "next-auth/jwt";
 
-export const authOptions:NextAuthOptions ={
+export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
             name: 'Credentials',
@@ -22,9 +22,9 @@ export const authOptions:NextAuthOptions ={
                         password: credentials.password,
                     });
 
-                    const { userId, name, userRole, token, permission } = res.data;
-                    console.log({ userId, name, userRole, token}, {permission});
-                    return { userId, name, role: userRole, token, permission };
+                    const { userId, name, userRole, token, permissions } = res.data;
+                    console.log({ userId, name, userRole, token, permissions });
+                    return { userId, name, role: userRole, token, permissions };
                 } catch (error) {
                     console.error('Login failed:', error);
                     return null;
@@ -39,6 +39,7 @@ export const authOptions:NextAuthOptions ={
                 token.name = user.name;
                 token.role = user.role;
                 token.accessToken = user.token;
+                token.permissions = user.permissions;
             }
             return token;
         },
@@ -47,7 +48,8 @@ export const authOptions:NextAuthOptions ={
                 id: token.userId,
                 name: token.name,
                 role: token.role,
-                token:token.accessToken, 
+                token: token.accessToken,
+                permissions: token.permissions
             };
             session.accessToken = token.accessToken;
             return session;
@@ -55,5 +57,6 @@ export const authOptions:NextAuthOptions ={
     },
     secret: 'SAHIL2102',
 };
+
 const handler = NextAuth(authOptions);
 export {handler as GET , handler as POST};

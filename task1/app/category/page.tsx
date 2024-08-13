@@ -12,8 +12,10 @@ import { DataTable } from '@/components/ui/datatabble';
 import withProtectedRoute from '../../lib/withProtectedRoute';
 import { useSession } from 'next-auth/react';
 const CategoryPage = () => {
+
   const {data:session} = useSession();
   const userRole = session?.user.role;
+  const permissions = session?.user?.permissions;
   const [categories, setCategories] = useState<Category[]>([]);
 
   const add = () => {
@@ -68,13 +70,13 @@ const CategoryPage = () => {
           <Button onClick={() => deleteit(row.original._id)}>
             <DeleteIcon sx={{ color: 'red' }} />
           </Button>
-          {userRole === "admin" && (
+      
           <Link href={`/category/edit/${row.original._id}`}>
             <Button>
               <EditIcon sx={{ color: 'blue' }} />
             </Button>
           </Link>
-          )}
+      
         </div>
       ),
     },
@@ -85,11 +87,15 @@ const CategoryPage = () => {
     <div className='m-6'>
       <div className='flex justify-between items-center h-16 m-4'>
         <h1 className='text-3xl font-bold text-primary'>Categories</h1>
+        {permissions?.create &&(
         <Link href="/category/add">
           <Button className='btn-add text-xs' onClick={add}>+ Add new categories</Button>
         </Link>
+        )}
       </div>
+      {permissions?.read &&
       <DataTable columns={columns} data={categories} />
+}
     </div>
   );
 };
