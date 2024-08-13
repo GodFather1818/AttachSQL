@@ -28,37 +28,7 @@ export default function Home() {
             Frontend, Backend, and much more.
           </p>
         </div>
-        <div className="w-full max-w-4xl mx-auto mb-10">
-          <h1 className="text-3xl font-semibold text-blue-600 mb-6">
-            Contributions
-          </h1>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
-            <div className="bg-white p-6 rounded-lg shadow-lg text-center border-r-2 border-gray-300 md:border-r-2">
-              <h1 className="text-2xl font-semibold text-gray-800 mb-2">
-                Dhruv
-              </h1>
-              <p className="text-lg py-1 text-primary border rounded-lg bg-blue-300">
-                Frontend and Backend
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg text-center border-r-2 border-gray-300 md:border-r-2">
-              <h1 className="text-2xl font-semibold text-gray-800 mb-2">
-                Sahil
-              </h1>
-              <p className="text-lg py-1 text-primary border rounded-lg bg-blue-300">
-                Frontend and Backend
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg text-center border-r-2 border-gray-300">
-              <h1 className="text-2xl font-semibold text-gray-800 mb-2">
-                Parita
-              </h1>
-              <p className="text-lg py-1 text-primary border rounded-lg bg-blue-300">
-                Frontend
-              </p>
-            </div>
-          </div>
-        </div>
+       
         <div className="w-full max-w-4xl mx-auto">
           <h1 className="text-3xl font-semibold text-blue-600 mb-6">
             Features

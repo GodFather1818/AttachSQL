@@ -19,6 +19,16 @@ export class ProductService {
         });
         return await newProduct.save();
       }
+    async findOne(productId:string):Promise<Product>{
+        return this.productModel.findById(productId).exec();
+    }
+    async updateProduct(productId: string, updateProductDto: any, imagePath: string): Promise<Product> {
+        const updateData = {
+          ...updateProductDto,
+          bannerImage: imagePath,
+        };
+        return this.productModel.findByIdAndUpdate(productId, updateData, { new: true }).exec();
+      } 
     async deleteProduct(categoryId:string):Promise<Product>{
         return this.productModel.findByIdAndDelete(categoryId).exec();
     }  

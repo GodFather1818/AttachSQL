@@ -91,7 +91,7 @@ const permissions = session?.user?.permissions;
             <Link href={`/tasks/create`}>
             {permissions?.create &&
 
-              <Button className="btn-add text-xs bg-primary text-blue-100 hover:text-black">
+              <Button className="btn-add text-xs bg-primary text-blue-100 hover:text-black py-2 px-2">
                 + Add new Tasks
               </Button>
               }

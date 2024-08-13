@@ -10,6 +10,7 @@ import { Category } from '../../../backend/src/category/category.schema';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import withProtectedRoute from '../../lib/withProtectedRoute';
+import EditIcon from '@mui/icons-material/Edit';
 
 const ProductPage = () => {
   const [products, setProducts] = useState<Category[]>([]);
@@ -58,14 +59,28 @@ const ProductPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6">
         {products.map(product => (
           <div key={product.id} className="card relative bg-slate-100 bg-white shadow-md rounded-lg p-4 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
-            <Button onClick={() => {deleteit(product._id)}} className="absolute bottom-0 right-0 mb-2 mr-2">
-              <DeleteIcon sx={{ color: 'red' }} />
-            </Button>
+         
             <img className="image-container h-48 w-full flex items-center justify-center bg-gray-200"
  src={product.bannerImage} alt={product.name} />
             <h2 className='font-bold text-blue-900 text-2xl m-5'>{product.name}</h2>
             <h3 className='font-semibold text-blue-500 text-lg m-1'>Category: {product.category}</h3>
             <p className='text-blue-900'>Description: {product.description}</p>
+            <div className="flex flex-row justify-between	gap-5 mt-3">
+          <div className="div1">
+
+            <Button onClick={() => {deleteit(product._id)}} className="">
+              <DeleteIcon sx={{ color: 'red' }} />
+            </Button>
+          </div>
+          <div className="div2">
+          <Link href={`/products/edit/${product._id}`}>
+            <Button className="">
+              <EditIcon sx={{ color: 'blue' }} />
+            </Button>
+            </Link>
+          </div>
+           
+           </div>
           </div>
         ))}
       </div>

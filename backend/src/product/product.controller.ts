@@ -7,6 +7,7 @@ import {
   UseInterceptors,
   Delete,
   Param,
+  Put
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ProductService } from './product.service';
@@ -52,6 +53,69 @@ export class ProductController {
   getProducts(): Promise<Product[]> {
     return this.productService.findAll();
   }
+
+  @Get('/api/get/:id')
+  @ApiOperation({ summary: 'Get a product by ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Get a product by ID',
+    schema: {
+      example: {
+        id: '123',
+        name: 'Product Name',
+        description: 'Product Description',
+        Sellingprice: 100,
+        Actualprice: 50,
+        Tags: ['user1', 'user2'],
+        category: 'Obj584515487',
+        bannerImage: 'uploads/bannerImage-123456789.jpg',
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Product not found',
+  })
+  getProduct(@Param('id') id: string): Promise<Product> {
+    return this.productService.findOne(id);
+  }
+
+
+@Put('/api/update/:id')
+@Roles(UserRole.ADMIN)
+@ApiOperation({ summary: 'Update a product by ID' })
+@ApiResponse({
+  status: 200,
+  description: 'Product successfully updated',
+  schema: {
+    example: {
+      id: '123',
+      name: 'Updated Product',
+      description: 'Updated Product Description',
+      price: 150,
+      bannerImage: 'uploads/bannerImage-987654321.jpg',
+    },
+  },
+})
+@ApiResponse({
+  status: 400,
+  description: 'Invalid input',
+})
+@UseInterceptors(FileInterceptor('bannerImage'))
+async updateProduct(
+  @Param('id') id: string,
+  @Body() updateProductDto: any,
+  @UploadedFile() file: Express.Multer.File,
+): Promise<Product> {
+  let imagePath = updateProductDto.bannerImage; // Default to existing image path
+  if (file) {
+    const result = await this.cloudinaryService.uploadImage(file);
+    imagePath = result.secure_url; // Get the secure URL from Cloudinary response
+  }
+  return await this.productService.updateProduct(id, updateProductDto, imagePath);
+}
+
+
 
   @Post('/api/add')
   @Roles(UserRole.ADMIN)
