@@ -4,10 +4,10 @@ import { User, UserRole } from "src/models/users.models";
 export class LoginDto {
     @IsEmail()
     @IsNotEmpty({message: "Email is Required!"})
-    email: string
+    email: string;
 
     @IsNotEmpty({message: "Password is Reequired!"})
-    password: string
+    password: string;
 
     @IsEnum(UserRole)
     @IsNotEmpty()

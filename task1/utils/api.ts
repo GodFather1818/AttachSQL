@@ -3,7 +3,8 @@ import axios from "axios";
 import { Task } from "../../backend/src/task/task.schema";
 import { Project } from "../../backend/src/project/project.schema";
 import {CreateProjectDto} from "../../backend/src/project/create-project.dto"
-import { getSession } from "next-auth/react";
+
+
 const api = axios.create({
     baseURL: "http://localhost:3002",
 });
@@ -45,8 +46,8 @@ export const getParticularTask = async(id: string) => {
     return response.data;
 }
 
-export const createTask = async(task: TaskCreateDto) => {
-    const response = await api.post("/tasks", task);
+export const createTask = async(task: TaskCreateDto, headers: any) => {
+    const response = await api.post("/tasks", task, {headers});
     return response.data;
 };
 

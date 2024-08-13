@@ -1,4 +1,4 @@
-import { Get, Controller, Post, Body, UploadedFile, UseInterceptors, Delete, Param } from '@nestjs/common';
+import { Get, Controller, Post, Body, UploadedFile, UseInterceptors, Delete, Param, UseGuards } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -6,6 +6,10 @@ import { ProductService } from './product.service';
 import { CreateProductDto } from '../dto/product.dto';
 import { Product } from './product.schema';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/auth/user/roles.decorator';
+import { UserRole } from 'src/models/users.models';
+import { AuthGuard } from 'src/auth/auth.guard';
+
 
 @ApiTags('Product Module')
 @Controller('product')
@@ -42,6 +46,8 @@ export class ProductController {
   }
 
   @Post("/api/add")
+  @UseGuards(AuthGuard)
+  @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Add a new product' })
   @ApiResponse({
     status: 201,
@@ -82,6 +88,8 @@ export class ProductController {
   }
 
   @Delete('/api/delete/:id')
+  @UseGuards(AuthGuard)
+  @Roles(UserRole.ADMIN) 
   @ApiOperation({ summary: 'Delete a product by ID' })
   @ApiResponse({
     status: 200,
