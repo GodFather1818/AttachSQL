@@ -66,14 +66,19 @@ const permissions = session?.user?.permissions;
       header: 'Actions',
       cell: ({ row }) => (
         <div className="flex space-x-2">
-          <Button onClick={() => handleDelete(row.original._id)}>
+          {permissions?.delete &&
+
+            <Button onClick={() => handleDelete(row.original._id)}>
             <DeleteIcon sx={{ color: 'red' }} />
           </Button>
-          <Link href={`/tasks/update/${row.original._id}`}>
+          }
+          {permissions?.write&&
+            <Link href={`/tasks/update/${row.original._id}`}>
             <Button>
               <EditIcon sx={{ color: 'blue' }} />
             </Button>
           </Link>
+          }
         </div>
       ),
     },

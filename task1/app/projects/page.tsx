@@ -10,13 +10,14 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/datatabble";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-
+import EditIcon from '@mui/icons-material/Edit';
 function ProjectList() {
   const [projects, setProjects] = useState<Project[]>([]);
 
   const { data: session } = useSession();
 
   const Userrole = session?.user.role;
+  const permissions = session?.user?.permissions;
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -57,29 +58,37 @@ function ProjectList() {
       cell: (info) => info.getValue(),
     },
     {
-      id: "delete",
-      header: "Delete",
+      id: "actions", // Changed from "delete" to "actions" to cover both edit and delete actions
+      header: "Actions",
       cell: ({ row }) => (
-        <div>
-          {Userrole === "ADMIN" && (
+        <div className="flex space-x-2">
+          {permissions?.delete && (
             <Button onClick={() => handleDelete(row.original._id)}>
               <DeleteIcon sx={{ color: "red" }} />
             </Button>
+          )}
+          {permissions?.write && (
+            <Link href={`/projects/update/${row.original._id}`}>
+              <Button>
+                <EditIcon sx={{ color: "blue" }} />
+              </Button>
+            </Link>
           )}
         </div>
       ),
     },
   ];
+  
 
   return (
     <div className="m-6">
       <div className="flex justify-between items-center h-16 mb-5">
         <h1 className="text-2xl font-bold text-primary">PROJECTS</h1>
-        {Userrole === "admin" && (
+   
           <Link href="/projects/create">
             <Button className="btn-add text-xs bg-primary text-blue-100">+ Add new PROJECTS</Button>
           </Link>
-        )}
+       
       </div>
       <DataTable columns={columns} data={projects} />
     </div>

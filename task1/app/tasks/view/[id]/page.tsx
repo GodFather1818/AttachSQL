@@ -26,7 +26,7 @@ function ViewDetails() {
         const fetchTask = async () => {
             if (id) {
                 try {
-                    const response = await axios.get(`http://localhost:3001/tasks/${id}`);
+                    const response = await axios.get(`http://localhost:3002/tasks/${id}`);
                     const taskData = response.data;
                     setTask(taskData);
                 } catch (error) {

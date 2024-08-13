@@ -67,15 +67,19 @@ const CategoryPage = () => {
       header: 'Actions',
       cell: ({ row }) => (
         <div className="flex space-x-2">
-          <Button onClick={() => deleteit(row.original._id)}>
+          {permissions?.delete && 
+
+            <Button onClick={() => deleteit(row.original._id)}>
             <DeleteIcon sx={{ color: 'red' }} />
           </Button>
-      
+          }
+      {permissions?.write && 
           <Link href={`/category/edit/${row.original._id}`}>
             <Button>
               <EditIcon sx={{ color: 'blue' }} />
             </Button>
           </Link>
+    }
       
         </div>
       ),

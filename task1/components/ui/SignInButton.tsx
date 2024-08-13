@@ -17,8 +17,8 @@ const SignInButton = () => {
 
     if (session && session.user){
 
-      console.log({session})
-      console.log('Token being sent:', session?.user.token);
+
+ 
 
       return (
         <div className="flex gap-4 ml-auto">

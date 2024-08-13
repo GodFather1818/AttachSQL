@@ -10,7 +10,8 @@ export const authOptions: NextAuthOptions = {
         CredentialsProvider({
             name: 'Credentials',
             credentials: {
-                email: { label: "Email", type: "email", placeholder: "your-email@example.com" },
+
+                email: { label: "Email", type: "email", placeholder: "your-email@example.com"},
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
@@ -23,7 +24,7 @@ export const authOptions: NextAuthOptions = {
                     });
 
                     const { userId, name, userRole, token, permissions } = res.data;
-                    console.log({ userId, name, userRole, token, permissions });
+                    // console.log({ userId, name, userRole, token, permissions });
                     return { userId, name, role: userRole, token, permissions };
                 } catch (error) {
                     console.error('Login failed:', error);

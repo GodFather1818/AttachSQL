@@ -15,7 +15,7 @@ export class TaskController {
     }
 
     @Get('/:id')
-    @UseGuards(AuthGuard)
+  
     async findParticularTask(@Param('id') id: string): Promise<Task> {
         return this.taskService.findParticularTask(id);
     }
