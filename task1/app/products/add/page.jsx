@@ -18,6 +18,19 @@ const AddProductForm = () => {
   const [error, setError] = useState('');
   const [categories, setCategories] = useState([]);
   const router = useRouter();
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.size > 5 * 1024 * 1024) { // 5MB limit
+      alert('File size should be less than 5MB');
+      return;
+    }
+    if (file && !['image/jpeg', 'image/png'].includes(file.type)) {
+      alert('Only JPEG or PNG files are allowed');
+      return;
+    }
+    setBannerImage(file);
+  };
+  
 
   useEffect(() => {
     // Replace this with your actual data fetching logic
@@ -49,7 +62,7 @@ const AddProductForm = () => {
     formData.append('category', category);
 
     try {
-      await axios.post('http://localhost:3001/product/api/add', formData, {
+      await axios.post('http://localhost:3002/product/api/add', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -156,11 +169,12 @@ const AddProductForm = () => {
       <div className="form-group">
         <label htmlFor="bannerImage">Banner Image</label>
         <input
-          type="file"
-          id="bannerImage"
-          onChange={(e) => setBannerImage(e.target.files[0])}
-          required
-        />
+  type="file"
+  id="bannerImage"
+  onChange={handleFileChange}
+  required
+/>
+
       </div>
       <button type="submit" disabled={loading}>
         {loading ? 'Adding...' : 'Add Product'}

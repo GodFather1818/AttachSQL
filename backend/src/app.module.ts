@@ -18,6 +18,7 @@ import { ProjectModule } from './project/project.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JWT_KEY } from './constant';
+// import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 
 @Module({
@@ -27,7 +28,7 @@ import { JWT_KEY } from './constant';
     signOptions: {
       expiresIn: '30d'
     }
-  })],
+  }),],
   controllers: [AppController],
   providers: [AppService],
 })

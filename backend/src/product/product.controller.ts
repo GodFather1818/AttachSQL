@@ -1,22 +1,31 @@
-import { Get, Controller, Post, Body, UploadedFile, UseInterceptors, Delete, Param, UseGuards } from '@nestjs/common';
+import {
+  Get,
+  Controller,
+  Post,
+  Body,
+  UploadedFile,
+  UseInterceptors,
+  Delete,
+  Param,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
 import { ProductService } from './product.service';
 import { CreateProductDto } from '../dto/product.dto';
 import { Product } from './product.schema';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/auth/user/roles.decorator';
 import { UserRole } from 'src/models/users.models';
-import { AuthGuard } from 'src/auth/auth.guard';
-
+import { CloudinaryService } from '../cloudinary/cloudinary.service'; // Import Cloudinary service
 
 @ApiTags('Product Module')
 @Controller('product')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private readonly productService: ProductService,
+    private readonly cloudinaryService: CloudinaryService, // Inject Cloudinary service
+  ) {}
 
-  @Get("/api/")
+  @Get('/api/')
   @ApiOperation({ summary: 'Get all products' })
   @ApiResponse({
     status: 200,
@@ -29,7 +38,7 @@ export class ProductController {
           description: 'Product Description',
           Sellingprice: 100,
           Actualprice: 50,
-          Tags: ['user1','user2'],
+          Tags: ['user1', 'user2'],
           category: 'Obj584515487',
           bannerImage: 'uploads/bannerImage-123456789.jpg',
         },
@@ -39,14 +48,12 @@ export class ProductController {
   @ApiResponse({
     status: 404,
     description: 'Products not found',
-   
   })
   getProducts(): Promise<Product[]> {
     return this.productService.findAll();
   }
 
-  @Post("/api/add")
-  @UseGuards(AuthGuard)
+  @Post('/api/add')
   @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Add a new product' })
   @ApiResponse({
@@ -65,41 +72,28 @@ export class ProductController {
   @ApiResponse({
     status: 400,
     description: 'Invalid input',
-  
   })
-  @UseInterceptors(
-    FileInterceptor('bannerImage', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, callback) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          callback(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(FileInterceptor('bannerImage'))
   async addProduct(
     @Body() createProductDto: CreateProductDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    const imagePath = file.path;
+    console.log(file);
+    const result = await this.cloudinaryService.uploadImage(file);
+    const imagePath = result.secure_url; // Get the secure URL from Cloudinary response
     return await this.productService.createProduct(createProductDto, imagePath);
   }
 
   @Delete('/api/delete/:id')
-  // @UseGuards(AuthGuard)
-  @Roles(UserRole.ADMIN) 
+  @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Delete a product by ID' })
   @ApiResponse({
     status: 200,
     description: 'Product successfully deleted',
-   
   })
   @ApiResponse({
     status: 404,
     description: 'Product not found',
-  
   })
   async deleteProduct(@Param('id') id: string): Promise<Product> {
     return await this.productService.deleteProduct(id);
