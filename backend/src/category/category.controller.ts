@@ -1,8 +1,11 @@
-import { Controller, Get ,Post, Body, Delete, Param, Put } from '@nestjs/common';
+import { Controller, Get ,Post, Body, Delete, Param, Put, UseGuards } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from './category.schema';
 import { CreateCategoryDto } from '../dto/category.dto'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { Roles } from 'src/auth/user/roles.decorator';
+import { UserRole } from 'src/models/users.models';
 
 @ApiTags('Category Module')
 @Controller('category')
@@ -53,6 +56,8 @@ export class CategoryController {
   }
 
   @Post("/api/add")
+  @UseGuards(AuthGuard)
+  @Roles(UserRole.ADMIN)
   @ApiOperation({summary:'Add a new Category'})
   @ApiResponse({
     
@@ -70,6 +75,8 @@ export class CategoryController {
     return this.categoryService.addCategory(createCategoryDto);
   }
   @Put("/api/update/:id")
+  @UseGuards(AuthGuard)
+  @Roles(UserRole.ADMIN) 
   @ApiResponse({
     status: 200,
     description: 'Category successfully updated',
@@ -85,6 +92,8 @@ export class CategoryController {
     return this.categoryService.updateCategory(id, updateData);
   }
   @Delete("/api/delete/:id")
+  @UseGuards(AuthGuard)
+  @Roles(UserRole.ADMIN) 
   @ApiResponse({
     status: 200,
     description: 'Category successfully deleted',

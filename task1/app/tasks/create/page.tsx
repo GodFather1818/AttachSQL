@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import toast from 'react-hot-toast';
 import { createTask, TaskCreateDto } from '@/utils/api'; // Ensure this function is properly defined in utils/api.ts
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 
 const CreateTask = () => {
@@ -16,6 +18,13 @@ const CreateTask = () => {
     const [assignedTo, setAssignedTo] = useState('');
     const [companyName, setCompanyName] = useState('');
     const [contactName, setContactName] = useState('');
+    const { data: session } = useSession();
+
+    const token = session?.user.token;
+
+    const headers = {
+        Authorization: `Bearer ${token}`,
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -30,7 +39,7 @@ const CreateTask = () => {
                 contactName
             };
             try {
-                await createTask(newTask);
+                await axios.post("http://localhost:3002/tasks",newTask,{headers});
                 toast.success('Task created successfully!');
                 setTimeout(() => {
                     router.push('/tasks');

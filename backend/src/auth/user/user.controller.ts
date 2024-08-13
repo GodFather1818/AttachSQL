@@ -1,10 +1,14 @@
-import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards, Patch, Param} from '@nestjs/common';
+import { BadRequestException, NotFoundException,Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards, Patch, Param} from '@nestjs/common';
 import { UserService } from './user.service';
 import { User,UserRole } from 'src/models/users.models';
 import { RegisterDto } from 'src/dto/auth.dto';
 import { LoginDto } from 'src/dto/login.dto';
 // import { AuthGuard } from '@nestjs/passport';
 import { AuthGuard } from '../auth.guard';
+import { UpdateUserRoleDto } from "../../dto/update-user-role.dto";
+import { UpdateUserPermissionsDto } from '../../dto/update-user-permissions.dto';
+import { AdminGuard } from 'src/admin/admin.guard';
+
 
 @Controller('user')
 export class UserController {
@@ -24,6 +28,35 @@ export class UserController {
     async postLogin(@Body() data: LoginDto) {
         return this.userService.LoginView(data);
     }
+    @Patch('update-role/:id')
+    async updateRole(
+      @Param('id') id: string,
+      @Body() updateUserRoleDto: UpdateUserRoleDto,
+    ) {
+      const updatedUser = await this.userService.updateUserRole(
+        id,
+        updateUserRoleDto.role,
+      );
+      if (!updatedUser) {
+        throw new NotFoundException('User not found');
+      }
+      return updatedUser;
+    }
+  
+    @Patch('permissions/:id')
+    async updatePermissions(
+      @Param('id') id: string,
+      @Body() updateUserPermissionsDto: UpdateUserPermissionsDto,
+    ) {
+      const updatedUser = await this.userService.updateUserPermissions(
+        id,
+        updateUserPermissionsDto.permissions,
+      );
+      if (!updatedUser) {
+        throw new NotFoundException('User not found');
+      }
+      return updatedUser;
+    }
 
 
     @HttpCode(HttpStatus.OK)
@@ -38,8 +71,5 @@ export class UserController {
         return this.userService.profileView(user?.userId);
     }
 
-    @Patch('role/:id')
-    async updateUserRole(@Param('id') id: string, @Body('role') role: UserRole) {
-        return this.userService.updateUserRole(id, role);
-    }
+   
 }

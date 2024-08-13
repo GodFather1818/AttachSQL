@@ -6,6 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from 'src/dto/auth.dto';
 import * as bcrypt from "bcrypt";
 import { LoginDto } from 'src/dto/login.dto';
+import { permission } from 'process';
 
 
 @Injectable()
@@ -26,12 +27,20 @@ export class UserService {
         if (chk_user) {
             throw new BadRequestException("User Already Exists!");
         }
-        const newUser = await this.userModel.create({
+        const newUser = new this.userModel({
             email: data.email,
-            password: data.password,
+            password: data.password, // Ensure password is hashed
             name: data.name,
-        
+            role: data.role || UserRole.USER, // Apply default role if not provided
+            permissions: data.permissions || {
+                read: true,
+                write: false,
+                create: false,
+                delete: false,
+            },
         });
+        console.log(newUser);
+        await newUser.save(); 
         const token = await this.jwtService.sign({userId: newUser._id});
 
         return {
@@ -49,22 +58,22 @@ export class UserService {
             throw new BadRequestException("User Does Not Exists!");
         }
 
-        // If password == string
-
         const isMatch = await bcrypt.compare(data.password, chk_user.password);
+        console.log(isMatch);
 
         if (!isMatch) {
             throw new BadRequestException('Invalid Credentials!');
         }
 
         const userRole = chk_user.role;
-        const token = this.jwtService.sign({userId: chk_user._id,userRole:userRole})
+        const token = this.jwtService.sign({userId: chk_user._id, userRole:userRole, permissions: chk_user.permissions});
 
         return {
             userId:chk_user._id,
-            name: chk_user.name, // Assuming 'name' is a field in chk_user
+            name: chk_user.name,
             userRole: userRole,
             token: token,
+            permissions: chk_user.permissions
         }
 
     }
@@ -92,4 +101,22 @@ export class UserService {
         await user.save();
         return user;
     }
+    async updateUserPermissions(
+        id: string,
+        permissions: {
+          read: boolean;
+          write: boolean;
+          create: boolean;
+          delete: boolean;
+        },
+      ): Promise<User> {
+        const user = await this.userModel.findById(id).exec();
+        if (!user) {
+          throw new NotFoundException('User not found');
+        }
+        console.log('Updating permissions to:', permissions); // Log permissions
+        user.permissions = permissions; // Update the permissions field
+        await user.save();
+        return user;
+      }
 }

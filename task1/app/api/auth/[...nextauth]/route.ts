@@ -22,9 +22,9 @@ export const authOptions:NextAuthOptions ={
                         password: credentials.password,
                     });
 
-                    const { userId, name, userRole, token } = res.data;
-                    console.log({ userId, name, userRole, token } )
-                    return { userId, name, role: userRole, token };
+                    const { userId, name, userRole, token, permission } = res.data;
+                    console.log({ userId, name, userRole, token}, {permission});
+                    return { userId, name, role: userRole, token, permission };
                 } catch (error) {
                     console.error('Login failed:', error);
                     return null;

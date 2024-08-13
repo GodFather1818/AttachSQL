@@ -31,6 +31,7 @@ export class ProjectController {
     }
     
     @Get("/:id")
+    @UseGuards(AuthGuard)
     async getParticularProject(@Param('id') id: string) : Promise<Project> {
         return this.projectService.findParticularProject(id);
     }
