@@ -7,7 +7,10 @@ import {
   UseInterceptors,
   Delete,
   Param,
-  Put
+  Put,
+  UseGuards,
+  Request,
+  ForbiddenException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ProductService } from './product.service';

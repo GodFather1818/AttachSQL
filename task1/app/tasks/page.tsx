@@ -88,14 +88,14 @@ const permissions = session?.user?.permissions;
       <div className="m-6">
       <div className="flex justify-between items-center h-16">
             <h1 className="text-2xl font-bold text-primary">Tasks</h1>
+            {permissions?.create &&(
             <Link href={`/tasks/create`}>
-            {permissions?.create &&
 
               <Button className="btn-add text-xs bg-primary text-blue-100 hover:text-black py-2 px-2">
                 + Add new Tasks
               </Button>
-              }
             </Link>
+              )}
           </div>
           <DataTable columns={columns} data={tasks} />
     </div>
