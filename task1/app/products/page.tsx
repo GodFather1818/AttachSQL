@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import withProtectedRoute from '../../lib/withProtectedRoute';
 import { useSession } from "next-auth/react";
+import EditIcon from "@mui/icons-material/Edit";
 
 const ProductPage = () => {
   const [products, setProducts] = useState<Category[]>([]);
