@@ -5,6 +5,7 @@ import axios from 'axios';
 import './style.add.css'
 import { useRouter } from 'next/navigation';
 import {toast} from 'react-hot-toast';
+import { useSession } from "next-auth/react";
 
 const AddProductForm = () => {
   const [name, setName] = useState('');
@@ -18,6 +19,14 @@ const AddProductForm = () => {
   const [error, setError] = useState('');
   const [categories, setCategories] = useState([]);
   const router = useRouter();
+
+  const { data: session } = useSession();
+  const permissions = session?.user?.permissions;
+  const token = session?.user.token;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+};
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file && file.size > 5 * 1024 * 1024) { // 5MB limit
@@ -31,12 +40,11 @@ const AddProductForm = () => {
     setBannerImage(file);
   };
   
-
   useEffect(() => {
     // Replace this with your actual data fetching logic
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:3002/category/api/'); // Example API endpoint
+        const response = await axios.get('http://localhost:3002/category/api', {headers}); // Example API endpoint
         setCategories(response.data);
         
       } catch (error) {
@@ -65,6 +73,7 @@ const AddProductForm = () => {
       await axios.post('http://localhost:3002/product/api/add', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
         },
       });
       setName('');
@@ -93,8 +102,11 @@ const AddProductForm = () => {
     <div className=" mx-auto align-middle p-6 bg-gradient-to-r from-blue-100 to-blue-200 border rounded-lg shadow-xl hover:shadow-2xl transition duration-300 ease-in-out">
         <form onSubmit={handleSubmit} >
       <div>
-      <h2 className='font-bold text-3xl 
-       text-primary mb-4'>Add New Product</h2>
+      {permissions?.create && (
+          <Link href="/tasks/create">
+            <Button className="btn-add text-xs bg-primary text-blue-100">Add Product</Button>
+          </Link>
+        )}
       </div>
       {error && <p className="error">{error}</p>}
       <div className="form-group">

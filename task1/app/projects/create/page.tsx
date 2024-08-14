@@ -8,16 +8,22 @@ import axios from 'axios';
 
 function CreateProject() {
     const [name, setName] = useState('');
-    const { data: session } = useSession();  // Access the session
     const router = useRouter();
+    // const { data: session } = useSession();
+    const { data: session } = useSession();
+
+    // const Userrole = session?.user.role;
+    const permissions = session?.user?.permissions;
+    const token = session?.user.token;
+    const headers = {
+        Authorization: `Bearer ${token}`,
+    }; 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
-            const headers = {
-                Authorization: `Bearer ${session?.user.token}`,
-            };
+            
 
             await axios.post('http://localhost:3002/project', { name }, { headers });
 

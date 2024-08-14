@@ -3,19 +3,27 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+
 const AddCategoryForm = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
+  const {data:session} = useSession();
+  const permissions = session?.user?.permissions;
+  const token = session?.user.token;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+};
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
-      await axios.post('http://localhost:3002/category/api/add', { name, description });
+      await axios.post('http://localhost:3002/category/api/add', { name, description }, {headers});
       setName('');
       setDescription('');
       alert('Category added successfully!');

@@ -9,6 +9,8 @@ import { useParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { getParticularProject, updateProject } from '@/utils/api';
 import axios from 'axios';
+import { useSession } from "next-auth/react";
+
 // import { Project } from '../../../../../backend/src/project/project.schema';
 
 
@@ -20,6 +22,14 @@ function UpdateProject() {
   const [loading, setLoading] = useState(true); // Added loading state
 
   const router = useRouter();
+  const { data: session } = useSession();
+
+  // const Userrole = session?.user.role;
+  const permissions = session?.user?.permissions;
+  const token = session?.user.token;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
 
 
 
@@ -27,7 +37,10 @@ function UpdateProject() {
     const fetchProject = async () => {
       if (id) {
         try {
-          const response = await getParticularProject(id as string); 
+          if (!token) {
+            throw new Error("Token not found");
+          }
+          const response = await axios.get(`http://localhost:3002/project/${id}`, {headers}); 
           const project = response.data;
           setName(project.name);
         } catch (error) {
@@ -44,7 +57,7 @@ function UpdateProject() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3001/project/${id}`, { name });
+      await axios.put(`http://localhost:3002/project/${id}`, { name }, {headers});
       // await updateProject(id as string, {name});
       setName('')
       setTimeout(() => {

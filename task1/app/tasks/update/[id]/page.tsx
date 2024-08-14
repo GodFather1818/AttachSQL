@@ -5,6 +5,8 @@ import { useRouter, useParams } from 'next/navigation';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import toast from 'react-hot-toast';
 import { getParticularTask, updateTask, TaskCreateDto } from '@/utils/api'; // Ensure these functions are properly defined in utils/api.ts
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
 const UpdateTask = () => {
     const router = useRouter();
@@ -18,10 +20,17 @@ const UpdateTask = () => {
     const [assignedTo, setAssignedTo] = useState('');
     const [companyName, setCompanyName] = useState('');
     const [contactName, setContactName] = useState('');
+    const { data: session } = useSession();
+//   const permissions = session?.user?.permissions;
+    const token = session?.user.token;
+    const headers = {
+        Authorization: `Bearer ${token}`,
+    };
 
     useEffect(() => {
         if (taskId) {
-            getParticularTask(taskId as string).then(task => {
+            axios.get(`http://localhost:3002/tasks/${taskId}`, { headers }).then(response  => {
+                const task = response.data;
                 setTitle(task.title);
                 setDescription(task.description || '');
                 setStage(task.stage);
@@ -39,7 +48,7 @@ const UpdateTask = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await updateTask(taskId as string, {
+            await axios.put(`http://localhost:3002/tasks/${taskId}`, {
                 title,
                 description,
                 stage,
@@ -47,7 +56,8 @@ const UpdateTask = () => {
                 assigned_to: assignedTo.split(',').map(str => str.trim()),
                 companyName,
                 contactName
-            });
+            }, { headers });
+            
             setTimeout(() => {
                 toast.success('Task updated successfully!');
                 router.push('/tasks');

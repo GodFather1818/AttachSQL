@@ -21,7 +21,7 @@ const CreateTask = () => {
     const { data: session } = useSession();
 
     const token = session?.user.token;
-    const permissions = session?.user?.permissions;
+    // const permissions = session?.user?.permissions;
 
     const headers = {
         Authorization: `Bearer ${token}`,

@@ -15,7 +15,7 @@ import Link from "next/link";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { deleteProject } from "../../utils/api";
-
+import axios from "axios";
 import {useRouter} from 'next/navigation';
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/datatabble";
@@ -27,11 +27,22 @@ function TaskList() {
 
   const router = useRouter();
   const { data: session } = useSession();
-const permissions = session?.user?.permissions;
+  const permissions = session?.user?.permissions;
+  const token = session?.user.token;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+};
   useEffect(() => {
     const fetchTasks = async () => {
-      const data = await getTasks();
-      setTasks(data);
+
+      try {
+        
+        const {data} = await axios.get("http://localhost:3002/tasks", { headers });
+        setTasks(data);
+
+      } catch (error) {
+        console.error("Error Fetching Tasks:", error);
+      }
     };
 
     fetchTasks();
@@ -39,12 +50,13 @@ const permissions = session?.user?.permissions;
 
   const handleDelete = async (id: any) => {
     try {
-      await deleteTask(id);
+      await axios.delete(`http://localhost:3002/tasks/${id}`, { headers });
       setTasks(tasks.filter((task) => task._id !== id));
     } catch (error) {
       console.error(error);
     }
   };
+
   const handleViewDetails = async(id: any) => {
     router.push(`/tasks/view/${id}`);
   }
@@ -96,6 +108,7 @@ const permissions = session?.user?.permissions;
               </Button>
             </Link>
               )}
+
           </div>
           <DataTable columns={columns} data={tasks} />
     </div>
