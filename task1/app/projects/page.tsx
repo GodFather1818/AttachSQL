@@ -16,21 +16,21 @@ function ProjectList() {
 
   const { data: session } = useSession();
 
-  const Userrole = session?.user.role;
+  // const Userrole = session?.user.role;
   const permissions = session?.user?.permissions;
+  const token = session?.user.token;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         // Ensure token is correctly extracted from session
-        const token = session?.user.token;
         if (!token) {
           throw new Error("Token not found");
         }
 
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
 
         const { data } = await axios.get("http://localhost:3002/project", { headers });
         setProjects(data);
@@ -44,7 +44,7 @@ function ProjectList() {
 
   const handleDelete = async (id: any) => {
     try {
-      await deleteProject(id);
+     await axios.delete(`http://localhost:3002/project/${id}`, {headers});
       setProjects(projects.filter((project) => project._id !== id));
     } catch (error) {
       console.error(error);
@@ -85,9 +85,11 @@ function ProjectList() {
       <div className="flex justify-between items-center h-16 mb-5">
         <h1 className="text-2xl font-bold text-primary">PROJECTS</h1>
    
+        {permissions?.create && (
           <Link href="/projects/create">
             <Button className="btn-add text-xs bg-primary text-blue-100">+ Add new PROJECTS</Button>
           </Link>
+        )}
        
       </div>
       <DataTable columns={columns} data={projects} />

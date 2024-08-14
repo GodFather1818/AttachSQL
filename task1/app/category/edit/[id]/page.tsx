@@ -3,12 +3,19 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 
 
 const EditCategory = () => {
   const params = useParams();
   const id = params.id;
+  const {data:session} = useSession();
+  const permissions = session?.user?.permissions;
+  const token = session?.user.token;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+};
   
 
   const [name, setName] = useState('');
@@ -18,7 +25,7 @@ const EditCategory = () => {
     const fetchCategory = async () => {
       if (id) {
         try {
-          const response = await axios.get(`http://localhost:3002/category/api/${id}`);
+          const response = await axios.get(`http://localhost:3002/category/api/${id}`, {headers});
           const category = response.data;
           setName(category.name);
           setDescription(category.description);
@@ -37,7 +44,7 @@ const EditCategory = () => {
       await axios.put(`http://localhost:3001/category/api/update/${id}`, {
         name,
         description,
-      });
+      } , {headers});
       window.location.href = '/category'
     } catch (error) {
       console.error('Error updating category:', error);

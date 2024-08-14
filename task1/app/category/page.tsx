@@ -11,12 +11,20 @@ import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/ui/datatabble';
 import withProtectedRoute from '../../lib/withProtectedRoute';
 import { useSession } from 'next-auth/react';
+// import { useSession } from "next-auth/react";
+
 const CategoryPage = () => {
 
   const {data:session} = useSession();
   const userRole = session?.user.role;
-  const permissions = session?.user?.permissions;
+  // const permissions = session?.user?.permissions;
   const [categories, setCategories] = useState<Category[]>([]);
+  // const { data: session } = useSession();
+  const permissions = session?.user?.permissions;
+  const token = session?.user.token;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+};
 
   const add = () => {
     console.log('Add category');
@@ -24,7 +32,7 @@ const CategoryPage = () => {
 
   const deleteit = async (id: any) => {
     try {
-      await axios.delete(`http://localhost:3002/category/api/delete/${id}`);
+      await axios.delete(`http://localhost:3002/category/api/delete/${id}`, {headers});
       fetchCategories();
     } catch (error) {
       console.log(error);
@@ -39,7 +47,7 @@ const CategoryPage = () => {
   // Fetch categories from the backend
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:3002/category/api/'); // Adjust the endpoint as per your backend route
+      const response = await axios.get('http://localhost:3002/category/api/', {headers}); // Adjust the endpoint as per your backend route
       setCategories(response.data);
       console.log(response.data);
     } catch (error) {

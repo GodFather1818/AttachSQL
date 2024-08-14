@@ -7,6 +7,9 @@ import {
   UseInterceptors,
   Delete,
   Param,
+  UseGuards,
+  Request,
+  ForbiddenException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ProductService } from './product.service';
@@ -16,6 +19,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/auth/user/roles.decorator';
 import { UserRole } from 'src/models/users.models';
 import { CloudinaryService } from '../cloudinary/cloudinary.service'; // Import Cloudinary service
+import { AuthGuard } from 'src/auth/auth.guard';
+import { Auth } from 'googleapis';
 
 @ApiTags('Product Module')
 @Controller('product')
@@ -26,6 +31,7 @@ export class ProductController {
   ) {}
 
   @Get('/api/')
+  @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Get all products' })
   @ApiResponse({
     status: 200,
@@ -49,11 +55,18 @@ export class ProductController {
     status: 404,
     description: 'Products not found',
   })
-  getProducts(): Promise<Product[]> {
+  async getProducts(@Request() req): Promise<Product[]> {
+    const user = req.user;
+
+    if(!user.permissions.read) {
+      throw new ForbiddenException('You do not have the permission to read the Product.');
+
+  }
     return this.productService.findAll();
   }
 
   @Post('/api/add')
+  @UseGuards(AuthGuard)
   @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Add a new product' })
   @ApiResponse({
@@ -75,10 +88,15 @@ export class ProductController {
   })
   @UseInterceptors(FileInterceptor('bannerImage'))
   async addProduct(
+    @Request() req,
     @Body() createProductDto: CreateProductDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
     console.log(file);
+    const user = req.user;
+    if (!user.permissions.create) {
+      throw new ForbiddenException('You do not have permission to create product.');
+  }
     const result = await this.cloudinaryService.uploadImage(file);
     const imagePath = result.secure_url; // Get the secure URL from Cloudinary response
     return await this.productService.createProduct(createProductDto, imagePath);
@@ -86,6 +104,7 @@ export class ProductController {
 
   @Delete('/api/delete/:id')
   @Roles(UserRole.ADMIN)
+  @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Delete a product by ID' })
   @ApiResponse({
     status: 200,
@@ -95,7 +114,10 @@ export class ProductController {
     status: 404,
     description: 'Product not found',
   })
-  async deleteProduct(@Param('id') id: string): Promise<Product> {
+  async deleteProduct(@Request() req, @Param('id') id: string): Promise<Product> {
+    if (!req.user.permissions.delete) {
+      throw new ForbiddenException('You do not have permission to delete product.');
+  }
     return await this.productService.deleteProduct(id);
   }
 }

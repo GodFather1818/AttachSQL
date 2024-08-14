@@ -132,12 +132,12 @@ const AdminDashboard = () => {
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom className="mt-8 mb-3">
         Admin Dashboard
       </Typography>
 
       {/* User Management Table */}
-      <TableContainer component={Paper} style={{ marginBottom: "2rem", width:"60vw"}}>
+      <TableContainer component={Paper} style={{ marginBottom: "2rem", width:"80vw"}}>
         <Table>
           <TableHead>
             <TableRow>

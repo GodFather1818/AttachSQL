@@ -15,7 +15,7 @@ import Link from "next/link";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { deleteProject } from "../../utils/api";
-
+import axios from "axios";
 import {useRouter} from 'next/navigation';
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/datatabble";
@@ -27,11 +27,22 @@ function TaskList() {
 
   const router = useRouter();
   const { data: session } = useSession();
-const permissions = session?.user?.permissions;
+  const permissions = session?.user?.permissions;
+  const token = session?.user.token;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+};
   useEffect(() => {
     const fetchTasks = async () => {
-      const data = await getTasks();
-      setTasks(data);
+
+      try {
+        
+        const {data} = await axios.get("http://localhost:3002/tasks", { headers });
+        setTasks(data);
+
+      } catch (error) {
+        console.error("Error Fetching Tasks:", error);
+      }
     };
 
     fetchTasks();
@@ -39,12 +50,13 @@ const permissions = session?.user?.permissions;
 
   const handleDelete = async (id: any) => {
     try {
-      await deleteTask(id);
+      await axios.delete(`http://localhost:3002/tasks/${id}`, { headers });
       setTasks(tasks.filter((task) => task._id !== id));
     } catch (error) {
       console.error(error);
     }
   };
+
   const handleViewDetails = async(id: any) => {
     router.push(`/tasks/view/${id}`);
   }
@@ -88,14 +100,11 @@ const permissions = session?.user?.permissions;
       <div className="m-6">
       <div className="flex justify-between items-center h-16">
             <h1 className="text-2xl font-bold text-primary">Tasks</h1>
-            <Link href={`/tasks/create`}>
-            {permissions?.create &&
-
-              <Button className="btn-add text-xs bg-primary text-blue-100 hover:text-black">
-                + Add new Tasks
-              </Button>
-              }
-            </Link>
+            {permissions?.create && (
+          <Link href="/tasks/create">
+            <Button className="btn-add text-xs bg-primary text-blue-100">+ Add new TASKS</Button>
+          </Link>
+        )}
           </div>
           <DataTable columns={columns} data={tasks} />
     </div>

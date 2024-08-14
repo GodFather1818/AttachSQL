@@ -1,4 +1,4 @@
-import { Controller, Get ,Post, Body, Delete, Param, Put, UseGuards } from '@nestjs/common';
+import { Controller, Get ,Post, Body, Delete, Param, Put, UseGuards, Request, ForbiddenException } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from './category.schema';
 import { CreateCategoryDto } from '../dto/category.dto'
@@ -14,6 +14,7 @@ export class CategoryController {
 
 
   @Get("/api")
+  @UseGuards(AuthGuard)
   @ApiOperation({summary:'Get all Data from this API'})
   @ApiResponse({
     status: 200,
@@ -35,7 +36,12 @@ export class CategoryController {
     description: 'Data not found',    
   })
 
-  getCategories(): Promise<Category[]> {
+  async getCategories(@Request() req): Promise<Category[]> {
+    const user = req.user;
+    if(!user.permissions.read) {
+      throw new ForbiddenException('You do not have the permission to read the Categories.');
+
+  }
     return this.categoryService.getCategories();
   }
   @Get("/api/:id")
@@ -51,7 +57,12 @@ export class CategoryController {
       },
     },
   })
-  getCategoryById(@Param('id') id: string): Promise<Category> {
+  getCategoryById(@Request() req, @Param('id') id: string): Promise<Category> {
+    const user = req.user;
+    if(!user.permissions.read) {
+      throw new ForbiddenException('You do not have the permission to read the Categories.');
+
+  }
     return this.categoryService.getCategoryById(id);
   }
 
@@ -71,7 +82,11 @@ export class CategoryController {
       },
     },
   })
-  addCategory(@Body() createCategoryDto: CreateCategoryDto): Promise<Category> {
+  addCategory(@Request() req, @Body() createCategoryDto: CreateCategoryDto): Promise<Category> {
+    const user = req.user;
+    if (!user.permissions.create) {
+      throw new ForbiddenException('You do not have permission to create tasks.');
+  }
     return this.categoryService.addCategory(createCategoryDto);
   }
   @Put("/api/update/:id")
@@ -88,7 +103,10 @@ export class CategoryController {
       },
     },
   })
-  updateCategory(@Param('id') id: string, @Body() updateData: Partial<Category>): Promise<Category> {
+  updateCategory(@Request() req, @Param('id') id: string, @Body() updateData: Partial<Category>): Promise<Category> {
+    if (!req.user.permissions.write) {
+      throw new ForbiddenException('You do not have permission to update tasks.');
+  }
     return this.categoryService.updateCategory(id, updateData);
   }
   @Delete("/api/delete/:id")
@@ -105,7 +123,10 @@ export class CategoryController {
       },
     },
   })
-  deleteCategory(@Param('id') id: string): Promise<Category> {
+  deleteCategory(@Request() req, @Param('id') id: string): Promise<Category> {
+    if (!req.user.permissions.delete) {
+      throw new ForbiddenException('You do not have permission to delete tasks.');
+  }
     return this.categoryService.deleteCategory(id);
   }
   
