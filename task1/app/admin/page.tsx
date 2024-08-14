@@ -4,6 +4,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import withProtectedRoute from '../../lib/withProtectedRoute';
+import { useSession } from "next-auth/react";
+import { useRouter } from 'next/router';
+
 import {
   Container,
   Table,
@@ -23,6 +26,7 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
+import Link from "next/link";
 
 interface User {
   _id: string;
@@ -135,6 +139,12 @@ const AdminDashboard = () => {
       <Typography variant="h4" gutterBottom className="mt-8 mb-3">
         Admin Dashboard
       </Typography>
+      <Link href={`/admin/users`}>
+
+      <Button className="btn-add text-xs bg-primary text-blue-100 hover:text-black py-2 px-2">
+           Roles
+        </Button>
+        </Link>
 
       {/* User Management Table */}
       <TableContainer component={Paper} style={{ marginBottom: "2rem", width:"80vw"}}>
@@ -240,92 +250,7 @@ const AdminDashboard = () => {
       </TableContainer>
 
       {/* New User Creation Form */}
-      <Typography variant="h5" gutterBottom>
-        Create New User
-      </Typography>
-      <form noValidate autoComplete="off" style={{ marginBottom: "2rem" }}>
-        <TextField
-          label="Name"
-          name="name"
-          value={newUser.name}
-          onChange={handleNewUserChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Email"
-          name="email"
-          value={newUser.email}
-          onChange={handleNewUserChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Password"
-          name="password"
-          type="password"
-          value={newUser.password}
-          onChange={handleNewUserChange}
-          fullWidth
-          margin="normal"
-        />
-        <FormControl variant="outlined" fullWidth margin="normal">
-          <InputLabel>Role</InputLabel>
-          <Select
-            value={newUser.role}
-            onChange={(e) => setNewUser({ ...newUser, role: e.target.value as string })}
-            label="Role"
-          >
-            <MenuItem value="user">User</MenuItem>
-            <MenuItem value="admin">Admin</MenuItem>
-          </Select>
-        </FormControl>
-        <div>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked = {newUser.permissions.read}
-                onChange={handleNewUserPermissionChange}
-                name="read"
-              />
-            }
-            label="Read"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={newUser.permissions.write}
-                onChange={handleNewUserPermissionChange}
-                name="write"
-              />
-            }
-            label="Write"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={newUser.permissions.create}
-                onChange={handleNewUserPermissionChange}
-                name="create"
-              />
-            }
-            label="Create"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={newUser.permissions.delete}
-                onChange={handleNewUserPermissionChange}
-                name="delete"
-              />
-            }
-            label="Delete"
-          />
-        </div>
-        <Button variant="contained" color="primary" onClick={handleCreateNewUser}>
-          Create User
-        </Button>
-      </form>
+      
     </Container>
   );
 };

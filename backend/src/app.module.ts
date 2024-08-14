@@ -20,6 +20,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { JWT_KEY } from './constant';
 // import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
+import { RolesModule } from './roles/roles.module';
+
 
 @Module({
   imports: [CategoryModule,ProductModule, MongooseModule.forRoot('mongodb+srv://Dhruv:Dhruv@cluster0.h6fh7fu.mongodb.net/task1?retryWrites=true&w=majority'), TaskModule, ProjectModule, AuthModule, JwtModule.register({
@@ -28,7 +30,7 @@ import { JWT_KEY } from './constant';
     signOptions: {
       expiresIn: '30d'
     }
-  }),],
+  }), RolesModule,],
   controllers: [AppController],
   providers: [AppService],
 })
