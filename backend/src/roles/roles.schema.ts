@@ -1,22 +1,36 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema({ timestamps: true })
+class Permissions {
+  @Prop({ required: true })
+  CREATE: boolean;
+
+  @Prop({ required: true })
+  READ: boolean;
+
+  @Prop({ required: true })
+  UPDATE: boolean;
+
+  @Prop({ required: true })
+  DELETE: boolean;
+}
+
+@Schema()
 export class Roles extends Document {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ type: Map, of: Boolean, default: { CREATE: false, READ: false, UPDATE: false, DELETE: false } })
-  Category: Record<'CREATE' | 'READ' | 'UPDATE' | 'DELETE', boolean>;
+  @Prop({ type: Permissions, required: true })
+  category: Permissions;
 
-  @Prop({ type: Map, of: Boolean, default: { CREATE: false, READ: false, UPDATE: false, DELETE: false } })
-  Products: Record<'CREATE' | 'READ' | 'UPDATE' | 'DELETE', boolean>;
+  @Prop({ type: Permissions, required: true })
+  products: Permissions;
 
-  @Prop({ type: Map, of: Boolean, default: { CREATE: false, READ: false, UPDATE: false, DELETE: false } })
-  Projects: Record<'CREATE' | 'READ' | 'UPDATE' | 'DELETE', boolean>;
+  @Prop({ type: Permissions, required: true })
+  projects: Permissions;
 
-  @Prop({ type: Map, of: Boolean, default: { CREATE: false, READ: false, UPDATE: false, DELETE: false } })
-  Tasks: Record<'CREATE' | 'READ' | 'UPDATE' | 'DELETE', boolean>;
+  @Prop({ type: Permissions, required: true })
+  tasks: Permissions;
 }
 
 export const RolesSchema = SchemaFactory.createForClass(Roles);

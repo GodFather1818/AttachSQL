@@ -45,6 +45,7 @@ interface Permissions {
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [roles, setRoles] = useState<User[]>([]);
   const [newUser, setNewUser] = useState({
     name: "",
     email: "",
@@ -70,35 +71,20 @@ const AdminDashboard = () => {
       console.error("Error fetching users:", error);
     }
   };
-
-  const handleRoleChange = async (userId: string, newRole: string) => {
+  const fetchRoles = async () => {
     try {
-      await axios.patch(`http://localhost:3002/user/update-role/${userId}`, {
-        role: newRole,
-      });
-      fetchUsers(); // Refresh the user list after updating the role
+      const response = await axios.get("http://localhost:3002/roles/api/get"); // Fetching all users
+      setRoles(response.data);
     } catch (error) {
-      console.error("Error updating user role:", error);
+      console.error("Error fetching users:", error);
     }
   };
 
-  const handlePermissionChange = async (userId: string, permissions: Permissions) => {
-    try {
-      await axios.patch(`http://localhost:3002/user/permissions/${userId}`, {
-        permissions: permissions,
-      });
-      fetchUsers(); // Refresh the user list after updating the permissions
-    } catch (error) {
-      console.error("Error updating user permissions:", error);
-    }
-  };
+useEffect(()=>{
+  fetchRoles()
+  fetchUsers()
+},[])
 
-  const handleNewUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewUser({
-      ...newUser,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   const handleNewUserPermissionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Prevent changes to the 'read' permission
@@ -113,26 +99,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleCreateNewUser = async () => {
-    try {
-      await axios.post("http://localhost:3002/user/register", newUser);
-      fetchUsers(); // Refresh the user list after creating a new user
-      setNewUser({
-        name: "",
-        email: "",
-        password: "",
-        role: "user",
-        permissions: {
-          read: true,
-          write: false,
-          create: false,
-          delete: false,
-        },
-      });
-    } catch (error) {
-      console.error("Error creating new user:", error);
-    }
-  };
+  
 
   return (
     <Container>
@@ -154,7 +121,6 @@ const AdminDashboard = () => {
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Role</TableCell>
-              <TableCell>Permissions</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -167,73 +133,20 @@ const AdminDashboard = () => {
                   <FormControl variant="outlined" size="small">
                     <InputLabel>Role</InputLabel>
                     <Select
-                      value={user.role}
+                      value={roles.name}
                       onChange={(e) => handleRoleChange(user._id, e.target.value as string)}
                       label="Role"
-                    >
-                      <MenuItem value="user">User</MenuItem>
-                      <MenuItem value="admin">Admin</MenuItem>
-                    </Select>
+                      >
+                    
+                      {roles.map((role)=>{
+                                return (
+            <MenuItem key={role._id} value={role.name}>{role.name}</MenuItem>
+          )
+        })}
+          </Select>
                   </FormControl>
                 </TableCell>
-                <TableCell>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={user.permissions.read}
-                        onChange={(e) =>
-                          handlePermissionChange(user._id, {
-                            ...user.permissions,
-                            read: e.target.checked,
-                          })
-                        }
-                      />
-                    }
-                    label="Read"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={user.permissions.write}
-                        onChange={(e) =>
-                          handlePermissionChange(user._id, {
-                            ...user.permissions,
-                            write: e.target.checked,
-                          })
-                        }
-                      />
-                    }
-                    label="Write"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={user.permissions.create}
-                        onChange={(e) =>
-                          handlePermissionChange(user._id, {
-                            ...user.permissions,
-                            create: e.target.checked,
-                          })
-                        }
-                      />
-                    }
-                    label="Create"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={user.permissions.delete}
-                        onChange={(e) =>
-                          handlePermissionChange(user._id, {
-                            ...user.permissions,
-                            delete: e.target.checked,
-                          })
-                        }
-                      />
-                    }
-                    label="Delete"
-                  />
-                </TableCell>
+
                 <TableCell>
                   <Button
                     variant="contained"

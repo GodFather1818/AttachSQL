@@ -5,13 +5,17 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class RolesService {
+  constructor(@InjectModel(Roles.name) private rolesModel: Model<Roles>) {}
 
-    constructor(@InjectModel(Roles.name) private rolesModel:Model<Roles>){} 
+  get() {
+    return 'Hello World!';
+  }
 
-    get() {
-        return 'Hello World!';
-    }
-    async addRoles(roles:Roles):Promise<Roles>{
-        return new this.rolesModel(roles).save();
-    }
+  async addRoles(roles: Roles): Promise<Roles> {
+    return new this.rolesModel(roles).save();
+  }
+
+  async getRole():Promise<Roles[]>{
+    return this.rolesModel.find().exec();
+  }
 }

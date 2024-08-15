@@ -1,162 +1,149 @@
 "use client"
+import axios from 'axios';
 import { useState } from 'react';
 
-// Main Component
-export default function AddRole() {
-  const [roleName, setRoleName] = useState('');
-  const [categoryPermissions, setCategoryPermissions] = useState({
-    CREATE: false,
-    READ: false,
-    UPDATE: false,
-    DELETE: false,
-  });
-  const [productsPermissions, setProductsPermissions] = useState({
-    CREATE: false,
-    READ: false,
-    UPDATE: false,
-    DELETE: false,
-  });
-  const [projectsPermissions, setProjectsPermissions] = useState({
-    CREATE: false,
-    READ: false,
-    UPDATE: false,
-    DELETE: false,
-  });
-  const [tasksPermissions, setTasksPermissions] = useState({
-    CREATE: false,
-    READ: false,
-    UPDATE: false,
-    DELETE: false,
-  });
+const NewUserPage = () => {
+  const [name, setName] = useState('');
+  const [category, setCategory] = useState({ CREATE: false, READ: false, UPDATE: false, DELETE: false });
+  const [products, setProducts] = useState({ CREATE: false, READ: false, UPDATE: false, DELETE: false });
+  const [projects, setProjects] = useState({ CREATE: false, READ: false, UPDATE: false, DELETE: false });
+  const [tasks, setTasks] = useState({ CREATE: false, READ: false, UPDATE: false, DELETE: false });
 
-  // Handler for permission change
-  const handlePermissionChange = (section: string, permission: 'CREATE' | 'READ' | 'UPDATE' | 'DELETE') => {
-    return (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { checked } = e.target;
-      switch (section) {
-        case 'Category':
-          setCategoryPermissions((prev) => ({ ...prev, [permission]: checked }));
-          break;
-        case 'Products':
-          setProductsPermissions((prev) => ({ ...prev, [permission]: checked }));
-          break;
-        case 'Projects':
-          setProjectsPermissions((prev) => ({ ...prev, [permission]: checked }));
-          break;
-        case 'Tasks':
-          setTasksPermissions((prev) => ({ ...prev, [permission]: checked }));
-          break;
-        default:
-          break;
-      }
-    };
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = {
-      name: roleName,
-      Category: categoryPermissions,
-      Products: productsPermissions,
-      Projects: projectsPermissions,
-      Tasks: tasksPermissions,
-    };
-
+    const newUser = { name, category, products, projects, tasks };
+    console.log('Submitting newUser:', newUser); // Debugging line
     try {
-      const response = await fetch('/api/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        // Handle success (e.g., clear form, show success message)
-        console.log('Role added successfully!');
-      } else {
-        // Handle error
-        console.error('Failed to add role');
-      }
+      const response = await axios.post('http://localhost:3002/roles/api/add', newUser);
+      console.log(response.data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error(error);
     }
   };
 
+  const handleCategoryChange = (e) => {
+    const { name, checked } = e.target;
+    setCategory((prevState) => {
+      const newState = { ...prevState, [name]: checked };
+      console.log('Updated Category State:', newState); // Debugging line
+      return newState;
+    });
+  };
+
+  const handleProductsChange = (e) => {
+    const { name, checked } = e.target;
+    setProducts((prevState) => {
+      const newState = { ...prevState, [name]: checked };
+      console.log('Updated Products State:', newState); // Debugging line
+      return newState;
+    });
+  };
+
+  const handleProjectsChange = (e) => {
+    const { name, checked } = e.target;
+    setProjects((prevState) => {
+      const newState = { ...prevState, [name]: checked };
+      console.log('Updated Projects State:', newState); // Debugging line
+      return newState;
+    });
+  };
+
+  const handleTasksChange = (e) => {
+    const { name, checked } = e.target;
+    setTasks((prevState) => {
+      const newState = { ...prevState, [name]: checked };
+      console.log('Updated Tasks State:', newState); // Debugging line
+      return newState;
+    });
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Add New Role</h2>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="roleName">
-            Role Name
-          </label>
+    <div className="container mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-4">Create New Role</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="form-group">
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
           <input
             type="text"
-            id="roleName"
-            value={roleName}
-            onChange={(e) => setRoleName(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            required
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
           />
         </div>
-
-        <PermissionSection
-          title="Category Permissions"
-          permissions={categoryPermissions}
-          onPermissionChange={handlePermissionChange('Category')}
-        />
-        <PermissionSection
-          title="Products Permissions"
-          permissions={productsPermissions}
-          onPermissionChange={handlePermissionChange('Products')}
-        />
-        <PermissionSection
-          title="Projects Permissions"
-          permissions={projectsPermissions}
-          onPermissionChange={handlePermissionChange('Projects')}
-        />
-        <PermissionSection
-          title="Tasks Permissions"
-          permissions={tasksPermissions}
-          onPermissionChange={handlePermissionChange('Tasks')}
-        />
-
-        <div className="flex items-center justify-between">
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Add Role
-          </button>
+        <div className="form-group">
+          <label className="block text-sm font-medium text-gray-700">Category Permissions</label>
+          {['CREATE', 'READ', 'UPDATE', 'DELETE'].map((perm) => (
+            <div key={perm} className="flex items-center">
+              <input
+                type="checkbox"
+                id={`category-${perm}`}
+                name={perm}
+                checked={category[perm]}
+                onChange={handleCategoryChange}
+                className="mr-2"
+              />
+              <label htmlFor={`category-${perm}`} className="text-sm">{perm}</label>
+            </div>
+          ))}
         </div>
+        <div className="form-group">
+          <label className="block text-sm font-medium text-gray-700">Products Permissions</label>
+          {['CREATE', 'READ', 'UPDATE', 'DELETE'].map((perm) => (
+            <div key={perm} className="flex items-center">
+              <input
+                type="checkbox"
+                id={`products-${perm}`}
+                name={perm}
+                checked={products[perm]}
+                onChange={handleProductsChange}
+                className="mr-2"
+              />
+              <label htmlFor={`products-${perm}`} className="text-sm">{perm}</label>
+            </div>
+          ))}
+        </div>
+        <div className="form-group">
+          <label className="block text-sm font-medium text-gray-700">Projects Permissions</label>
+          {['CREATE', 'READ', 'UPDATE', 'DELETE'].map((perm) => (
+            <div key={perm} className="flex items-center">
+              <input
+                type="checkbox"
+                id={`projects-${perm}`}
+                name={perm}
+                checked={projects[perm]}
+                onChange={handleProjectsChange}
+                className="mr-2"
+              />
+              <label htmlFor={`projects-${perm}`} className="text-sm">{perm}</label>
+            </div>
+          ))}
+        </div>
+        <div className="form-group">
+          <label className="block text-sm font-medium text-gray-700">Tasks Permissions</label>
+          {['CREATE', 'READ', 'UPDATE', 'DELETE'].map((perm) => (
+            <div key={perm} className="flex items-center">
+              <input
+                type="checkbox"
+                id={`tasks-${perm}`}
+                name={perm}
+                checked={tasks[perm]}
+                onChange={handleTasksChange}
+                className="mr-2"
+              />
+              <label htmlFor={`tasks-${perm}`} className="text-sm">{perm}</label>
+            </div>
+          ))}
+        </div>
+        <button
+          type="submit"
+          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+        >
+          Submit
+        </button>
       </form>
     </div>
   );
-}
+};
 
-// PermissionSection Component
-interface PermissionSectionProps {
-  title: string;
-  permissions: Record<'CREATE' | 'READ' | 'UPDATE' | 'DELETE', boolean>;
-  onPermissionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-function PermissionSection({ title, permissions, onPermissionChange }: PermissionSectionProps) {
-  return (
-    <div className="mb-4">
-      <h3 className="text-lg font-semibold text-gray-700 mb-2">{title}</h3>
-      {Object.keys(permissions).map((permission) => (
-        <label key={permission} className="block text-gray-600">
-          <input
-            type="checkbox"
-            checked={permissions[permission as keyof typeof permissions]}
-            onChange={onPermissionChange}
-            className="mr-2 leading-tight"
-          />
-          {permission}
-        </label>
-      ))}
-    </div>
-  );
-}
+export default NewUserPage;
