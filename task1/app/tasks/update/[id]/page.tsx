@@ -20,8 +20,9 @@ const UpdateTask = () => {
     const [assignedTo, setAssignedTo] = useState('');
     const [companyName, setCompanyName] = useState('');
     const [contactName, setContactName] = useState('');
-    const { data: session } = useSession();
-//   const permissions = session?.user?.permissions;
+    const {data:session} = useSession();
+    const permissions = session?.user?.permissions.category;
+    console.log(permissions);
     const token = session?.user.token;
     const headers = {
         Authorization: `Bearer ${token}`,

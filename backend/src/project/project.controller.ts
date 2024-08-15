@@ -6,6 +6,7 @@ import { Roles } from 'src/auth/user/roles.decorator';
 import { UserRole } from 'src/models/users.models';
 import { AuthGuard } from 'src/auth/auth.guard';
 
+
 @Controller('project')
 export class ProjectController {
     constructor(private readonly projectService: ProjectService) {}
@@ -16,23 +17,10 @@ export class ProjectController {
     async getProjects(@Request() req): Promise<Project[]> {
 
         const user = req.user;
-        if (!user.permissions.read) {
+        if (!user.permissions.projects.READ) {
             throw new ForbiddenException("");
         }
         return this.projectService.findAll();
-
-        // console.log("User is",{user})
-
-        // if(user.userRole === UserRole.ADMIN) {
-        //     // ADMIN: Show all the projects
-        //     console.log(this.projectService.findAll())
-        //     return this.projectService.findAll();
-        // }else if (user.userRole === UserRole.USER) {
-        //     // Regular User: Show only thier Project.
-        //     return this.projectService.findParticularProject(user.userId);
-        // }else {
-        //     throw new UnauthorizedException("Not Authorized to view projects");
-        // }
     }
     
     @Get("/:id")
@@ -40,7 +28,7 @@ export class ProjectController {
     async getParticularProject(@Request() req, @Param('id') id: string) : Promise<Project> {
 
         const user = req.user;
-        if (!user.permissions.read) {
+        if (!user.permissions.projects.READ) {
             throw new ForbiddenException("You dont have permissions ")
         }
 
@@ -50,10 +38,10 @@ export class ProjectController {
     @Post() 
     @UseGuards(AuthGuard)
     async createProject(@Request() req, @Body() createProjectDto: CreateProjectDto ): Promise<Project> {
-        // const userId = req.user.userId;
+     
         const user = req.user;
         console.log('Creating project for user:', user.userId);
-        if (!user.permissions.create) {
+        if (!user.permissions.projects.CREATE) {
             throw new ForbiddenException("You dont have permissions to create project")
         }
     
@@ -64,17 +52,8 @@ export class ProjectController {
     async deleteProject(@Request() req, @Param('id') id: string): Promise<Project> {
         const user = req.user;
 
-        // if (user.role === UserRole.ADMIN) {
-        //     return this.projectService.deleteProject(id);
-        // } else {
-        //     const project = await this.projectService.findParticularProject(id);
-        //     if (project.ownerId.toString() === user.userId) {
-        //         return this.projectService.deleteProject(id);
-        //     } else {
-        //         throw new UnauthorizedException("Not Authorized to delete this project");
-        //     }
-        // }
-        if (!user.permissions.delete) {
+        
+        if (!user.permissions.projects.DELETE) {
             throw new ForbiddenException("You do not have the permission to delete the Project!");
         }
         return this.projectService.deleteProject(id);
@@ -85,18 +64,7 @@ export class ProjectController {
     async updateProject(@Request() req, @Param('id') id: string, @Body() updateData: Partial<Project>): Promise<Project> {
         const user = req.user;
 
-        // if (user.role === UserRole.ADMIN) {
-        //     return this.projectService.updateProject(id, updateData);
-        // } else {
-        //     const project = await this.projectService.findParticularProject(id);
-        //     if (project.ownerId.toString() === user.userId) {
-        //         return this.projectService.updateProject(id, updateData);
-        //     } else {
-        //         throw new UnauthorizedException("Not Authorized to update this project");
-        //     }
-        // }
-
-        if (!user.permissions.write) {
+        if (!user.permissions.projects.WRITE) {
             throw new ForbiddenException("You do not have the permission to update the Project!");
         }
         return this.projectService.updateProject(id, updateData);

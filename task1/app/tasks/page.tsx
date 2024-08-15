@@ -26,8 +26,9 @@ function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const router = useRouter();
-  const { data: session } = useSession();
-  const permissions = session?.user?.permissions;
+  const {data:session} = useSession();
+  const permissions = session?.user?.permissions.tasks;
+  console.log(permissions);
   const token = session?.user.token;
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -78,13 +79,13 @@ function TaskList() {
       header: 'Actions',
       cell: ({ row }) => (
         <div className="flex space-x-2">
-          {permissions?.delete &&
+          {permissions?.DELETE &&
 
             <Button onClick={() => handleDelete(row.original._id)}>
             <DeleteIcon sx={{ color: 'red' }} />
           </Button>
           }
-          {permissions?.write&&
+          {permissions?.WRITE &&
             <Link href={`/tasks/update/${row.original._id}`}>
             <Button>
               <EditIcon sx={{ color: 'blue' }} />
@@ -100,7 +101,7 @@ function TaskList() {
       <div className="m-6">
       <div className="flex justify-between items-center h-16">
             <h1 className="text-2xl font-bold text-primary">Tasks</h1>
-            {permissions?.create &&(
+            {permissions?.CREATE &&(
             <Link href={`/tasks/create`}>
 
               <Button className="btn-add text-xs bg-primary text-blue-100 hover:text-black py-2 px-2">

@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { Roles } from './roles.schema';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('roles')
 export class RolesController {
@@ -38,5 +38,23 @@ export class RolesController {
   getRoles(): Promise<Roles[]> {
     return this.rolesService.getRole();
 }
+  @Get('/api/get/:id')
+  @ApiOperation({ summary: 'Get a role by ID' })
+  @ApiParam({ name: 'id', type: 'string', description: 'Role ID' })
+  @ApiResponse({ status: 200, description: 'Return a single role' })
+  @ApiResponse({ status: 404, description: 'Role not found' })
+  getRoleById(@Param('id') id: string): Promise<Roles> {
+    return this.rolesService.getRoleById(id);
+  }
+
+  @Put('/api/update/:id')
+  @ApiOperation({ summary: 'Update a role' })
+  @ApiParam({ name: 'id', type: 'string', description: 'Role ID' })
+  @ApiBody({ type: Roles })
+  @ApiResponse({ status: 200, description: 'Role updated successfully', type: Roles })
+  @ApiResponse({ status: 404, description: 'Role not found' })
+  updateRole(@Param('id') id: string, @Body() updatedRole: Partial<Roles>): Promise<Roles> {
+    return this.rolesService.updateRole(id, updatedRole);
+  }
 
 }

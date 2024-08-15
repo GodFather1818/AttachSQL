@@ -9,11 +9,10 @@ import axios from 'axios';
 function CreateProject() {
     const [name, setName] = useState('');
     const router = useRouter();
-    // const { data: session } = useSession();
-    const { data: session } = useSession();
-
-    // const Userrole = session?.user.role;
-    const permissions = session?.user?.permissions;
+    
+    const {data:session} = useSession();
+    const permissions = session?.user?.permissions.category;
+    console.log(permissions);
     const token = session?.user.token;
     const headers = {
         Authorization: `Bearer ${token}`,

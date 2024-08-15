@@ -60,7 +60,7 @@ export class ProductController {
   async getProducts(@Request() req): Promise<Product[]> {
     const user = req.user;
 
-    if(!user.permissions.read) {
+    if(!user.permissions.products.READ) {
       throw new ForbiddenException('You do not have the permission to read the Product.');
 
   }
@@ -89,13 +89,17 @@ export class ProductController {
     status: 404,
     description: 'Product not found',
   })
-  getProduct(@Param('id') id: string): Promise<Product> {
+  getProduct(@Request() req, @Param('id') id: string): Promise<Product> {
+    const user = req.user;
+    if (!user.permissions.products.READ) {
+      throw new ForbiddenException('You do not have the permission to read the Product.');
+    }
     return this.productService.findOne(id);
   }
 
 
 @Put('/api/update/:id')
-@Roles(UserRole.ADMIN)
+
 @ApiOperation({ summary: 'Update a product by ID' })
 @ApiResponse({
   status: 200,
@@ -116,10 +120,16 @@ export class ProductController {
 })
 @UseInterceptors(FileInterceptor('bannerImage'))
 async updateProduct(
+  @Request() req,
   @Param('id') id: string,
   @Body() updateProductDto: any,
   @UploadedFile() file: Express.Multer.File,
 ): Promise<Product> {
+
+  if (!req.user.permissions.products.WRITE) {
+    throw new ForbiddenException('You do not have the permission to update the Product.');
+  }
+
   let imagePath = updateProductDto.bannerImage; // Default to existing image path
   if (file) {
     const result = await this.cloudinaryService.uploadImage(file);
@@ -132,7 +142,7 @@ async updateProduct(
 
   @Post('/api/add')
   @UseGuards(AuthGuard)
-  @Roles(UserRole.ADMIN)
+ 
   @ApiOperation({ summary: 'Add a new product' })
   @ApiResponse({
     status: 201,
@@ -159,16 +169,16 @@ async updateProduct(
   ) {
     console.log(file);
     const user = req.user;
-    if (!user.permissions.create) {
+    if (!user.permissions.products.CREATE) {
       throw new ForbiddenException('You do not have permission to create product.');
   }
     const result = await this.cloudinaryService.uploadImage(file);
-    const imagePath = result.secure_url; // Get the secure URL from Cloudinary response
+    const imagePath = result.secure_url; 
     return await this.productService.createProduct(createProductDto, imagePath);
   }
 
   @Delete('/api/delete/:id')
-  @Roles(UserRole.ADMIN)
+ 
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Delete a product by ID' })
   @ApiResponse({
@@ -180,7 +190,7 @@ async updateProduct(
     description: 'Product not found',
   })
   async deleteProduct(@Request() req, @Param('id') id: string): Promise<Product> {
-    if (!req.user.permissions.delete) {
+    if (!req.user.permissions.products.DELETE) {
       throw new ForbiddenException('You do not have permission to delete product.');
   }
     return await this.productService.deleteProduct(id);

@@ -15,12 +15,12 @@ import { useSession } from 'next-auth/react';
 
 const CategoryPage = () => {
 
-  const {data:session} = useSession();
-  const userRole = session?.user.role;
-  // const permissions = session?.user?.permissions;
+  // const userRole = session?.user.role;
   const [categories, setCategories] = useState<Category[]>([]);
-  // const { data: session } = useSession();
+  
+  const {data:session} = useSession();
   const permissions = session?.user?.permissions.category;
+  console.log(permissions);
   const token = session?.user.token;
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -75,13 +75,13 @@ const CategoryPage = () => {
       header: 'Actions',
       cell: ({ row }) => (
         <div className="flex space-x-2">
-          {permissions?.delete && 
+          {permissions?.DELETE && 
 
             <Button onClick={() => deleteit(row.original._id)}>
             <DeleteIcon sx={{ color: 'red' }} />
           </Button>
           }
-      {permissions?.write && 
+      {permissions?.WRITE && 
           <Link href={`/category/edit/${row.original._id}`}>
             <Button>
               <EditIcon sx={{ color: 'blue' }} />
@@ -99,7 +99,7 @@ const CategoryPage = () => {
     <div className='m-6'>
       <div className='flex justify-between items-center h-16 m-4'>
         <h1 className='text-3xl font-bold text-primary'>Categories</h1>
-        {permissions?.create &&(
+        {permissions?.CREATE &&(
         <Link href="/category/add">
           <Button className='btn-add text-xs' onClick={add}>+ Add new categories</Button>
         </Link>

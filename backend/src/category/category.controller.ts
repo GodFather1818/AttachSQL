@@ -40,11 +40,12 @@ export class CategoryController {
     const user = req.user;
     if(!user.permissions.category.READ) {
       throw new ForbiddenException('You do not have the permission to read the Categories.');
-
   }
     return this.categoryService.getCategories();
   }
+
   @Get("/api/:id")
+  @UseGuards(AuthGuard)
   @ApiOperation({summary:'Get Category by ID'})
   @ApiResponse({
     status: 200,
@@ -59,9 +60,8 @@ export class CategoryController {
   })
   getCategoryById(@Request() req, @Param('id') id: string): Promise<Category> {
     const user = req.user;
-    if(!user.permissions.read) {
+    if(!user.permissions.category.READ) {
       throw new ForbiddenException('You do not have the permission to read the Categories.');
-
   }
     return this.categoryService.getCategoryById(id);
   }
@@ -84,14 +84,15 @@ export class CategoryController {
   })
   addCategory(@Request() req, @Body() createCategoryDto: CreateCategoryDto): Promise<Category> {
     const user = req.user;
-    if (!user.permissions.create) {
+    if (!user.permissions.category.CREATE) {
       throw new ForbiddenException('You do not have permission to create tasks.');
   }
     return this.categoryService.addCategory(createCategoryDto);
   }
+
+
   @Put("/api/update/:id")
   @UseGuards(AuthGuard)
-  @Roles(UserRole.ADMIN) 
   @ApiResponse({
     status: 200,
     description: 'Category successfully updated',
@@ -104,14 +105,16 @@ export class CategoryController {
     },
   })
   updateCategory(@Request() req, @Param('id') id: string, @Body() updateData: Partial<Category>): Promise<Category> {
-    if (!req.user.permissions.write) {
+    if (!req.user.permissions.category.WRITE) {
       throw new ForbiddenException('You do not have permission to update tasks.');
   }
     return this.categoryService.updateCategory(id, updateData);
   }
+
+
   @Delete("/api/delete/:id")
   @UseGuards(AuthGuard)
-  @Roles(UserRole.ADMIN) 
+  // @Roles(UserRole.ADMIN) 
   @ApiResponse({
     status: 200,
     description: 'Category successfully deleted',
@@ -123,11 +126,13 @@ export class CategoryController {
       },
     },
   })
+
   deleteCategory(@Request() req, @Param('id') id: string): Promise<Category> {
-    if (!req.user.permissions.delete) {
+    if (!req.user.permissions.category.DELETE) {
       throw new ForbiddenException('You do not have permission to delete tasks.');
   }
     return this.categoryService.deleteCategory(id);
   }
   
 }
+

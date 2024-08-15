@@ -14,14 +14,14 @@ import EditIcon from '@mui/icons-material/Edit';
 function ProjectList() {
   const [projects, setProjects] = useState<Project[]>([]);
 
-  const { data: session } = useSession();
-
-  // const Userrole = session?.user.role;
-  const permissions = session?.user?.permissions;
+  const {data:session} = useSession();
+  const permissions = session?.user?.permissions.projects;
+  console.log(permissions);
   const token = session?.user.token;
   const headers = {
     Authorization: `Bearer ${token}`,
-  };
+};
+
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -62,12 +62,12 @@ function ProjectList() {
       header: "Actions",
       cell: ({ row }) => (
         <div className="flex space-x-2">
-          {permissions?.delete && (
+          {permissions?.DELETE && (
             <Button onClick={() => handleDelete(row.original._id)}>
               <DeleteIcon sx={{ color: "red" }} />
             </Button>
           )}
-          {permissions?.write && (
+          {permissions?.WRITE && (
             <Link href={`/projects/update/${row.original._id}`}>
               <Button>
                 <EditIcon sx={{ color: "blue" }} />
@@ -85,7 +85,7 @@ function ProjectList() {
       <div className="flex justify-between items-center h-16 mb-5">
         <h1 className="text-2xl font-bold text-primary">PROJECTS</h1>
    
-        {permissions?.create && (
+        {permissions?.CREATE && (
           <Link href="/projects/create">
             <Button className="btn-add text-xs bg-primary text-blue-100">+ Add new PROJECTS</Button>
           </Link>

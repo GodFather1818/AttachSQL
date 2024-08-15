@@ -20,8 +20,9 @@ const AddProductForm = () => {
   const [categories, setCategories] = useState([]);
   const router = useRouter();
 
-  const { data: session } = useSession();
-  const permissions = session?.user?.permissions;
+  const {data:session} = useSession();
+  const permissions = session?.user?.permissions.products;
+  console.log(permissions);
   const token = session?.user.token;
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -102,8 +103,8 @@ const AddProductForm = () => {
     <div className=" mx-auto align-middle p-6 bg-gradient-to-r from-blue-100 to-blue-200 border rounded-lg shadow-xl hover:shadow-2xl transition duration-300 ease-in-out">
         <form onSubmit={handleSubmit} >
       <div>
-      {permissions?.create && (
-          <Link href="/tasks/create">
+      {permissions?.CREATE && (
+          <Link href="/products/api/add">
             <Button className="btn-add text-xs bg-primary text-blue-100">Add Product</Button>
           </Link>
         )}

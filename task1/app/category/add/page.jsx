@@ -12,7 +12,8 @@ const AddCategoryForm = () => {
   const [error, setError] = useState('');
   const router = useRouter();
   const {data:session} = useSession();
-  const permissions = session?.user?.permissions;
+  const permissions = session?.user?.permissions.category;
+  console.log(permissions);
   const token = session?.user.token;
   const headers = {
     Authorization: `Bearer ${token}`,

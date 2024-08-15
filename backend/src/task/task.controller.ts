@@ -16,7 +16,7 @@ export class TaskController {
         const user = req.user;
         console.log(user);
 
-        if(!user.permissions.read) {
+        if(!user.permissions.tasks.READ) {
             throw new ForbiddenException('You do not have the permission to read the tasks.');
 
         }
@@ -27,7 +27,7 @@ export class TaskController {
     @Get('/:id')
     @UseGuards(AuthGuard)
     async findParticularTask(@Request() req, @Param('id') id: string): Promise<Task> {
-        if (!req.user.permissions.read) {
+        if (!req.user.permissions.tasks.READ) {
             throw new ForbiddenException('You do not have the permission to read the tasks.');
         }
         return this.taskService.findParticularTask(id);
@@ -40,7 +40,7 @@ export class TaskController {
         const user = req.user;
         console.log(user);
         console.log(task);
-        if (!user.permissions.create) {
+        if (!user.permissions.tasks.CREATE) {
             throw new ForbiddenException('You do not have permission to create tasks.');
         }
         return this.taskService.create(task);
@@ -49,7 +49,7 @@ export class TaskController {
     @Delete("/:id")
     @UseGuards(AuthGuard)
     async deleteTask(@Request() req, @Param('id') id: string): Promise<Task> {
-        if (!req.user.permissions.delete) {
+        if (!req.user.permissions.tasks.DELETE) {
             throw new ForbiddenException('You do not have permission to delete tasks.');
         }
         return this.taskService.delete(id);
@@ -59,7 +59,7 @@ export class TaskController {
     @UseGuards(AuthGuard)
     async updateTask(@Request() req, @Param('id') id: string, @Body() updateData: Partial<Task>) : Promise<Task> {
 
-        if (!req.user.permissions.write) {
+        if (!req.user.permissions.tasks.WRITE) {
             throw new ForbiddenException('You do not have permission to update tasks.');
         }
         return this.taskService.update(id, updateData);

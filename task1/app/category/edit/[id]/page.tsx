@@ -11,7 +11,8 @@ const EditCategory = () => {
   const params = useParams();
   const id = params.id;
   const {data:session} = useSession();
-  const permissions = session?.user?.permissions;
+  const permissions = session?.user?.permissions.category;
+  console.log(permissions);
   const token = session?.user.token;
   const headers = {
     Authorization: `Bearer ${token}`,
