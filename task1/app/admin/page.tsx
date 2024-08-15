@@ -80,10 +80,20 @@ const AdminDashboard = () => {
     }
   };
 
-useEffect(()=>{
-  fetchRoles()
-  fetchUsers()
-},[])
+
+  const handleRoleChange = (userId, roleId) => {
+    console.log(userId, roleId);
+    axios.put(`http://localhost:3002/user/update-role`, { userId, roleId }).then((res) => {
+      console.log(res.data);
+    }).catch((err) => {
+      console.log(err);
+    });
+  };
+
+  useEffect(() => {
+    fetchRoles()
+    fetchUsers()
+  }, [])
 
 
   const handleNewUserPermissionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,7 +109,7 @@ useEffect(()=>{
     }
   };
 
-  
+
 
   return (
     <Container>
@@ -108,20 +118,19 @@ useEffect(()=>{
       </Typography>
       <Link href={`/admin/users`}>
 
-      <Button className="btn-add text-xs bg-primary text-blue-100 hover:text-black py-2 px-2">
-           Roles
+        <Button className="btn-add text-xs bg-primary text-blue-100 hover:text-black py-2 px-2">
+          Roles
         </Button>
-        </Link>
+      </Link>
 
       {/* User Management Table */}
-      <TableContainer component={Paper} style={{ marginBottom: "2rem", width:"80vw"}}>
+      <TableContainer component={Paper} style={{ marginBottom: "2rem", width: "80vw" }}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Role</TableCell>
-              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -133,29 +142,17 @@ useEffect(()=>{
                   <FormControl variant="outlined" size="small">
                     <InputLabel>Role</InputLabel>
                     <Select
-                      value={roles.name}
+                      value={user.role._id}
                       onChange={(e) => handleRoleChange(user._id, e.target.value as string)}
                       label="Role"
-                      >
-                    
-                      {roles.map((role)=>{
-                                return (
-            <MenuItem key={role._id} value={role.name}>{role.name}</MenuItem>
-          )
-        })}
-          </Select>
+                    >
+                      {roles.map((role) => (
+                        <MenuItem key={role._id} value={role._id}>{role.name}</MenuItem>
+                      ))}
+                    </Select>
                   </FormControl>
                 </TableCell>
 
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => handleRoleChange(user._id, "admin")}
-                  >
-                    Set Admin
-                  </Button>
-                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -163,9 +160,9 @@ useEffect(()=>{
       </TableContainer>
 
       {/* New User Creation Form */}
-      
+
     </Container>
   );
 };
 
-export default withProtectedRoute(AdminDashboard, ['admin']);
+export default withProtectedRoute(AdminDashboard, ['admin', 'user']);

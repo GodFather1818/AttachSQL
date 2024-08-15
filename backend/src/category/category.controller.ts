@@ -38,7 +38,7 @@ export class CategoryController {
 
   async getCategories(@Request() req): Promise<Category[]> {
     const user = req.user;
-    if(!user.permissions.read) {
+    if(!user.permissions.category.READ) {
       throw new ForbiddenException('You do not have the permission to read the Categories.');
 
   }

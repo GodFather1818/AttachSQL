@@ -1,4 +1,4 @@
-import { BadRequestException, NotFoundException,Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards, Patch, Param} from '@nestjs/common';
+import { BadRequestException, NotFoundException,Body, Put, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards, Patch, Param} from '@nestjs/common';
 import { UserService } from './user.service';
 import { User,UserRole } from 'src/models/users.models';
 import { RegisterDto } from 'src/dto/auth.dto';
@@ -28,35 +28,35 @@ export class UserController {
     async postLogin(@Body() data: LoginDto) {
         return this.userService.LoginView(data);
     }
-    @Patch('update-role/:id')
-    async updateRole(
-      @Param('id') id: string,
-      @Body() updateUserRoleDto: UpdateUserRoleDto,
-    ) {
-      const updatedUser = await this.userService.updateUserRole(
-        id,
-        updateUserRoleDto.role,
-      );
-      if (!updatedUser) {
-        throw new NotFoundException('User not found');
-      }
-      return updatedUser;
-    }
+    // @Patch('update-role/:id')
+    // async updateRole(
+    //   @Param('id') id: string,
+    //   @Body() updateUserRoleDto: UpdateUserRoleDto,
+    // ) {
+    //   const updatedUser = await this.userService.updateUserRole(
+    //     id,
+    //     updateUserRoleDto.role,
+    //   );
+    //   if (!updatedUser) {
+    //     throw new NotFoundException('User not found');
+    //   }
+    //   return updatedUser;
+    // }
   
-    @Patch('permissions/:id')
-    async updatePermissions(
-      @Param('id') id: string,
-      @Body() updateUserPermissionsDto: UpdateUserPermissionsDto,
-    ) {
-      const updatedUser = await this.userService.updateUserPermissions(
-        id,
-        updateUserPermissionsDto.permissions,
-      );
-      if (!updatedUser) {
-        throw new NotFoundException('User not found');
-      }
-      return updatedUser;
-    }
+    // @Patch('permissions/:id')
+    // async updatePermissions(
+    //   @Param('id') id: string,
+    //   @Body() updateUserPermissionsDto: UpdateUserPermissionsDto,
+    // ) {
+    //   const updatedUser = await this.userService.updateUserPermissions(
+    //     id,
+    //     updateUserPermissionsDto.permissions,
+    //   );
+    //   if (!updatedUser) {
+    //     throw new NotFoundException('User not found');
+    //   }
+    //   return updatedUser;
+    // }
 
 
     @HttpCode(HttpStatus.OK)
@@ -69,6 +69,11 @@ export class UserController {
         }
         console.log(user);
         return this.userService.profileView(user?.userId);
+    }
+    
+    @Put('update-role')
+    async updateUserRole(@Body() updateUserRoleDto: UpdateUserRoleDto): Promise<User> {
+      return this.userService.updateUserRole(updateUserRoleDto.userId, updateUserRoleDto.roleId);
     }
 
    

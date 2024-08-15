@@ -1,7 +1,11 @@
-import { IsEnum } from 'class-validator';
-import { UserRole } from "../models/users.models";
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class UpdateUserRoleDto {
-  @IsEnum(UserRole)
-  role: UserRole;
+  @IsNotEmpty()
+  @IsString()
+  readonly userId: string;
+
+  @IsNotEmpty()
+  @IsString()
+  readonly roleId: string;
 }

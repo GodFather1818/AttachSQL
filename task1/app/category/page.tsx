@@ -20,7 +20,7 @@ const CategoryPage = () => {
   // const permissions = session?.user?.permissions;
   const [categories, setCategories] = useState<Category[]>([]);
   // const { data: session } = useSession();
-  const permissions = session?.user?.permissions;
+  const permissions = session?.user?.permissions.category;
   const token = session?.user.token;
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -105,7 +105,7 @@ const CategoryPage = () => {
         </Link>
         )}
       </div>
-      {permissions?.read &&
+      {permissions?.READ &&
       <DataTable columns={columns} data={categories} />
 }
     </div>
