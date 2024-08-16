@@ -70,6 +70,7 @@ const UpdateTask = () => {
     };
 
     return (
+        <Layout>
         <div className="w-full h-screen flex items-center justify-center">
             <Box
                 component="form"
@@ -144,6 +145,7 @@ const UpdateTask = () => {
                 </Button>
             </Box>
         </div>
+        </Layout>
     );
 };
 

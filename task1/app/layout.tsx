@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Providers from "@/components/ui/Providers";
 import SignInButton from "@/components/ui/SignInButton";
 import { SessionProvider } from "next-auth/react";
+import Layout from "@/components/ui/Layout";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,16 +22,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    
 
     <html lang="en">
         <Providers>
+
+        
       <body className={inter.className}>
-      
-      <ButtonAppBar />
       <ToastContainer />
         <NextTopLoader color="#fff" />
-       
         {children}</body>
         </Providers>
     </html>

@@ -1,168 +1,132 @@
-
 "use client"
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import withProtectedRoute from '../../lib/withProtectedRoute';
 import { useSession } from "next-auth/react";
-import { useRouter } from 'next/router';
+import Link from "next/link";
+import Layout from "@/components/ui/Layout";
 
+import { Button } from "@/components/ui/button";
 import {
-  Container,
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
+  TableHeader,
   TableRow,
-  Paper,
-  Button,
+} from "@/components/ui/table";
+import {
   Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  TextField,
-  Typography,
-  Checkbox,
-  FormControlLabel,
-} from "@mui/material";
-import Link from "next/link";
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface User {
   _id: string;
   name: string;
   email: string;
-  role: string;
-  permissions: Permissions;
+  role: {
+    _id: string;
+    name: string;
+  };
 }
 
-interface Permissions {
-  read: boolean;
-  write: boolean;
-  create: boolean;
-  delete: boolean;
+interface Role {
+  _id: string;
+  name: string;
 }
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [roles, setRoles] = useState<User[]>([]);
-  const [newUser, setNewUser] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role: "user",
-    permissions: {
-      read: true,
-      write: false,
-      create: false,
-      delete: false,
-    },
-  });
+  const [roles, setRoles] = useState<Role[]>([]);
 
   useEffect(() => {
     fetchUsers();
+    fetchRoles();
   }, []);
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:3002/user"); // Fetching all users
+      const response = await axios.get("http://localhost:3002/user");
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
   };
+
   const fetchRoles = async () => {
     try {
-      const response = await axios.get("http://localhost:3002/roles/api/get"); // Fetching all users
+      const response = await axios.get("http://localhost:3002/roles/api/get");
       setRoles(response.data);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error fetching roles:", error);
     }
   };
 
-
-  const handleRoleChange = (userId, roleId) => {
-    console.log(userId, roleId);
-    axios.put(`http://localhost:3002/user/update-role`, { userId, roleId }).then((res) => {
-      console.log(res.data);
-    }).catch((err) => {
-      console.log(err);
-    });
-  };
-
-  useEffect(() => {
-    fetchRoles()
-    fetchUsers()
-  }, [])
-
-
-  const handleNewUserPermissionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Prevent changes to the 'read' permission
-    if (e.target.name !== 'read') {
-      setNewUser({
-        ...newUser,
-        permissions: {
-          ...newUser.permissions,
-          [e.target.name]: e.target.checked,
-        },
+  const handleRoleChange = (userId: string, roleId: string) => {
+    axios.put(`http://localhost:3002/user/update-role`, { userId, roleId })
+      .then((res) => {
+        console.log(res.data);
+        fetchUsers(); // Refresh the user list after update
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    }
   };
-
-
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom className="mt-8 mb-6">
-        Admin Dashboard
-      </Typography>
-      <div className="mb-4">
-      <Link href="/admin/roles">
-        <Button className="btn-add text-xs bg-primary text-blue-100 hover:text-black py-2 px-2 mx-2">
-          Manage Roles
-        </Button>
-      </Link>
-      </div>
+    <Layout>
+      <div className="container mx-auto p-6">
+        <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+        <div className="mb-4">
+          <Link href="/admin/roles">
+            <Button variant="default" className="text-xs">
+              Manage Roles
+            </Button>
+          </Link>
+        </div>
 
-      {/* User Management Table */}
-      <TableContainer component={Paper} style={{ marginBottom: "2rem", width: "80vw" }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell><b>Name</b></TableCell>
-              <TableCell><b>Email</b></TableCell>
-              <TableCell><b>Role</b></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.map((user) => (
-              <TableRow key={user._id}>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>
-                  <FormControl variant="outlined" size="small">
-                    <InputLabel>Role</InputLabel>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="font-bold">Name</TableHead>
+                <TableHead className="font-bold">Email</TableHead>
+                <TableHead className="font-bold">Role</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {users.map((user) => (
+                <TableRow key={user._id}>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>
                     <Select
                       value={user.role._id}
-                      onChange={(e) => handleRoleChange(user._id, e.target.value as string)}
-                      label="Role"
+                      onValueChange={(value) => handleRoleChange(user._id, value)}
                     >
-                      {roles.map((role) => (
-                        <MenuItem key={role._id} value={role._id}>{role.name}</MenuItem>
-                      ))}
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select a role" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {roles.map((role) => (
+                          <SelectItem key={role._id} value={role._id}>
+                            {role.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
                     </Select>
-                  </FormControl>
-                </TableCell>
-
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      {/* New User Creation Form */}
-
-    </Container>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+    </Layout>
   );
 };
 

@@ -9,6 +9,7 @@ import { DataTable } from "@/components/ui/datatabble";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import EditIcon from '@mui/icons-material/Edit';
+import Layout from "@/components/ui/Layout";
 function ProjectList() {
   const [projects, setProjects] = useState([]);
 
@@ -79,6 +80,7 @@ function ProjectList() {
   
 
   return (
+    <Layout>
     <div className="m-6">
       <div className="flex justify-between items-center h-16 mb-5">
         <h1 className="text-2xl font-bold text-primary">PROJECTS</h1>
@@ -92,6 +94,7 @@ function ProjectList() {
       </div>
       <DataTable columns={columns} data={projects} />
     </div>
+    </Layout>
   );
 }
 

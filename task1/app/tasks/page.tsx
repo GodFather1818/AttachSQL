@@ -19,6 +19,7 @@ import {useRouter} from 'next/navigation';
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/datatabble";
 import { useSession } from "next-auth/react";
+import Layout from "@/components/ui/Layout";
 
 function TaskList() {
 
@@ -97,6 +98,7 @@ function TaskList() {
   ];
 
   return (
+    <Layout>
       <div className="m-6">
       <div className="flex justify-between items-center h-16">
             <h1 className="text-2xl font-bold text-primary">Tasks</h1>
@@ -113,6 +115,7 @@ function TaskList() {
           </div>
           <DataTable columns={columns} data={tasks} />
     </div>
+    </Layout>
   );
 }
 

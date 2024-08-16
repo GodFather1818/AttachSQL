@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
+import Layout from '@/components/ui/Layout';
 
 function CreateProject() {
     const [name, setName] = useState('');
@@ -36,6 +37,7 @@ function CreateProject() {
     };
 
     return (
+        <Layout>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <TextField 
                 label="Project Name"
@@ -48,6 +50,7 @@ function CreateProject() {
                 Create Project
             </Button>
         </Box>
+        </Layout>
     );
 }
 

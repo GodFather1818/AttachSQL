@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { createTask, TaskCreateDto } from '@/utils/api'; // Ensure this function is properly defined in utils/api.ts
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import Layout from '@/components/ui/Layout';
 
 
 const CreateTask = () => {
@@ -51,6 +52,7 @@ const CreateTask = () => {
     };
 
     return (
+        <Layout>
         <div className="w-full h-screen flex items-center justify-center">
             <Box
                 component="form"
@@ -125,6 +127,7 @@ const CreateTask = () => {
                 </Button>
             </Box>
         </div>
+        </Layout>
     );
 };
 

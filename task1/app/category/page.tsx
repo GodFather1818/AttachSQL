@@ -11,6 +11,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/ui/datatabble';
 import withProtectedRoute from '../../lib/withProtectedRoute';
 import { useSession } from 'next-auth/react';
+import Layout from "../../components/ui/Layout";
 // import { useSession } from "next-auth/react";
 
 const CategoryPage = () => {
@@ -97,6 +98,7 @@ const CategoryPage = () => {
 
 
   return (
+    <Layout >
     <div className='m-6'>
       <div className='flex justify-between items-center h-16 m-4'>
         <h1 className='text-3xl font-bold text-primary'>Categories</h1>
@@ -110,6 +112,7 @@ const CategoryPage = () => {
       <DataTable columns={columns} data={categories} />
 }
     </div>
+    </Layout>
   );
 };
 

@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Layout from '@/components/ui/Layout';
 
 interface Task {
     _id: string;
@@ -43,6 +44,7 @@ function ViewDetails() {
     }
 
     return (
+        <Layout>
         <div className='w-full h-screen flex justify-center items-center'>
             <div className='w-[60%] shadow bg-slate-300 p-6'>
                 <div className='title-container w-full flex justify-center mb-4'>
@@ -61,6 +63,7 @@ function ViewDetails() {
                 </div>
             </div>
         </div>
+        </Layout>
     );
 }
 

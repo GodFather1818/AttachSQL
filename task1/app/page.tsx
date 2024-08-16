@@ -9,11 +9,12 @@ import {
 import ButtonAppBar from "@/components/ui/ButtonAppBar";
 import Image from "next/image";
 import AddCategoryform from "../components/ui/AddCategoryForm";
-
+import Layout from "../components/ui/Layout"; // Import the new Layout component
 export default function Home() {
   return (
     <>
-      <div className="min-h-screen flex flex-col items-center justify-center p-10 m-4 ">
+    <Layout>
+      <div className="min-h-screen flex flex-col items-center justify-center p-10 mt-4 mr-40">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-semibold mb-4 text-primary">
             Implementing our Skills!
@@ -80,7 +81,7 @@ export default function Home() {
             <a
               href="mailto:people@26ideas.com"
               className="text-gray-400 hover:text-white"
-            >
+              >
               people@26ideas.com
             </a>
             <a href="#" className="text-gray-400 hover:text-white">
@@ -102,6 +103,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      </Layout>
     </>
   );
 }
