@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+import { Document, Schema as MongooseSchema } from "mongoose";
+import { User } from "src/models/users.models";
+
 
 
 @Schema({timestamps: true})
@@ -17,8 +19,8 @@ export class Task extends Document {
     @Prop({ required: true })
     due: Date;
 
-    @Prop({required:true})
-    assigned_to: string[];
+    @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'User' }], required: true })
+    assigned_to: User[];
 
     @Prop({ required: true })
     companyName: string;
