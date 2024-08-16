@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 
 
-function page() {
+function Page() {
     const router = useRouter();
     const params = useParams();
 
@@ -115,4 +115,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

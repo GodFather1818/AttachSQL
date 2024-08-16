@@ -10,7 +10,6 @@ import {
   Button,
   TableClassKey,
 } from "@mui/material";
-import { Task } from "../../../backend/src/task/task.schema";
 import Link from "next/link";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -23,7 +22,7 @@ import { useSession } from "next-auth/react";
 
 function TaskList() {
 
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState([]);
 
   const router = useRouter();
   const {data:session} = useSession();

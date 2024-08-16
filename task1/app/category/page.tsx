@@ -6,7 +6,7 @@ import { Button } from '@mui/material';
 import Link from 'next/link';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Category } from '../../../backend/src/category/category.schema';
+// import { Category } from '../../../backend/src/category/category.schema';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/ui/datatabble';
 import withProtectedRoute from '../../lib/withProtectedRoute';
@@ -16,7 +16,8 @@ import { useSession } from 'next-auth/react';
 const CategoryPage = () => {
 
   // const userRole = session?.user.role;
-  const [categories, setCategories] = useState<Category[]>([]);
+  
+  const [categories, setCategories] = useState([]);
   
   const {data:session} = useSession();
   const permissions = session?.user?.permissions.category;
@@ -112,4 +113,4 @@ const CategoryPage = () => {
   );
 };
 
-export default withProtectedRoute(CategoryPage, ['user', 'admin']);
+export default withProtectedRoute(CategoryPage, ['admin','user']);

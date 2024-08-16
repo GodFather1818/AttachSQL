@@ -11,7 +11,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-function page() {
+function Page() {
     const [roles, setRoles] = useState([]);
     const fetchRoles = async () => {
         try {
@@ -90,4 +90,4 @@ function page() {
   )
 }
 
-export default page;
+export default Page;

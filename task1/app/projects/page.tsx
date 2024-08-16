@@ -1,8 +1,6 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
-import { Project } from "../../../backend/src/project/project.schema";
 import Link from "next/link";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteProject } from "../../utils/api";
@@ -12,7 +10,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import EditIcon from '@mui/icons-material/Edit';
 function ProjectList() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState([]);
 
   const {data:session} = useSession();
   const permissions = session?.user?.permissions.projects;

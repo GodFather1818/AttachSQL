@@ -3,7 +3,7 @@
 import React from "react"
 import { useRouter } from 'next/navigation';
 
-const page = () => {
+const Page = () => {
 
   const router = useRouter();
   setTimeout(()=>{
@@ -18,4 +18,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

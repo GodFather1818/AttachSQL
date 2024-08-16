@@ -2,7 +2,7 @@
 import React from "react"
 
 
-const page = () => {
+const Page = () => {
   return (
     <div className="bg-black h-screen " >
         <div className=" flex-col justify-center"></div>
@@ -11,4 +11,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

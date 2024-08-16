@@ -6,7 +6,6 @@ import axios from 'axios';
 import { Button } from '@mui/material';
 import Link from 'next/link';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Category } from '../../../backend/src/category/category.schema';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import withProtectedRoute from '../../lib/withProtectedRoute';
@@ -15,7 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useSession } from "next-auth/react";
 
 const ProductPage = () => {
-  const [products, setProducts] = useState<Category[]>([]);
+  const [products, setProducts] = useState([]);
   const router = useRouter();
   const {data:session} = useSession();
   const permissions = session?.user?.permissions.products;

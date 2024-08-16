@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import axios from 'axios'
-const editProductPage = () => {
+const EditProductPage = () => {
     const params = useParams();
     const id = params.id;
     const [name, setName] = useState('');
@@ -118,4 +118,4 @@ const editProductPage = () => {
     )
 }
 
-export default editProductPage;
+export default EditProductPage;

@@ -1,13 +1,36 @@
 
 import axios from "axios";
-import { Task } from "../../backend/src/task/task.schema";
-import { Project } from "../../backend/src/project/project.schema";
-import {CreateProjectDto} from "../../backend/src/project/create-project.dto"
 
 
 const api = axios.create({
     baseURL: "http://localhost:3002",
 });
+
+
+export interface CreateProjectDto {
+    name: string;
+    tasks?: string[]; // Using string[] to represent ObjectId[] from Mongoose
+  }
+
+  // Task.ts
+
+export interface Task {
+    title: string;
+    description?: string; // Optional field
+    stage: string;
+    due: Date;
+    assigned_to: string[];
+    companyName: string;
+    contactName: string;
+  }
+
+  // Project.ts
+
+export interface Project {
+    name: string;
+    tasks: string[]; // Using string[] to represent ObjectId[] from Mongoose
+    ownerId: string; // Using string to represent ObjectId from Mongoose
+  }
 
 
 export const getProjects = async (headers: any) => {
