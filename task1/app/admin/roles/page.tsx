@@ -9,7 +9,7 @@ import {
     TableHead, TableRow, Paper, Button, Typography, IconButton 
   } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function page() {
     const [roles, setRoles] = useState([]);
@@ -26,6 +26,17 @@ function page() {
         fetchRoles();
     }, []);
 
+    const handleDelete = async (id) =>{
+      console.log(id)
+        try {
+            await axios.delete(`http://localhost:3002/roles/api/delete/${id}`);
+            setRoles(roles.filter((role)=>role._id!==id))
+            fetchRoles();
+          } catch (error) {
+            console.error("Error deleting role:", error);
+          }
+
+    }
 
   return (
     <div>
@@ -58,6 +69,9 @@ function page() {
                       <EditIcon />
                     </IconButton>
                   </Link>
+                    <IconButton>
+                      <DeleteIcon sx={{ color: 'red' }} onClick={()=>{handleDelete(role._id)}} />
+                    </IconButton>
                   </div>
                 </TableCell>
               </TableRow>

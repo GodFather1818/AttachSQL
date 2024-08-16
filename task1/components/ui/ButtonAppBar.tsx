@@ -25,6 +25,10 @@ export default function ButtonAppBar() {
   
   const {data:session} = useSession();
   const userRole = session?.user.role;
+  const Cpermissions = session?.user?.permissions.category;
+  const Ppermissions = session?.user?.permissions.products;
+  const Propermissions = session?.user?.permissions.projects;
+  const Taskpermissions = session?.user?.permissions.tasks;
   const category = () => {
     console.log("Hello");
   };
@@ -59,33 +63,43 @@ export default function ButtonAppBar() {
                 <SheetTitle className='text-3xl text-blue-100 bg-blue-950 p-4 mb-5 border rounded-lg'>Features</SheetTitle>
                 <SheetDescription>
                   <div className="btn-class text-primary">
+                    {Cpermissions?.READ&&
                     <SheetClose asChild>
                       <Link href="/category">
                         <Button className='mt-3 mb-1 ml-5 text-blue-950 font-semibold text-lg' onClick={category}>Category</Button>
                       </Link>
                     </SheetClose>
-                    <SheetClose asChild>
+                    }
+                    {Ppermissions?.READ&&
+
+                      <SheetClose asChild>
                       <Link href="/products">
                         <Button className='mb-1 ml-5 text-blue-950 font-semibold text-lg' onClick={products}>Products</Button>
                       </Link>
                     </SheetClose>
+                    }
+                    {Propermissions?.READ&&
                     <SheetClose asChild>
                       <Link href="/projects">
                         <Button className='mb-1 ml-5 text-blue-950 font-semibold text-lg' onClick={projects}>Projects</Button>
                       </Link>
                     </SheetClose>
+}
+              {Taskpermissions?.READ&&
                     <SheetClose asChild>
                       <Link href="/tasks">
                         <Button className='mb-1 text-blue-950 font-semibold text-lg' onClick={tasks}>Tasks</Button>
                       </Link>
                     </SheetClose>
+}
                    
-
+            {userRole==='admin'&&(
                       <SheetClose asChild>
                       <Link href="/admin">
                         <Button className='mb-1 text-blue-950 font-semibold text-lg' onClick={tasks}>Users</Button>
                       </Link>
                     </SheetClose>
+                      )}
             
                   </div>
                 </SheetDescription>

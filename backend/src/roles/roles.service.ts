@@ -18,7 +18,6 @@ export class RolesService {
   async getRole():Promise<Roles[]>{
     return this.rolesModel.find().exec();
   }
-
   async getRoleById(id: string): Promise<Roles> {
     const role = await this.rolesModel.findById(id).exec();
     if (!role) {
@@ -26,11 +25,15 @@ export class RolesService {
     }
     return role;
   }
+
   async updateRole(id: string, updatedRole: Partial<Roles>): Promise<Roles> {
     const role = await this.rolesModel.findByIdAndUpdate(id, updatedRole, { new: true }).exec();
     if (!role) {
       throw new NotFoundException(`Role with ID "${id}" not found`);
     }
     return role;
+  }
+  async deleteRole(id:string):Promise<Roles>{
+    return this.rolesModel.findByIdAndDelete(id).exec();
   }
 }

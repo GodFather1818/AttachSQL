@@ -63,7 +63,7 @@ const ProductPage = () => {
       <div className='flex justify-between items-center mt-3 mb-10'>
         <h1 className='text-5xl text-center text-primary font-bold '>Products</h1>
         {permissions?.CREATE && (
-          <Link href="/tasks/create">
+          <Link href="/products/add">
             <Button className="btn-add text-xs bg-primary text-blue-100">+ Add new Products</Button>
           </Link>
         )}      </div>

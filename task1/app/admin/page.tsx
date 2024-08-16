@@ -166,4 +166,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default withProtectedRoute(AdminDashboard, ['admin', 'user']);
+export default withProtectedRoute(AdminDashboard, ['admin']);

@@ -67,37 +67,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-.btn-class{
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-}
-
-.btn-class Button{
-
-display: flex;
-width: 40%;
-margin-top: 1rem;
-justify-content: center;
-transition: all ease-in-out 0.3s;
-padding: 0.5rem;
-}
-
-.btn-class Button:hover{
-  background-color: #1976d2;
-  color: #fff;
-  padding: 0.5rem;
-}
-.main-h1{
-  display: block;
-  margin-top: 10rem;
-  text-align: center;
-  font-size: 3rem;
-  font-family:cursive;
-  
-}
-.main-h1 .span{
-  background-color: #1976d2b6;
-  color: rgb(0, 0, 0);
-}

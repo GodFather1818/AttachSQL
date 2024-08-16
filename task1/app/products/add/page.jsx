@@ -102,13 +102,7 @@ const AddProductForm = () => {
 
     <div className=" mx-auto align-middle p-6 bg-gradient-to-r from-blue-100 to-blue-200 border rounded-lg shadow-xl hover:shadow-2xl transition duration-300 ease-in-out">
         <form onSubmit={handleSubmit} >
-      <div>
-      {permissions?.CREATE && (
-          <Link href="/products/api/add">
-            <Button className="btn-add text-xs bg-primary text-blue-100">Add Product</Button>
-          </Link>
-        )}
-      </div>
+      
       {error && <p className="error">{error}</p>}
       <div className="form-group">
         <label htmlFor="name" className="block text-lg font-medium mb-2">Name</label>
