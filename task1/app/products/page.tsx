@@ -100,4 +100,4 @@ const ProductPage = () => {
   );
 };
 
-export default withProtectedRoute(ProductPage, ['admin', 'user']);
+export default ProductPage;

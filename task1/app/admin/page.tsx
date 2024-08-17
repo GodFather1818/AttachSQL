@@ -131,3 +131,4 @@ const AdminDashboard = () => {
 };
 
 export default withProtectedRoute(AdminDashboard, ['admin']);
+// export default AdminDashboard;

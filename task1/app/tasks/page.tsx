@@ -85,7 +85,7 @@ function TaskList() {
             <DeleteIcon sx={{ color: 'red' }} />
           </Button>
           }
-          {permissions?.WRITE &&
+          {permissions?.UPDATE &&
             <Link href={`/tasks/update/${row.original._id}`}>
             <Button>
               <EditIcon sx={{ color: 'blue' }} />

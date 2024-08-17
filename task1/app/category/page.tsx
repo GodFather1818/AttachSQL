@@ -6,7 +6,6 @@ import { Button } from '@mui/material';
 import Link from 'next/link';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-// import { Category } from '../../../backend/src/category/category.schema';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/ui/datatabble';
 import withProtectedRoute from '../../lib/withProtectedRoute';
@@ -116,4 +115,4 @@ const CategoryPage = () => {
   );
 };
 
-export default withProtectedRoute(CategoryPage, ['admin','user']);
+export default CategoryPage;
