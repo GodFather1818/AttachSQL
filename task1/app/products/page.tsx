@@ -12,7 +12,7 @@ import withProtectedRoute from '../../lib/withProtectedRoute';
 
 import EditIcon from '@mui/icons-material/Edit';
 import { useSession } from "next-auth/react";
-
+import Layout from "../../components/ui/Layout";
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
   const router = useRouter();
@@ -58,6 +58,7 @@ const ProductPage = () => {
   }
 
   return (
+    <Layout>
     <div className="w-full container m-5 border rounded-lg align-middle p-10 mx-auto  bg-gradient-to-r from-blue-100 to-blue-200 shadow-xl hover:shadow-2xl transition duration-300 ease-in-out">
       <div className='flex justify-between items-center mt-3 mb-10'>
         <h1 className='text-5xl text-center text-primary font-bold '>Products</h1>
@@ -95,8 +96,8 @@ const ProductPage = () => {
         ))}
       </div>
     </div>
-
+    </Layout>
   );
 };
 
-export default withProtectedRoute(ProductPage, ['admin', 'user']);
+export default ProductPage;

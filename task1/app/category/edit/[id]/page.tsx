@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import Layout from '@/components/ui/Layout';
 
 
 
@@ -53,6 +54,7 @@ const EditCategory = () => {
   };
 
   return (
+    <Layout>
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold">Edit Category</h1>
       <form onSubmit={handleSubmit} className="mt-4">
@@ -82,6 +84,7 @@ const EditCategory = () => {
         </button>
       </form>
     </div>
+    </Layout>
   );
 };
 

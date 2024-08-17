@@ -6,7 +6,7 @@ import './style.add.css'
 import { useRouter } from 'next/navigation';
 import {toast} from 'react-hot-toast';
 import { useSession } from "next-auth/react";
-
+import Layout from '@/components/ui/Layout';
 const AddProductForm = () => {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
@@ -99,7 +99,7 @@ const AddProductForm = () => {
 
   return (
     
-
+<Layout>
     <div className=" mx-auto align-middle p-6 bg-gradient-to-r from-blue-100 to-blue-200 border rounded-lg shadow-xl hover:shadow-2xl transition duration-300 ease-in-out">
         <form onSubmit={handleSubmit} >
       
@@ -189,7 +189,8 @@ const AddProductForm = () => {
     </form>
     </div>
 
-    
+    </Layout>
+
   );
 };
 

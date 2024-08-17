@@ -4,6 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import Layout from '@/components/ui/Layout';
 
 const AddCategoryForm = () => {
   const [name, setName] = useState('');
@@ -38,6 +39,7 @@ const AddCategoryForm = () => {
   };
 
   return (
+    <Layout>
     <form onSubmit={handleSubmit} className="category-form border rounded-lg m-10">
       <h2 className='mt-10 text-3xl font-bold'>Add New Category</h2>
       {error && <p className="error">{error}</p>}
@@ -102,6 +104,7 @@ const AddCategoryForm = () => {
         }
       `}</style>
     </form>
+    </Layout>
   );
 };
 

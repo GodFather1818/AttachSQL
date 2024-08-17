@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import axios from 'axios'
+import Layout from '@/components/ui/Layout'
 const EditProductPage = () => {
     const params = useParams();
     const id = params.id;
@@ -63,6 +64,7 @@ const EditProductPage = () => {
 
 
     return (
+        <Layout>
         <div className='container mx-auto p-6'>
             <h1 className="text-3xl font-bold mb-4">Edit Product</h1>
             <form className="space-y-4">
@@ -115,6 +117,7 @@ const EditProductPage = () => {
                 <button type="submit" onClick={updateData} className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">Submit</button>
             </form>
         </div>
+        </Layout>
     )
 }
 
