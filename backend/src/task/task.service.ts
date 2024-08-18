@@ -19,7 +19,9 @@ export class TaskService {
     async findParticularTask(taskId: string): Promise<Task> {
         return this.taskModel.findById(taskId).exec();
     }
-
+    async findTasksWithUsers():Promise<Task[]> {
+        return this.taskModel.find().populate('assigned_to', 'name email').exec();
+    }
     async create(task: Task) : Promise<Task> {
         const newTask = new this.taskModel(task);
         return newTask.save();

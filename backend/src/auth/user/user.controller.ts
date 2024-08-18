@@ -19,6 +19,11 @@ export class UserController {
         return this.userService.findAll();
     }
 
+    @Get("/api/getUsers") 
+    async getUserName() {
+        return this.userService.findUsers();
+    }
+
     @Post('register')
     async postData(@Body() data: RegisterDto) {
         return this.userService.RegisterView(data);

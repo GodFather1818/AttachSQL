@@ -2,17 +2,22 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Roles } from './roles.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { RolesGateway } from './roles.gateway';
 
 @Injectable()
 export class RolesService {
-  constructor(@InjectModel(Roles.name) private rolesModel: Model<Roles>) {}
+  constructor(@InjectModel(Roles.name) private rolesModel: Model<Roles>, private readonly rolesGateway: RolesGateway,) {}
 
   get() {
     return 'Hello World!';
   }
 
   async addRoles(roles: Roles): Promise<Roles> {
-    return new this.rolesModel(roles).save();
+    const newRole = new this.rolesModel(roles);
+    await newRole.save();
+    // Emit WebSocket event
+    this.rolesGateway.emitRoleAdded(newRole);
+    return newRole;  
   }
 
   async getRole():Promise<Roles[]>{
@@ -31,9 +36,20 @@ export class RolesService {
     if (!role) {
       throw new NotFoundException(`Role with ID "${id}" not found`);
     }
+    console.log(`Emitting roleUpdated event for role: ${role.name}`); 
+
+    this.rolesGateway.emitUpdatedRole(role);
     return role;
   }
+
   async deleteRole(id:string):Promise<Roles>{
-    return this.rolesModel.findByIdAndDelete(id).exec();
+   
+    const role = await this.rolesModel.findByIdAndDelete(id).exec();
+    if (!role) {
+      throw new NotFoundException(`Role ${role.name} not Found`);
+    }
+
+    this.rolesGateway.emitRoleDeleted(role);
+    return role;
   }
 }

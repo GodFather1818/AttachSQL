@@ -1,11 +1,14 @@
 "use client"
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import withProtectedRoute from '../../lib/withProtectedRoute';
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Layout from "@/components/ui/Layout";
+import io from 'socket.io-client';
+import Toast from '@/components/ui/Toast';
+
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,7 +34,7 @@ interface User {
   role: {
     _id: string;
     name: string;
-  };
+  } | null;
 }
 
 interface Role {
@@ -42,12 +45,30 @@ interface Role {
 const AdminDashboard = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
+  const socketRef = useRef(null);  // Use useRef to ensure the socket is not reinitialized
+  const [toast, setToast] = useState({ message: '', type: 'info', show: false });
+  const socket = io('http://localhost:3002'); 
 
+  const showToast = (message, type) => {
+    setToast({ message, type, show: true });
+  };
+  
   useEffect(() => {
     fetchUsers();
     fetchRoles();
   }, []);
 
+ useEffect(()=> {
+  socket.on('roleUpdated', (role)=> {
+    showToast(`Role Updated to ${role.name}`, "success");
+  });
+
+  return () => {
+    socket.off('roleUpdated');
+  }
+
+ }, []);
+  
   const fetchUsers = async () => {
     try {
       const response = await axios.get("http://localhost:3002/user");
@@ -66,16 +87,17 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleRoleChange = (userId: string, roleId: string) => {
-    axios.put(`http://localhost:3002/user/update-role`, { userId, roleId })
-      .then((res) => {
-        console.log(res.data);
-        fetchUsers(); // Refresh the user list after update
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const handleRoleChange =async  (userId: string, roleId: string) => {
+    try {
+      const role = await axios.put(`http://localhost:3002/user/update-role`, { userId, roleId });
+      fetchUsers();
+      
+    } catch (error) {
+      console.log(error);
+      showToast("Failed to update role.", "error");
+    }};
+
+
 
   return (
     <Layout>
@@ -105,7 +127,7 @@ const AdminDashboard = () => {
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
                     <Select
-                      value={user.role._id}
+                      value={user.role?._id || ""}
                       onValueChange={(value) => handleRoleChange(user._id, value)}
                     >
                       <SelectTrigger className="w-[180px]">
@@ -125,6 +147,13 @@ const AdminDashboard = () => {
             </TableBody>
           </Table>
         </div>
+        {toast.show && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast({ ...toast, show: false })}
+        />
+      )}
       </div>
     </Layout>
   );
