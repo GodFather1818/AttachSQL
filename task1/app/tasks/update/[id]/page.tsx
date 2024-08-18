@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { getParticularTask, updateTask, TaskCreateDto } from '@/utils/api'; // Ensure these functions are properly defined in utils/api.ts
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import Layout from '../../../../components/ui/Layout';
 
 const UpdateTask = () => {
     const router = useRouter();

@@ -2,7 +2,6 @@ import axios from 'axios';
 import { NextAuthOptions } from 'next-auth';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { JWT } from 'next-auth/jwt';
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -48,8 +47,8 @@ export const authOptions: NextAuthOptions = {
                 role: token.role,
                 token: token.accessToken,
                 permissions: token.permissions
-            };
-            session.accessToken = token.accessToken;
+            } as any; // Type assertion to avoid TypeScript errors
+            session.accessToken = token.accessToken as string;
             return session;
         }
     },
@@ -57,4 +56,5 @@ export const authOptions: NextAuthOptions = {
 };
 
 const handler = NextAuth(authOptions);
+
 export { handler as GET, handler as POST };
