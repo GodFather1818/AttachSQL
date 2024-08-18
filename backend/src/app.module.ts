@@ -21,6 +21,7 @@ import { JWT_KEY } from './constant';
 // import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 import { RolesModule } from './roles/roles.module';
+import { NotificationModule } from './notification/notification.module';
 
 
 @Module({
@@ -30,7 +31,7 @@ import { RolesModule } from './roles/roles.module';
     signOptions: {
       expiresIn: '30d'
     }
-  }), RolesModule,],
+  }), RolesModule, NotificationModule,],
   controllers: [AppController],
   providers: [AppService],
 })

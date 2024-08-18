@@ -3,7 +3,7 @@ import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/models/users.models';
-import { Roles,RolesSchema } from '../roles/roles.schema'; // Import Role schema
+import { Roles,RolesSchema } from '../roles/roles.schema'; 
 import * as bcrypt from 'bcrypt';
 
 @Module({
@@ -13,7 +13,6 @@ import * as bcrypt from 'bcrypt';
         name: User.name,
         async useFactory() {
           const schema = UserSchema;
-
           schema.pre('save', async function () {
             if (this.isModified('password')) {
               this.password = await bcrypt.hash(this.password, 10);
@@ -24,7 +23,7 @@ import * as bcrypt from 'bcrypt';
         },
       },
       {
-        name: Roles.name, // Add Role schema
+        name: Roles.name, 
         useFactory: () => {
           const schema = RolesSchema;
           return schema;

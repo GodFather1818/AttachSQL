@@ -4,6 +4,9 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import SignInButton from './SignInButton';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { Bell } from 'lucide-react';
+
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -58,6 +61,11 @@ export default function Navbar() {
         </div>
         <div className="px-10 px-4">
           <SignInButton />
+          <Link href="/notifications">
+            <Button variant="ghost" className="p-2">
+              <Bell className="h-5 w-5" />
+            </Button>
+          </Link>
         </div>
       </aside>
     </div>

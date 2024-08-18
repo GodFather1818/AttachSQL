@@ -8,6 +8,7 @@ import { AuthGuard } from '../auth.guard';
 import { UpdateUserRoleDto } from "../../dto/update-user-role.dto";
 import { UpdateUserPermissionsDto } from '../../dto/update-user-permissions.dto';
 import { AdminGuard } from 'src/admin/admin.guard';
+import { AuthModule } from '../auth.module';
 
 
 @Controller('user')
@@ -33,37 +34,7 @@ export class UserController {
     async postLogin(@Body() data: LoginDto) {
         return this.userService.LoginView(data);
     }
-    // @Patch('update-role/:id')
-    // async updateRole(
-    //   @Param('id') id: string,
-    //   @Body() updateUserRoleDto: UpdateUserRoleDto,
-    // ) {
-    //   const updatedUser = await this.userService.updateUserRole(
-    //     id,
-    //     updateUserRoleDto.role,
-    //   );
-    //   if (!updatedUser) {
-    //     throw new NotFoundException('User not found');
-    //   }
-    //   return updatedUser;
-    // }
-  
-    // @Patch('permissions/:id')
-    // async updatePermissions(
-    //   @Param('id') id: string,
-    //   @Body() updateUserPermissionsDto: UpdateUserPermissionsDto,
-    // ) {
-    //   const updatedUser = await this.userService.updateUserPermissions(
-    //     id,
-    //     updateUserPermissionsDto.permissions,
-    //   );
-    //   if (!updatedUser) {
-    //     throw new NotFoundException('User not found');
-    //   }
-    //   return updatedUser;
-    // }
-
-
+    
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthGuard)
     @Get('profile')
