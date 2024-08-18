@@ -149,7 +149,7 @@
 // export default NewUserPage;
 
 "use client"
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import {
   Container,
@@ -167,16 +167,42 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import { useRouter } from "next/navigation";
- 
+import io from 'socket.io-client';
+import Toast from '@/components/ui/Toast';
+
 const NewRolePage = () => {
+  
   const [name, setName] = useState('');
+  
   const [permissions, setPermissions] = useState({
     category: { CREATE: false, READ: false, UPDATE: false, DELETE: false },
     products: { CREATE: false, READ: false, UPDATE: false, DELETE: false },
     projects: { CREATE: false, READ: false, UPDATE: false, DELETE: false },
     tasks: { CREATE: false, READ: false, UPDATE: false, DELETE: false },
   });
+  
+  const [toast, setToast] = useState({ message: '', type: 'info', show: false });
+  
   const router = useRouter();
+
+  const socket = io('http://localhost:3002'); 
+
+  const showToast = (message, type) => {
+    setToast({ message, type, show: true });
+  };
+
+  useEffect(() => {
+
+    socket.on('roleAdded', (role) => {
+      showToast(`${role.name} has been added to roles.`, "success");
+    });
+
+    return () => {
+      socket.off('roleAdded');
+    };
+  }, []);
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -185,7 +211,10 @@ const NewRolePage = () => {
     try {
       const response = await axios.post('http://localhost:3002/roles/api/add', newRole);
       console.log(response.data);
-      router.push('/admin/roles');
+      setTimeout(()=> {
+        // showToast(`New Role:- ${newRole.name} added successfuly`, "success");
+        router.push('/admin/roles');
+      }, 3000);
     } catch (error) {
       console.error(error);
     }
@@ -258,6 +287,13 @@ const NewRolePage = () => {
           Submit
         </Button>
       </form>
+      {toast.show && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast({ ...toast, show: false })}
+        />
+      )}
     </Container>
   );
 };

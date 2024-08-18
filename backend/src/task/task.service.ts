@@ -3,11 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Task } from './task.schema';
 import { exec } from 'child_process';
+import { User } from 'src/models/users.models';
 
 @Injectable()
 export class TaskService {
 
-    constructor(@InjectModel(Task.name) private taskModel: Model<Task>){}
+    constructor(
+        @InjectModel(Task.name) private taskModel: Model<Task>,
+        @InjectModel(User.name) private userModel:Model<User>
+        ){}
     
     async findAll(): Promise<Task[]> {
         return this.taskModel.find().exec();
@@ -15,7 +19,9 @@ export class TaskService {
     async findParticularTask(taskId: string): Promise<Task> {
         return this.taskModel.findById(taskId).exec();
     }
-
+    async findTasksWithUsers():Promise<Task[]> {
+        return this.taskModel.find().populate('assigned_to', 'name email').exec();
+    }
     async create(task: Task) : Promise<Task> {
         const newTask = new this.taskModel(task);
         return newTask.save();

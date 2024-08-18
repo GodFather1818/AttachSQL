@@ -20,6 +20,10 @@ export class UserService {
     return this.userModel.find().populate('role').exec();
   }
 
+  async findUsers(): Promise<User[]> {
+    return this.userModel.find().select('name email').exec();
+  }
+
   async findOne(userId: string): Promise<User> {
     return this.userModel.findById(userId).populate('role').exec();
   }

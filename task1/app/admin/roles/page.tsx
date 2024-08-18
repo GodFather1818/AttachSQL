@@ -3,6 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Link from "next/link";
+import io from 'socket.io-client';
+
+
 import {
   Table,
   TableBody,
@@ -14,9 +17,19 @@ import {
 import { Button } from "../../../components/ui/button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
+import Toast from '@/components/ui/Toast';
 
 function Page() {
   const [roles, setRoles] = useState([]);
+  const [toast, setToast] = useState({ message: '', type: 'info', show: false });
+   // Use useRef to ensure the socket is not reinitialized
+
+
+  const socket = io('http://localhost:3002'); 
+
+  const showToast = (message, type) => {
+    setToast({ message, type, show: true });
+  };
 
   const fetchRoles = async () => {
     try {
@@ -24,8 +37,38 @@ function Page() {
       setRoles(response.data);
     } catch (error) {
       console.error("Error fetching roles:", error);
+      showToast("Error fetching roles", "error");
     }
   };
+
+  useEffect(() => {
+    // Listen for role added event
+    socket.on('roleAdded', (role) => {
+      showToast(`${role.name} has been added to roles.`, "success");
+    });
+
+    // Listen for user assigned to role event
+    socket.on('userAssignedToRole', ({ userId, role }) => {
+      showToast(`User ${userId} has been assigned to ${role.name}.`, "info");
+    });
+
+    socket.on('roleDeleted', (role) => {
+      showToast(`Role:- ${role.name} has been deleted.`, "error");
+    })
+
+    return () => {
+      socket.off('roleAdded');
+      socket.off('userAssignedToRole');
+      socket.off('roleDeleted');
+    };
+  }, []);
+
+  // function handleDeleteNotifications(role) {
+  //   socket.on('roleDeleted', ({role}) => {
+  //     showToast(`Role:- ${role.name} has been deleted.`, "info");
+  //   })
+  //   socket.off('roleDeleted');
+  // } 
 
   useEffect(() => {
     fetchRoles();
@@ -35,12 +78,14 @@ function Page() {
     try {
       await axios.delete(`http://localhost:3002/roles/api/delete/${id}`);
       setRoles(roles.filter((role) => role._id !== id));
+      // handleDeleteNotifications(roles.filter((role)=> role._id === id))
       fetchRoles();
     } catch (error) {
       console.error("Error deleting role:", error);
     }
   };
 
+  
   return (
     <div>
       <div className="container mx-auto p-4">
@@ -95,6 +140,13 @@ function Page() {
           </Button>
         </Link>
       </div>
+      {toast.show && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast({ ...toast, show: false })}
+        />
+      )}
     </div>
   );
 }

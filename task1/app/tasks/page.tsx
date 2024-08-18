@@ -33,18 +33,18 @@ function TaskList() {
   const headers = {
     Authorization: `Bearer ${token}`,
 };
-  useEffect(() => {
-    const fetchTasks = async () => {
-
-      try {
-        
-        const {data} = await axios.get("http://localhost:3002/tasks", { headers });
-        setTasks(data);
-
-      } catch (error) {
-        console.error("Error Fetching Tasks:", error);
-      }
-    };
+const fetchTasks = async () => {
+  
+  try {
+    
+    const {data} = await axios.get("http://localhost:3002/tasks", { headers });
+    setTasks(data);
+    console.log(tasks);
+  } catch (error) {
+    console.error("Error Fetching Tasks:", error);
+  }
+};
+useEffect(() => {
 
     fetchTasks();
   }, []);
