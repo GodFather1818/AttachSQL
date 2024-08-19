@@ -45,24 +45,18 @@ export class TaskService {
         this.taskGateway.emitTaskAssigned(populatedTask);
 
 
-        // Create notifications for assigned users
     if (populatedTask.assigned_to && populatedTask.assigned_to.length > 0) {
         for (const user of populatedTask.assigned_to) {
           await this.notificationService.createNotification({
             user: user,
             message: `You've been assigned to a new task: ${populatedTask.title}`,
             type: 'task_assigned',
-            entityId: populatedTask._id as Types.ObjectId,// Convert to ObjectId
+            entityId: populatedTask._id as Types.ObjectId,
             entityType: 'Task',
           });
         }
       }
-
         return populatedTask;
-
-
-
-
     }
 
     async delete(taskId: string) : Promise<Task> {

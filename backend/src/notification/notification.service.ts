@@ -22,4 +22,8 @@ export class NotificationService {
   async markAsRead(notificationId: string): Promise<Notification> {
     return this.notificationModel.findByIdAndUpdate(notificationId, { read: true }, { new: true }).exec();
   }
+  // In your notifications service
+  async getUnreadCount(userId: string): Promise<number> {
+    return this.notificationModel.countDocuments({ user: userId, read: false });
+}
 }

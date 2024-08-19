@@ -16,4 +16,12 @@ export class NotificationController {
   async markAsRead(@Param('id') id: string) {
     return this.notificationService.markAsRead(id);
   }
+  // In your notifications controller
+  @Get('unread-count')
+  async getUnreadCount(@Request() req): Promise<number> {
+    const userId = req.user.userId; // Assuming you have user information in the request
+    return this.notificationService.getUnreadCount(userId);
+}
+  
+
 }
