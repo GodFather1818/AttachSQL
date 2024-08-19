@@ -555,7 +555,43 @@ export default function CreateTask() {
                   ))}
                 </SelectContent>
               </Select> */}
-               <Select onValueChange={handleSelectChange}>
+               {/* <Select onValueChange={handleSelectChange}>
+                <SelectTrigger id="assignedTo">
+                  <SelectValue placeholder="Select users">
+                    {assignedTo.length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {assignedTo.map((id) => (
+                          <span
+                            key={id}
+                            className="bg-gray-200 text-gray-700 px-2 py-1 rounded"
+                          >
+                            {users.find((user) => user._id === id)?.name || id}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      "Select users"
+                    )}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {users.map((user) => (
+                    <SelectItem
+                      key={user._id}
+                      value={user._id}
+                      onSelect={() => handleSelectChange(user._id)}
+                    >
+                      <div className="flex items-center">
+                        <span className="flex-grow">{user.name}</span>
+                        {assignedTo.includes(user._id) && (
+                          <Check className="ml-2 h-4 w-4 text-green-500" />
+                        )}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select> */}
+              <Select onValueChange={handleSelectChange}>
                 <SelectTrigger id="assignedTo">
                   <SelectValue placeholder="Select users">
                     {assignedTo.length > 0 ? (

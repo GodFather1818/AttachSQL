@@ -37,9 +37,9 @@ export class RolesService {
       throw new NotFoundException(`Role with ID "${id}" not found`);
     }
     console.log(`Emitting roleUpdated event for role: ${role.name}`); 
+    return role;
 
     this.rolesGateway.emitUpdatedRole(role);
-    return role;
   }
 
   async deleteRole(id:string):Promise<Roles>{

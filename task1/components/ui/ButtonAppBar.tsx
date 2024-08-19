@@ -4,6 +4,10 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import SignInButton from './SignInButton';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { Bell } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -12,11 +16,43 @@ export default function Navbar() {
   const Ppermissions = session?.user?.permissions.products;
   const Propermissions = session?.user?.permissions.projects;
   const Taskpermissions = session?.user?.permissions.tasks;
+  const [unreadCount, setUnreadCount] = useState(0);
+
 
   const category = () => console.log("Category clicked");
   const products = () => console.log("Products clicked");
   const projects = () => console.log("Projects clicked");
   const tasks = () => console.log("Tasks clicked");
+
+  useEffect(() => {
+    if (session?.user?.token) {
+      fetchUnreadCount();
+    }
+  }, [session]);
+  const fetchUnreadCount = useCallback(async () => {
+    if (session?.user?.token) {
+      try {
+        const response = await axios.get('http://localhost:3002/notifications/unread-count', {
+          headers: { Authorization: `Bearer ${session.user.token}` },
+        });
+        if (typeof response.data === 'number') {
+          setUnreadCount(response.data);
+        } else {
+          console.error('Unexpected response format for unread count:', response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching unread count:', error);
+      }
+    }
+  }, [session]);
+  // Add this to the Navbar component
+  useEffect(() => {
+    const handleRefreshUnreadCount = () => fetchUnreadCount();
+    window.addEventListener('refreshUnreadCount', handleRefreshUnreadCount);
+    return () => {
+      window.removeEventListener('refreshUnreadCount', handleRefreshUnreadCount);
+  };
+}, [fetchUnreadCount]);
 
   return (
     <div className="fixed w-45 h-full bg-gray-100 flex flex-col">
@@ -58,8 +94,20 @@ export default function Navbar() {
         </div>
         <div className="px-10 px-4">
           <SignInButton />
+          <Link href="/notifications">
+          <Button variant="ghost" className="p-2 relative">
+            <Bell className="h-5 w-5" />
+            {unreadCount > 0 && (
+              <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                {unreadCount}
+              </span>
+            )}
+          </Button>
+          </Link>
         </div>
       </aside>
     </div>
   );
 }
+
+

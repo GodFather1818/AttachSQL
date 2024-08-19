@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Layout from '@/components/ui/Layout';
+import { useSession } from "next-auth/react";
 
 interface Task {
     _id: string;
@@ -22,12 +23,21 @@ function ViewDetails() {
     const params = useParams();
     const id = params.id;
     const [task, setTask] = useState<Task | null>(null);
+    const { data: session } = useSession();
+    const permissions = session?.user?.permissions.tasks;
+    console.log(permissions);
+    const token = session?.user.token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
 
     useEffect(() => {
         const fetchTask = async () => {
             if (id) {
                 try {
-                    const response = await axios.get(`http://localhost:3002/tasks/${id}`);
+                    const response = await axios.get(`http://localhost:3002/tasks/${id}`,{
+                        headers,
+                      });
                     const taskData = response.data;
                     setTask(taskData);
                 } catch (error) {
