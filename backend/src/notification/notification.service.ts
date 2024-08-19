@@ -25,5 +25,9 @@ export class NotificationService {
   // In your notifications service
   async getUnreadCount(userId: string): Promise<number> {
     return this.notificationModel.countDocuments({ user: userId, read: false });
-}
+  }
+
+  async deleteNotifications(notificationId: string): Promise<Notification> {
+    return this.notificationModel.findByIdAndDelete(notificationId).exec();
+  }
 }

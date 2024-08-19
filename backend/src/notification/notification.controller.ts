@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Param, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Patch, Param, UseGuards, Request, Delete } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 
@@ -21,7 +21,11 @@ export class NotificationController {
   async getUnreadCount(@Request() req): Promise<number> {
     const userId = req.user.userId; // Assuming you have user information in the request
     return this.notificationService.getUnreadCount(userId);
-}
-  
+  }
+
+  @Delete(":id")
+  async deleteNotification(@Request() req, @Param('id') id: string) {
+    return this.notificationService.deleteNotifications(id);
+  }
 
 }
