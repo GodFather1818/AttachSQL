@@ -28,36 +28,86 @@ export class UserService {
     return this.userModel.findById(userId).populate('role').exec();
   }
 
-  async RegisterView(data: RegisterDto) {
-    const chk_user = await this.userModel.findOne({ email: data.email.toLowerCase() });
+
   
-    if (chk_user) {
-      throw new BadRequestException('User Already Exists!');
-    }
+  // async RegisterView(data: RegisterDto) {
+  //   const chk_user = await this.userModel.findOne({ email: data.email.toLowerCase() });
   
-    // Fetch the 'user' role from the database
-    const defaultRole = await this.rolesModel.findOne({ name: 'user' });
-    if (!defaultRole) {
-      throw new BadRequestException('Default role not found!');
-    }
+  //   if (chk_user) {
+  //     throw new BadRequestException('User Already Exists!');
+  //   }
   
-    const newUser = new this.userModel({
-      email: data.email,
-      password: data.password,
-      name: data.name,
-      role: defaultRole._id, 
-    });
+  //   // Fetch the 'user' role from the database
+  //   const defaultRole = await this.rolesModel.findOne({ name: 'user' });
+  //   if (!defaultRole) {
+  //     throw new BadRequestException('Default role not found!');
+  //   }
   
-    await newUser.save();
-    const token = await this.jwtService.sign({ userId: newUser._id });
+  //   const newUser = new this.userModel({
+  //     email: data.email,
+  //     password: data.password,
+  //     name: data.name,
+  //     role: defaultRole._id, 
+  //   });
   
-    return {
-      token: token,
-      email: data.email,
-      name: data.name,
-    };
+  //   await newUser.save();
+  //   const token = await this.jwtService.sign({ userId: newUser._id });
+  
+  //   return {
+  //     token: token,
+  //     email: data.email,
+  //     name: data.name,
+  //   };
+  // }
+  
+
+async RegisterView(data: RegisterDto) {
+  console.log('RegisterView method called');
+
+  // Check if the user already exists
+  const chk_user = await this.userModel.findOne({ email: data.email.toLowerCase() });
+  if (chk_user) {
+    console.log('User already exists');
+    throw new BadRequestException('User Already Exists!');
   }
+
+  // Fetch the 'user' role from the database
+  const defaultRole = await this.rolesModel.findOne({ name: 'user' });
+  if (!defaultRole) {
+    console.log('Default role not found');
+    throw new BadRequestException('Default role not found!');
+  }
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(data.password, 10);
+  console.log('Password after hashing:', hashedPassword);
+
+  // Create a new user with the hashed password
+  const newUser = new this.userModel({
+    email: data.email,
+    password: hashedPassword,
+    name: data.name,
+    role: defaultRole._id,
+  });
+
+  // Save the user to the database
+  await newUser.save();
+  console.log('User saved to the database with hashed password');
+
+  // Generate a JWT token
+  const token = await this.jwtService.sign({ userId: newUser._id });
+
+  return {
+    token: token,
+    email: data.email,
+    name: data.name,
+  };
+}
+ 
   
+
+
+
   async LoginView(data: LoginDto) {
     const chk_user = await this.userModel.findOne({ email: data.email.toLowerCase() }).populate('role');
 
