@@ -50,14 +50,14 @@ function TaskList() {
       console.error("Error Fetching Tasks:", error);
     }
   };
+  useEffect(() => {
+    fetchTasks();
+  }, [token]);
 
   const showToast = (message, type) => {
     setToast({ message, type, show: true });
   };
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
   useEffect(() => {
     const socket = io("http://localhost:3002"); // Replace with your server URL
 
@@ -78,7 +78,7 @@ function TaskList() {
     //   showToast('Task deleted', 'warning');
     // });
 
-    fetchTasks();
+
 
     // Cleanup function
     return () => {

@@ -19,7 +19,7 @@ export class Notification extends Document {
   type: string;
 
   @Prop({ type: Types.ObjectId, refPath: 'entityType' })
-  entityId: Types.ObjectId;;
+  entityId: Types.ObjectId;
 
   @Prop({ type: String, enum: ['Task', 'Role'] })
   entityType: string;

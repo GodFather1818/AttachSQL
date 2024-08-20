@@ -92,8 +92,9 @@ export default function Navbar() {
             </Link>
           )}
         </div>
-        <div className="px-10 px-4">
-          <SignInButton />
+        <div className="flex flex-row justify-around ">
+          <div className="div">
+
           <Link href="/notifications">
           <Button variant="ghost" className="p-2 relative">
             <Bell className="h-5 w-5" />
@@ -104,6 +105,10 @@ export default function Navbar() {
             )}
           </Button>
           </Link>
+            </div>
+                <div className="flex flex-row pt-1.5 p-1 rounded-md  hover:bg-white hover:text-blue-500 ">
+          <SignInButton />
+            </div>
         </div>
       </aside>
     </div>

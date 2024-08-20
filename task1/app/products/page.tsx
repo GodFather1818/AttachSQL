@@ -41,7 +41,7 @@ const ProductPage = () => {
     useEffect(() => {
 
     fetchProducts();
-  }, []);
+  }, [token]);
 
   const deleteit = async (id:any) =>{
     console.log(id)
@@ -84,7 +84,7 @@ const ProductPage = () => {
             </Button>}
           </div>
           <div className="div2">
-          {permissions?.WRITE && <Link href={`/products/edit/${product._id}`}>
+          {permissions?.UPDATE && <Link href={`/products/edit/${product._id}`}>
             <Button className="">
               <EditIcon sx={{ color: 'blue' }} />
             </Button>

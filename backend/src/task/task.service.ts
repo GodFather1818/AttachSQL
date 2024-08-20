@@ -21,7 +21,7 @@ export class TaskService {
         return this.taskModel.find().populate('assigned_to', 'name email').exec();
     }
     async findParticularTask(taskId: string): Promise<Task> {
-        return this.taskModel.findById(taskId).exec();
+        return await this.taskModel.findById(taskId).populate('assigned_to','name').exec();
     }
     async findTasksWithUsers():Promise<Task[]> {
         return this.taskModel.find().populate('assigned_to', 'name email').exec();

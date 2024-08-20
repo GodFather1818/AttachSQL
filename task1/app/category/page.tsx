@@ -58,7 +58,7 @@ const CategoryPage = () => {
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [token]);
 
   const columns: ColumnDef<Category>[] = [
     {
@@ -82,7 +82,7 @@ const CategoryPage = () => {
             <DeleteIcon sx={{ color: 'red' }} />
           </Button>
           }
-      {permissions?.WRITE && 
+      {permissions?.UPDATE && 
           <Link href={`/category/edit/${row.original._id}`}>
             <Button>
               <EditIcon sx={{ color: 'blue' }} />

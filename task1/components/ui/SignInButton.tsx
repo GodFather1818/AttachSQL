@@ -21,11 +21,11 @@ const SignInButton = () => {
  
 
       return (
-        <div className="flex gap-4 ml-auto">
+        <div className="">
           {/* <p className="text-black bg-white m-auto px-2 py-1">User: {session?.user.name} Role: {session?.user.role}</p> */}
           <Link
             href={"/api/auth/signout"}
-            className="flex gap-4 ml-auto text-blue-600 bg-white px-2 py-1"
+           
             >
             Sign Out
           </Link>
@@ -34,10 +34,9 @@ const SignInButton = () => {
     }
   
     return (
-      <div className="flex gap-4 ml-auto items-center">
+      <div className="">
         <Link
           href={"/api/auth/signin"}
-          className="flex gap-4 ml-auto  text-blue-600 bg-white px-2 py-1"
         >
           Sign In
         </Link>

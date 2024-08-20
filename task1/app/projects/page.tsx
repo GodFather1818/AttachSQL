@@ -66,7 +66,7 @@ function ProjectList() {
               <DeleteIcon sx={{ color: "red" }} />
             </Button>
           )}
-          {permissions?.WRITE && (
+          {permissions?.UPDATE && (
             <Link href={`/projects/update/${row.original._id}`}>
               <Button>
                 <EditIcon sx={{ color: "blue" }} />

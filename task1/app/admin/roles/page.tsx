@@ -14,11 +14,13 @@ import {
   TableHeader,
   TableRow,
 } from "../../../components/ui/table";
-import { Button } from "../../../components/ui/button";
+// import { Button } from "../../../components/ui/button";
+import { Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
 import Toast from '@/components/ui/Toast';
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 function Page() {
   const [roles, setRoles] = useState([]);
   const [toast, setToast] = useState({ message: '', type: 'info', show: false });
@@ -114,16 +116,15 @@ function Page() {
                         </Button>
                       </Link>
                       <Link href={`/admin/roles/edit/${role._id}`}>
-                        <Button className='background-color: transparent,border: none; ;'>
-                          <FontAwesomeIcon icon={faPen} className="mr-2 "  />
-                      
+                        <Button className='' >
+                          <EditIcon />
                         </Button>
                       </Link>
                       <Button
                         onClick={() => handleDelete(role._id)}
                         className="text-red-500"
                       >
-                        <FontAwesomeIcon icon={faTrash} className="mr-2" />
+                        <DeleteIcon  sx={{ color: 'red' }}  />
                         
                       </Button>
                     </div>
@@ -133,12 +134,14 @@ function Page() {
             </TableBody>
           </Table>
         </div>
+            <div className='border-blue-500 '>
 
-        <Link href="/admin/users">
-          <Button className="text-xs bg-primary text-blue-100 hover:text-black py-2 px-2">
+        <Link href="/admin/users" className=''>
+          <Button className="text-xs bg-primary text-blue-100 hover:text-black py-2 px-2 ">
             Create New Role
           </Button>
         </Link>
+            </div>
       </div>
       {toast.show && (
         <Toast
