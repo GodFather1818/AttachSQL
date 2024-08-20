@@ -12,6 +12,7 @@ import io from "socket.io-client";
 export default function Navbar() {
   const { data: session } = useSession();
   const userRole = session?.user.role;
+  const token = session?.user.token;
   const Cpermissions = session?.user?.permissions.category;
   const Ppermissions = session?.user?.permissions.products;
   const Propermissions = session?.user?.permissions.projects;
@@ -42,7 +43,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const socket = io("http://localhost:3002", {
-      query: { userId: "yourUserId" } // Replace with the actual user ID
+      query: { userId: session?.user.id } // Replace with the actual user ID
     });
   
     socket.on("connect", () => {
@@ -66,9 +67,10 @@ export default function Navbar() {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [tasks]);
   const fetchUnreadCount = useCallback(async () => {
     if (session?.user?.token) {
+      console.log(session?.user)
       try {
         const response = await axios.get('http://localhost:3002/notifications/unread-count', {
           headers: { Authorization: `Bearer ${session.user.token}` },
