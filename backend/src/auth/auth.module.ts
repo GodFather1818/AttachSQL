@@ -1,18 +1,20 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { UserController } from './user/user.controller';
-import { UserService } from './user/user.service';
-import { User, UserSchema } from 'src/models/users.models';
-import { Roles, RolesSchema } from '../roles/roles.schema';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+// import { PrismaModule } from '../prisma/prisma.module';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: User.name, schema: UserSchema },
-      { name: Roles.name, schema: RolesSchema },
-    ]),
+    // PrismaModule,
+    PassportModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1h' },
+    }),
   ],
-  controllers: [UserController],
-  providers: [UserService],
+  controllers: [AuthController],
+  providers: [AuthService],
 })
 export class AuthModule {}
