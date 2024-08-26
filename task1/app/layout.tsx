@@ -27,7 +27,7 @@ export default function RootLayout({
         <Providers>
       <body className={inter.className}>
       <ToastContainer />
-        <NextTopLoader color="#fff" />
+        <NextTopLoader color="#2299DD" />
         {children}</body>
         </Providers>
     </html>

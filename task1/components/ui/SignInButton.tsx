@@ -1,47 +1,24 @@
-"use client"
-import React from 'react'
-import { useSession } from 'next-auth/react'
-import Link from 'next/link'
-import { signOut } from 'next-auth/react';
+"use client";
+import React from 'react';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import Link from 'next/link';
 
-import Button from 'next/'
 const SignInButton = () => {
+  const { data: session } = useSession();
 
-    const {data:session} = useSession();
-    const logout=()=>{
-        // window.location.reload()
-        
-        signOut();
-
-    }
-
-    if (session && session.user){
-
-
- 
-
-      return (
-        <div className="">
-          {/* <p className="text-black bg-white m-auto px-2 py-1">User: {session?.user.name} Role: {session?.user.role}</p> */}
-          <Link
-            href={"/api/auth/signout"}
-           
-            >
-            Sign Out
-          </Link>
-        </div>
-      );
-    }
-  
+  if (session && session.user) {
     return (
       <div className="">
-        <Link
-          href={"/api/auth/signin"}
-        >
-          Sign In
-        </Link>
-        
+        <button onClick={() => signOut()}>Sign Out</button>
       </div>
     );
-  };
-export default SignInButton
+  }
+
+  return (
+    <div className="">
+      <button onClick={() => signIn()}>Sign In</button>
+    </div>
+  );
+};
+
+export default SignInButton;

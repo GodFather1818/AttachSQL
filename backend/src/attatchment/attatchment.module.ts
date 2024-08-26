@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AttatchmentService } from './attatchment.service';
-import { AttatchmentController } from './attatchment.controller';
+import { AttachmentController } from './attatchment.controller';
+import { AttachmentService } from './attatchment.service';
+// import { PrismaModule } from '../prisma/prisma.module';
+import { FileModule } from '../file/file.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  providers: [AttatchmentService],
-  controllers: [AttatchmentController]
+  imports: [FileModule, AuthModule],
+  controllers: [AttachmentController],
+  providers: [AttachmentService],
 })
-export class AttatchmentModule {}
+export class AttachmentModule {}

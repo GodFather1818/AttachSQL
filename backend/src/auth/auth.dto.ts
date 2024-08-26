@@ -5,6 +5,7 @@ export class RegisterDto {
   name: string;
 
   @IsEmail()
+  // @IsUnique()
   email: string;
 
   @IsString()
