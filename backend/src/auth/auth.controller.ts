@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto, LoginDto } from './auth.dto';
 
@@ -15,4 +15,10 @@ export class AuthController {
   async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
+
+//   @Get('google/api/redirect')
+//   async googelRedirect() {
+//     return {message: "Redirected successfully!"}
+//   }
+// }
 }

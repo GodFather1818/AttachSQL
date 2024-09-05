@@ -131,6 +131,7 @@ export const authOptions: NextAuthOptions = {
         return null;
       },
     }),
+
   ],
   callbacks: {
     async jwt({ token, user }) {
@@ -153,3 +154,4 @@ export const authOptions: NextAuthOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
+

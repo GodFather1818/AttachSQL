@@ -20,7 +20,6 @@ export class FileService {
 
   constructor(private prisma: PrismaService, private configService: ConfigService) {
     const apiKey = configService.get<string>('GOOGLE_API_KEY');
-    // console.log(`The API KEY IS: ${apiKey}`);
     this.genAI = new GoogleGenerativeAI(apiKey);
     this.model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   }
@@ -74,56 +73,21 @@ export class FileService {
   }
 
 
-  // private async extractTextFromPptx(buffer: Buffer): Promise<string> {
-  //   const tempFilePath = path.join(__dirname, '..', '..', 'temp', `temp_${Date.now()}.pptx`);
-  //   await util.promisify(fs.writeFile)(tempFilePath, buffer);
-
-  //   try {
-  //     const pptx = officegen('pptx');
-      
-  //     const fileContent = await util.promisify(fs.readFile)(tempFilePath);
-      
-      
-  //     await new Promise<void>((resolve, reject) => {
-  //       pptx.parse(fileContent, (err) => {
-  //         if (err) reject(err);
-  //         else resolve();
-  //       });
-  //     });
-
-  //     let extractedText = '';
-  //     pptx.getSlides().forEach((slide) => {
-  //       slide.forEach((object) => {
-  //         if (object.options && object.options.text) {
-  //           extractedText += object.options.text + '\n';
-  //         }
-  //       });
-  //     });
-  //     console.log(extractedText.trim())
-  //     return extractedText.trim();
-  //   } finally {
-  //     await util.promisify(fs.unlink)(tempFilePath);
-  //   }
-  // }
+ 
   
   private async extractTextFromPptx(buffer: Buffer): Promise<string> {
     try {
-      // Create a temporary file path
       const tempFilePath = path.join(__dirname, '..', '..', 'temp', `temp_${Date.now()}.pptx`);
       
-      // Write the buffer to a temporary file
       await util.promisify(fs.writeFile)(tempFilePath, buffer);
   
-      // Configure the parser
       const config: officeParser.OfficeParserConfig = {
-        newlineDelimiter: " ",  // Separate new lines with a space
-        ignoreNotes: true       // Ignore notes in the presentation
+        newlineDelimiter: " ",
+        ignoreNotes: true       
       };
   
-      // Parse the PPTX file
       const extractedText = await officeParser.parseOfficeAsync(tempFilePath, config);
   
-      // Clean up the temporary file
       await util.promisify(fs.unlink)(tempFilePath);
       console.log(extractedText.trim())
       return extractedText.trim();
